@@ -1,1 +1,3 @@
-export * from './SuppliersTable/SuppliersTable';
+export * from './EditableSupplierContactsTable';
+export * from './EditableSupplierForm';
+export * from './SuppliersTable';

@@ -6,7 +6,7 @@ export type Nullable<T> = T | null;
 /**
  * Defines a Type that can be Undefined.
  */
-export type Undefinable<T> = T | null;
+export type Undefinable<T> = T | undefined;
 
 /**
  * Defines a Type that can be either Null or Undefined.

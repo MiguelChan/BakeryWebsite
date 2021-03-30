@@ -1,6 +1,4 @@
-export {
-    NavigationBar,
-} from './NavigationBar/NavigationBar';
-export {
-    ViewSuppliers,
-} from './ViewSuppliers/ViewSuppliers';
+export * from './NavigationBar';
+export * from './SupplierDetailView';
+export * from './SupplierEditableView';
+export * from './ViewSuppliers';

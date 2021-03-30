@@ -4,14 +4,22 @@ import {
     TableRow, 
     TableCell, 
     TableBody,
+    IconButton,
 } from '@material-ui/core';
+import { 
+    Delete,
+} from '@material-ui/icons';
 import * as React from 'react';
 import { 
     Contact,
 } from '../../../Models';
 
+export type OnDeleteContactClickListener = (contact: Contact, contactIndex: number) => void;
+
 interface Properties {
     contacts: Contact[];
+    canDeleteContact: boolean;
+    onDeleteContactClickListener: OnDeleteContactClickListener;
 }
 
 /**
@@ -21,11 +29,14 @@ interface Properties {
  */
 export const SupplierContactsTable: React.FunctionComponent<Properties> = ({
     contacts,
+    canDeleteContact,
+    onDeleteContactClickListener,
+
 }) => {
 
     function renderContactRow(contactIndex: number, contact: Contact) {
         return (
-            <TableRow key={contact.contactFirstName}>
+            <TableRow key={contact.contactFirstName} hover>
                 <TableCell>
                     {contactIndex}
                 </TableCell>
@@ -41,12 +52,24 @@ export const SupplierContactsTable: React.FunctionComponent<Properties> = ({
                 <TableCell>
                     {`${contact.contactType}`}
                 </TableCell>
+                {canDeleteContact &&
+                    <TableCell>
+                        <IconButton 
+                            aria-label={`delete-${contactIndex}`}
+                            onClick={() => onDeleteContactClickListener(contact, contactIndex - 1)}
+                        >
+                            <Delete />
+                        </IconButton>
+                    </TableCell>
+                }
             </TableRow>
         );
     }
 
     function renderContacts() {
-        return contacts.map((currentContact: Contact, index: number) => renderContactRow(index, currentContact));
+        return contacts.map((currentContact: Contact, index: number) => {
+            return renderContactRow(index + 1, currentContact);
+        });
     }
 
     return (
@@ -68,6 +91,10 @@ export const SupplierContactsTable: React.FunctionComponent<Properties> = ({
                     <TableCell>
                         Tipo
                     </TableCell>
+                    {canDeleteContact &&
+                        <TableCell>
+                        </TableCell>
+                    }
                 </TableRow>
             </TableHead>   
             <TableBody>

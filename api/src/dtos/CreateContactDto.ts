@@ -10,5 +10,5 @@ export interface CreateContactDto {
     phoneNumber: string;
     emailAddress: string;
     contactFirstName: string;
-    contactLastName: string;   
+    contactLastName: string;
 }

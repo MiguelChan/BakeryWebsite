@@ -1,13 +1,21 @@
+import * as React from 'react';
 import { 
-    Fab,
+    Button,
     makeStyles,
     Paper,
 } from '@material-ui/core';
-import * as React from 'react';
+import { 
+    Contact,
+} from '../../../Models';
 import theme from '../../../theme';
 import { 
+    CreateContactDialog, 
+    OnCreateContactClickListener,
+} from '../../Blocks/CreateContactDialog';
+import { 
+    OnDeleteContactClickListener,
     SupplierContactsTable,
-} from '../../Blocks/SuppliersContactsTable/SupplierContactsTable';
+} from '../../Blocks/SuppliersContactsTable';
 
 const useStyles = makeStyles((theme) => ({
     addButton: {
@@ -15,21 +23,59 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+interface Properties {
+    contacts: Contact[];
+    onCreateContactClickListener: OnCreateContactClickListener;
+    onDeleteContactClickListener: OnDeleteContactClickListener;
+}
+
 /**
  * Defines the Editable Contacts Table for the Supplier.
  * @param 
  * @returns The Editable SupplierContactsTable.
  */
-export const EditableSupplierContactsTable: React.FunctionComponent = ({}) => {
+export const EditableSupplierContactsTable: React.FunctionComponent<Properties> = ({
+    contacts,
+    onCreateContactClickListener,
+    onDeleteContactClickListener,
+}) => {
 
     const classes = useStyles(theme);
 
+    const [isShowingContactModal, setIsShowingContactModal] = React.useState<boolean>(false);
+
+    function closeCreateModalDialog () {
+        setIsShowingContactModal(false);
+    }
+
+    function onAddContactClickListener() {
+        setIsShowingContactModal(true);
+    }
+
+    function internalOnCreateContactClickListener(contact: Contact) {
+        setIsShowingContactModal(false);
+        onCreateContactClickListener(contact);
+    }
+
     return (
         <Paper>
-            <SupplierContactsTable contacts={[]} />
-            <Fab variant='extended' className={classes.addButton}>
+            <SupplierContactsTable 
+                contacts={contacts} 
+                canDeleteContact
+                onDeleteContactClickListener={onDeleteContactClickListener}
+            />
+            <Button 
+                variant='contained' 
+                className={classes.addButton}
+                onClick={onAddContactClickListener}
+            >
                 Agregar nuevo Contacto
-            </Fab>
+            </Button>
+            <CreateContactDialog 
+                isOpen={isShowingContactModal} 
+                onCloseModalClickListener={closeCreateModalDialog}
+                onCreateContactClickListener={internalOnCreateContactClickListener}
+            />
         </Paper>
     );
 };

@@ -1,1 +1,1 @@
-export * from './APIClient';
+export * from './SuppliersClient';
