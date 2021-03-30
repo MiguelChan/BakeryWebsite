@@ -40,8 +40,8 @@ describe('SupplierContactsTable', () => {
         screen.getByText(/Numero de Telefono/);
         screen.getByText(/Tipo/);
 
-        expect(screen.getByText('PhoneNumber: 0'));
-        expect(screen.getByText('PhoneNumber: 1'));
+        expect(screen.getByText('PhoneNumber: 0')).toBeInTheDocument();
+        expect(screen.getByText('PhoneNumber: 1')).toBeInTheDocument();
     });
 
     function buildContacts(numberOfContacts: number): Contact[] {

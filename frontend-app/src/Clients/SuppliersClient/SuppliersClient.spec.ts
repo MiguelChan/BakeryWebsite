@@ -32,7 +32,7 @@ describe('SuppliersClient', () => {
             };
             mockPostFn.mockResolvedValue(axiosResponse);
 
-            suppliersClient.createSupplier(supplier, [contact]).then((createSupplierResponse: CreateSupplierResponse) => {
+            return suppliersClient.createSupplier(supplier, [contact]).then((createSupplierResponse: CreateSupplierResponse) => {
                 expect(mockPostFn).toHaveBeenCalledWith(SUPPLIERS_URL, createSupplierRequest);
                 expect(createSupplierResponse).not.toBeNull();
                 expect(createSupplierResponse.errorMessage).toBeUndefined();
@@ -56,7 +56,7 @@ describe('SuppliersClient', () => {
 
             mockPostFn.mockRejectedValue(axiosError);
 
-            suppliersClient.createSupplier(supplier, [contact]).catch((createSupplierResponse: CreateSupplierResponse) => {
+            return suppliersClient.createSupplier(supplier, [contact]).catch((createSupplierResponse: CreateSupplierResponse) => {
                 expect(mockPostFn).toHaveBeenLastCalledWith(SUPPLIERS_URL, createSupplierRequest);
                 expect(createSupplierResponse).not.toBeNull();
                 expect(createSupplierResponse.errorMessage).toBeDefined();
@@ -83,7 +83,7 @@ describe('SuppliersClient', () => {
 
             mockPostFn.mockRejectedValue(axiosError);
 
-            suppliersClient.createSupplier(supplier, [contact]).catch((createSupplierResponse: CreateSupplierResponse) => {
+            return suppliersClient.createSupplier(supplier, [contact]).catch((createSupplierResponse: CreateSupplierResponse) => {
                 expect(mockPostFn).toHaveBeenCalledWith(SUPPLIERS_URL, createSupplierRequest);
                 expect(createSupplierResponse).not.toBeNull();
                 expect(createSupplierResponse.errorMessage).toBeDefined();
