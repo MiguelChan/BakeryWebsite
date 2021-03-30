@@ -1,3 +1,3 @@
 export * from './CreateSupplierDto';
-export * from './CreateContactDto';
+export * from './CreateSupplierResponseDto';
 export * from './GetSuppliersDto';

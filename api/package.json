@@ -11,7 +11,7 @@
     "debug": "export DEBUG=* && npm run start",
     "debug:build": "export DEBUG=* && npm run build",
     "debug:server": "export DEBUG=* && npm run dev-server",
-    "test": "jest"
+    "test": "jest --config jest.config.js"
   },
   "author": "Miguel Chan",
   "license": "ISC",
