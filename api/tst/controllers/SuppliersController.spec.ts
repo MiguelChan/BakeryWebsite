@@ -1,10 +1,20 @@
 import {
-    SupplierService,
     supplierService, 
 } from '../../src/services/SupplierService';
 import express from 'express';
-import { Supplier } from '../../src/models';
+import { 
+    Contact, 
+    ContactType,
+    Supplier,
+} from '../../src/models';
 import SuppliersController from '../../src/controllers/SuppliersController';
+import { 
+    CreateSupplierDto,
+} from '../../src/dtos';
+import { 
+    createMockRequest, 
+    createMockResponse,
+} from '../utils/ExpressUtils';
 jest.mock('../../src/services/SupplierService')
 
 describe('SuppliersController', () => {
@@ -24,34 +34,89 @@ describe('SuppliersController', () => {
         mockResponse = null;
     });
    
-    it('Should return a List of all Suppliers', () => {
-        const suppliersList: Supplier[] = [];
-        getSuppliersMockFn.mockImplementation(() => {
-            return suppliersList;
+    describe('CreateSupplier', () => {
+
+        const createSupplierMockFn = supplierService.createSupplier as jest.Mock;
+
+        afterEach(() => {
+            createSupplierMockFn.mockClear();
         });
 
-        SuppliersController.getSuppliers(mockRequest!, mockResponse!);
+        it('Should call the SuppliersService when a Create is Requested', () => {
+            const supplier: Supplier = buildRandomSupplier();
+            const contact: Contact = buildRandomContact();
 
-        expect(getSuppliersMockFn).toHaveBeenCalledTimes(1);
-        expect(mockResponse!.status).toHaveBeenCalledWith(200);
-        expect(mockResponse!.status(200).send).toHaveBeenCalledWith(suppliersList);
+            const createSupplierDto: CreateSupplierDto = {
+                contacts: [contact],
+                supplier: supplier,
+            };
+
+            const mockRequest = createMockRequest();
+            mockRequest.body = createSupplierDto;
+
+            const mockResponse = createMockResponse();
+
+            SuppliersController.createSupplier(mockRequest, mockResponse);
+
+            const expectedNewSupplier: Supplier = {
+                ...supplier,
+                contacts: [contact],
+            };
+
+            expect(createSupplierMockFn).toHaveBeenCalledWith(expectedNewSupplier);
+            expect(mockResponse.status).toHaveBeenCalledWith(201);
+            expect(mockResponse.send).toHaveBeenCalledWith({});
+        });
+
+        it('Should return an error code when the Service fails', () => {
+            const supplier: Supplier = buildRandomSupplier();
+            const contact: Contact = buildRandomContact();
+
+            const createSupplierDto: CreateSupplierDto = {
+                contacts: [contact],
+                supplier: supplier,
+            };
+
+            const mockRequest = createMockRequest();
+            mockRequest.body = createSupplierDto;
+
+            const mockResponse = createMockResponse();
+
+            createSupplierMockFn.mockImplementation(() => { throw new Error('SomeSome') });
+
+            SuppliersController.createSupplier(mockRequest, mockResponse);
+
+            const expectedNewSupplier: Supplier = {
+                ...supplier,
+                contacts: [contact],
+            };
+            expect(createSupplierMockFn).toHaveBeenCalledWith(expectedNewSupplier);
+            expect(mockResponse.status).toHaveBeenCalledWith(500);
+            expect(mockResponse.send).toHaveBeenCalled();
+        });
+
     });
 
-    function createMockRequest(): express.Request {
-        const request: any = {
-            body: {},
-            params: {},
+    function buildRandomSupplier(): Supplier {
+        return {
+            addressLine1: 'AddressLine1',
+            addressLine2: 'AddressLine2',
+            contacts: [],
+            id: '',
+            name: '',
+            phoneNumber: '',
         };
-        return request;
     }
 
-    function createMockResponse(): express.Response {
-        const res: any = {};
-        res.status = jest.fn().mockReturnValue(res);
-        res.send = jest.fn();
-        res.json = jest.fn();
-        res.body = {};
-        return res;
+    function buildRandomContact(): Contact {
+        return {
+            contactFirstName: 'ContactFirstName',
+            contactLastName: 'ContactLastName',
+            contactType: ContactType.Returns,
+            emailAddress: 'emailAddress',
+            id: '',
+            phoneNumber: 'PhoneNumber',  
+        };
     }
 
 });

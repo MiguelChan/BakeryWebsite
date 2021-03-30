@@ -6,10 +6,19 @@ import debug from 'debug';
 import { 
     Supplier,
 } from '../models';
-import { GetSupplierDto } from '../dtos/GetSuppliersDto';
+import { 
+    GetSupplierDto,
+} from '../dtos/GetSuppliersDto';
+import { 
+    CreateSupplierDto,
+} from '../dtos';
+import { CreateSupplierResponseDto } from '../dtos/CreateSupplierResponseDto';
 
 const logger: debug.IDebugger = debug('app:SuppliersController');
 
+/**
+ * Defines the Suppliers Controller.
+ */
 class SuppliersController {
 
     async getSuppliers(req: express.Request, res: express.Response) {
@@ -22,12 +31,25 @@ class SuppliersController {
         res.status(200).send(getSuppliersDto);
     }
 
+    /**
+     * Creates a Single Supplier.
+     * @param req .
+     * @param res .
+     */
     async createSupplier(req: express.Request, res: express.Response) {
+        const createSupplierResponse: CreateSupplierResponseDto = {};
+
         try {
-            supplierService.createSupplier(req.body);
-            res.status(201).send({ id: 1 });
+            const createSupplierDto: CreateSupplierDto = req.body;
+            const newSupplier: Supplier = {
+                ...createSupplierDto.supplier,
+                contacts: [...createSupplierDto.contacts],
+            };
+            supplierService.createSupplier(newSupplier);
+            res.status(201).send(createSupplierResponse);
         } catch (exception) {
-            res.status(500).send(exception);
+            createSupplierResponse.errorMessage = exception;
+            res.status(500).send(createSupplierResponse);
         }
     }
 

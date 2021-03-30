@@ -4,6 +4,7 @@ import {
     screen,
 } from '@testing-library/react';
 import { 
+    OnDeleteContactClickListener,
     SupplierContactsTable,
 } from './SupplierContactsTable';
 import { 
@@ -12,9 +13,15 @@ import {
 
 describe('SupplierContactsTable', () => {
 
+    const mockOnDeleteContactClickListener = jest.fn();
+
+    afterEach(() => {
+        mockOnDeleteContactClickListener.mockClear();
+    });
+
     it('Should display the Table Header', () => {
         const contacts: Contact[] = buildContacts(0);
-        setupComponent(contacts);
+        setupComponent(contacts, mockOnDeleteContactClickListener);
 
         screen.getByText(/#/);
         screen.getByText(/Nombre completo/);
@@ -25,7 +32,7 @@ describe('SupplierContactsTable', () => {
 
     it('Should display the provided Contacts', () => {
         const contacts: Contact[] = buildContacts(2);
-        setupComponent(contacts);
+        setupComponent(contacts, mockOnDeleteContactClickListener);
 
         screen.getByText(/#/);
         screen.getByText(/Nombre completo/);
@@ -33,8 +40,8 @@ describe('SupplierContactsTable', () => {
         screen.getByText(/Numero de Telefono/);
         screen.getByText(/Tipo/);
 
-        expect(screen.getAllByText('0').length).toBe(3);
-        expect(screen.getAllByText('1').length).toBe(3);
+        expect(screen.getByText('PhoneNumber: 0'));
+        expect(screen.getByText('PhoneNumber: 1'));
     });
 
     function buildContacts(numberOfContacts: number): Contact[] {
@@ -43,18 +50,22 @@ describe('SupplierContactsTable', () => {
             contacts.push({
                 id: `${i}`,
                 contactType: ContactType.Returns,
-                phoneNumber: `${i}`,
-                emailAddress: `${i}`,
-                contactFirstName: `${i}`,
-                contactLastName: `${i}`,
+                phoneNumber: `PhoneNumber: ${i}`,
+                emailAddress: `EmailAddress: ${i}`,
+                contactFirstName: `FirstName: ${i}`,
+                contactLastName: `LastName: ${i}`,
             });
         }
         return contacts;
     }
 
-    function setupComponent(contacts: Contact[]) {
+    function setupComponent(contacts: Contact[], onDeleteContactClickListener: OnDeleteContactClickListener) {
         render(
-            <SupplierContactsTable contacts={contacts} />
+            <SupplierContactsTable 
+                contacts={contacts} 
+                canDeleteContact={false}
+                onDeleteContactClickListener={onDeleteContactClickListener}
+            />
         );
     }
 

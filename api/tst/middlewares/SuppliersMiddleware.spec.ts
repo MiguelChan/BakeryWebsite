@@ -1,5 +1,7 @@
 import express from 'express';
-import { CreateSupplierDto } from '../../src/dtos';
+import { 
+    CreateSupplierDto,
+} from '../../src/dtos';
 import SuppliersMiddleware from '../../src/middlewares/SuppliersMiddleware';
 
 describe('SuppliersMiddleware', () => {
@@ -21,8 +23,15 @@ describe('SuppliersMiddleware', () => {
 
     it('Should call next Function when all required parameters are set', () => {
         const customBody: Partial<CreateSupplierDto> = {
-            name: 'SomeName',
-            phoneNumber: 'SomePhoneNumber'
+            contacts: [],
+            supplier: {
+                name: 'SomeName',
+                phoneNumber: 'SomePhoneNumber',
+                addressLine1: '',
+                addressLine2: '',
+                contacts: [],
+                id: '',
+            },
         };
 
         const req = mockRequest();
