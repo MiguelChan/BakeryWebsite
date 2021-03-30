@@ -13,12 +13,10 @@ import {
     useHistory,
 } from 'react-router-dom';
 import { 
-    apiClient,
+    buildEmptyResponse,
+    GetSupplierResponse, 
+    suppliersClient,
 } from '../../../Clients';
-import { 
-    buildEmptyResponse, 
-    GetSupplierResponse,
-} from '../../../Clients/responses';
 import { 
     Supplier,
 } from '../../../Models';
@@ -54,7 +52,7 @@ export const ViewSuppliers: React.FunctionComponent = () => {
     const history = useHistory<Supplier>();
 
     React.useEffect(() => {
-        apiClient.getSuppliers()
+        suppliersClient.getSuppliers()
         .then((suppliersResponse: GetSupplierResponse) => {
             setCurrentSuppliers(suppliersResponse);
         })
