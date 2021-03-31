@@ -1,56 +1,39 @@
-import debug from 'debug';
 import {
   Supplier,
 } from '../models';
 
-const logger: debug.IDebugger = debug('app:SupplierService');
-
 /**
- * The Supplier Service.
- * Within this class we can access all the data from the Supplier Service.
+ * The Supplier Service interface.
  */
-export class SupplierService {
-  private readonly suppliers: Supplier[];
+export interface SupplierService {
 
-  constructor() {
-    this.suppliers = [];
-  }
+  /**
+   * Gets the Suppliers.
+   */
+  getSuppliers(): Supplier[];
 
-  public getSuppliers(): Supplier[] {
-    return this.suppliers;
-  }
+  /**
+   * Creates a Supplier.
+   * @param {Supplier} supplier The supplier to create.
+   */
+  createSupplier(supplier: Supplier): void;
 
-  public createSupplier(supplier: Supplier): void {
-    const newSupplier: Supplier = {
-      ...supplier,
-      id: `${this.suppliers.length + 1}`,
-    };
-    this.suppliers.push(newSupplier);
-  }
+  /**
+   * Deletes a Supplier.
+   * @param {string} supplierId The id of the supplier to delete.
+   */
+  deleteSupplier(supplierId: string): void;
 
-  public deleteSupplier(supplierId: string): void {
-    const foundIndex = this.suppliers.findIndex((currentSupplier: Supplier) => currentSupplier.id === supplierId);
+  /**
+   * Edits a Supplier.
+   * @param {Supplier} supplier The supplier to edit.
+   */
+  editSupplier(supplier: Supplier): void;
 
-    this.suppliers.splice(foundIndex, 1);
-  }
+  /**
+   * Gets a Supplier.
+   * @param {string} supplierId The supplierId to fetch.
+   */
+  getSupplier(supplierId: string): Supplier;
 
-  public editSupplier(supplier: Supplier): void {
-    const foundIndex = this.suppliers.findIndex((currentSupplier: Supplier) => currentSupplier.id === supplier.id);
-
-    this.suppliers[foundIndex] = supplier;
-  }
-
-  public getSupplier(supplierId: string): Supplier {
-    logger.log(`Trying to Fetch Supplier for Id: ${supplierId}`);
-    const foundElement = this.suppliers.filter((currentSupplier: Supplier) => currentSupplier.id === supplierId).pop();
-    if (foundElement === undefined) {
-      throw new Error('Not Found');
-    }
-    return foundElement;
-  }
 }
-
-/**
- * The singleton for the Supplier Service.
- */
-export const supplierService: SupplierService = new SupplierService();

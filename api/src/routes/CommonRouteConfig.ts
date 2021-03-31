@@ -1,8 +1,10 @@
 import express from 'express';
+import { injectable } from 'inversify';
 
 /**
  * Base class for Custom API Routes Definitions.
  */
+@injectable()
 export abstract class CommonRoutesConfig {
   /**
      * Default constructor.
@@ -10,7 +12,6 @@ export abstract class CommonRoutesConfig {
      * @param {string} name The name of this Route Configuration File.
      */
   constructor(protected readonly app: express.Application, private readonly name: string) {
-    this.configureRoutes();
   }
 
   /**
@@ -23,5 +24,5 @@ export abstract class CommonRoutesConfig {
   /**
      * Configures the provided routes.
      */
-  abstract configureRoutes(): express.Application;
+  public abstract configureRoutes(): express.Application;
 }

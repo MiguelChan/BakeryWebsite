@@ -18,6 +18,11 @@ import {
 
 export type OnSupplierChangedListener = (supplier: Supplier) => void;
 
+export const PHONE_NUMBER_TEST_ID = 'PhoneNumberTestId';
+export const ADDRESS_1_TEST_ID = 'AddressLine1TestId';
+export const ADDRESS_2_TEST_ID = 'AddressLine2TestId';
+export const NAME_TEST_ID = 'SupplierNameTestId';
+
 interface Properties {
     supplier: Supplier;
     onSupplierChangedListener: OnSupplierChangedListener;
@@ -107,7 +112,7 @@ export const EditableSupplierForm: React.FunctionComponent<Properties> = ({
                 spacing={2} 
             >
                 <Grid item xs={8} container alignItems='stretch'>
-                    {renderTextField('supplierName', 'Nombre de Proveedor', true, true, onNameChangedListener, <AccountCircle />)}
+                    {renderTextField(NAME_TEST_ID, 'Nombre de Proveedor', true, true, onNameChangedListener, <AccountCircle />)}
                 </Grid>
                 <Grid item xs={4} container alignItems='center'>
                     <Button>
@@ -116,13 +121,13 @@ export const EditableSupplierForm: React.FunctionComponent<Properties> = ({
                     </Button>
                 </Grid>
                 <Grid item xs={4}>
-                    {renderTextField('supplierAddress1', 'Direccion Linea 1', true, false, onLineAddress1ChangedListener, <Home />)}
+                    {renderTextField(ADDRESS_1_TEST_ID, 'Direccion Linea 1', true, false, onLineAddress1ChangedListener, <Home />)}
                 </Grid>
                 <Grid item xs={4}>
-                    {renderTextField('supplierAddress2', 'Direccion Linea 2', false, false, onLineAddress2ChangedListener)}
+                    {renderTextField(ADDRESS_2_TEST_ID, 'Direccion Linea 2', false, false, onLineAddress2ChangedListener)}
                 </Grid>
                 <Grid item xs={4}>
-                    {renderTextField('supplierPhoneNumber', 'Numero de Telefono', false, false, onPhoneNumberChangedListener, <Phone />)}
+                    {renderTextField(PHONE_NUMBER_TEST_ID, 'Numero de Telefono', false, false, onPhoneNumberChangedListener, <Phone />)}
                 </Grid>
             </Grid>
         </Paper>

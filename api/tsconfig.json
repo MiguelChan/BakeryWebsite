@@ -5,6 +5,10 @@
         "outDir": "./build",
         "strict": true,
         "esModuleInterop": true,
-        "inlineSourceMap": true
+        "inlineSourceMap": true,
+        "lib": ["ESNext"],
+        "types": ["reflect-metadata", "@types/jest", "node", "jest", "@types/node"],
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
     }
 }
