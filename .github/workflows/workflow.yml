@@ -1,0 +1,34 @@
+name: Website CI
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+jobs:
+  setup-node:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out the pull request's source code
+      - name: Checkout the Source Code
+        uses: actions/checkout@v2
+      # Setup node
+      - name: Setting Up Node JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+  build-api:
+    needs: setup-node
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: api
+    steps:
+      # Install node dependencies
+      - name: Install Dependencies
+        run: npm ci
+      # Make a release build
+      - name: release-build
+        run: npm run-script release
