@@ -1,12 +1,9 @@
 import {
   Supplier,
 } from '../models';
-import {
-  Nullable,
-} from '../utils';
 
-export interface GetSupplierDto {
+export interface GetSuppliersDto {
   suppliers: Supplier[];
-  paginationCursor: Nullable<string>;
-  pageNumber: number;
+  totalElements: number;
+  errorMessage?: string;
 }

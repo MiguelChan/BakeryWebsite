@@ -2,6 +2,7 @@ export const createMockRequest = () => {
   const request: any = {
     body: {},
     params: {},
+    query: {},
   };
   return request;
 };

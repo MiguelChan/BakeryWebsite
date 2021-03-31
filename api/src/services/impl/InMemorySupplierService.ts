@@ -1,5 +1,6 @@
 import debug from 'debug';
 import { injectable } from 'inversify';
+import { GetSuppliersDto } from '../../dtos';
 import {
   Supplier,
 } from '../../models';
@@ -21,8 +22,11 @@ export class InMemorySupplierService implements SupplierService {
     this.suppliers = [];
   }
 
-  public getSuppliers(): Supplier[] {
-    return this.suppliers;
+  public getSuppliers(pageNumber: number, pageSize: number): GetSuppliersDto {
+    return {
+      suppliers: this.suppliers.slice((pageNumber * pageSize), (pageNumber * pageSize) + pageSize),
+      totalElements: this.suppliers.length,
+    };
   }
 
   public createSupplier(supplier: Supplier): void {

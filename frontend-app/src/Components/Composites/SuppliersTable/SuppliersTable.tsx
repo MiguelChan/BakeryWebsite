@@ -3,6 +3,9 @@ import {
     Table, 
     TableBody, 
     TableContainer,
+    TableFooter,
+    TablePagination,
+    TableRow,
     Typography,
 } from '@material-ui/core';
 import * as React from 'react';
@@ -15,9 +18,14 @@ import {
     SuppliersTableRow,
 } from '../../Blocks';
 
+export type OnPageChangedListener = (currentPage: number, nextPage: number) => void;
+
 interface Properties {
     suppliers: Supplier[];
     onSupplierClickedListener: OnSupplierClickedListener;
+    onPageChangedListener: OnPageChangedListener;
+    totalSuppliers: number;
+    currentPage: number;
 }
 
 /**
@@ -27,7 +35,10 @@ interface Properties {
  */
 export const SuppliersTable: React.FunctionComponent<Properties> = ({
     suppliers,
+    totalSuppliers,
+    currentPage,
     onSupplierClickedListener,
+    onPageChangedListener,
 }) => {
     
     function renderSuppliers() {
@@ -42,12 +53,16 @@ export const SuppliersTable: React.FunctionComponent<Properties> = ({
         });
     }
 
-    if (suppliers.length === 0) {
+    if (totalSuppliers === 0) {
         return (
             <Paper>
                 <Typography variant='body2'>No hay proveedores disponibles. Favor de crear uno.</Typography>
             </Paper>
         );
+    }
+
+    function internalOnPageChangedListener(event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) {
+        onPageChangedListener(currentPage, newPage);
     }
 
     return (
@@ -57,6 +72,19 @@ export const SuppliersTable: React.FunctionComponent<Properties> = ({
                 <TableBody>
                     {renderSuppliers()}
                 </TableBody>
+                <TableFooter>
+                    {totalSuppliers >= 50 &&
+                        <TableRow>
+                            <TablePagination
+                                count={totalSuppliers} 
+                                rowsPerPageOptions={[50]}
+                                rowsPerPage={50}
+                                page={currentPage}
+                                onChangePage={internalOnPageChangedListener}
+                            />
+                        </TableRow>
+                    }
+                </TableFooter>
             </Table>
         </TableContainer>
     );

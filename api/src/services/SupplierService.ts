@@ -1,3 +1,4 @@
+import { GetSuppliersDto } from '../dtos';
 import {
   Supplier,
 } from '../models';
@@ -9,8 +10,13 @@ export interface SupplierService {
 
   /**
    * Gets the Suppliers.
+   *
+   * @param {number} pageNumber The page number.
+   * @param {number} pageSize The size of the page.
+   *
+   * @returns {Supplier[]} a List of Suppliers.
    */
-  getSuppliers(): Supplier[];
+  getSuppliers(pageNumber: number, pageSize: number): GetSuppliersDto;
 
   /**
    * Creates a Supplier.

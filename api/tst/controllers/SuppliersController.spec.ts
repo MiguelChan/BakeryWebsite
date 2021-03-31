@@ -1,6 +1,6 @@
 import express from 'express';
 import { SuppliersController } from '../../src/controllers';
-import { CreateSupplierDto } from '../../src/dtos';
+import { CreateSupplierDto, GetSuppliersDto } from '../../src/dtos';
 import { Contact, ContactType, Supplier } from '../../src/models';
 import { SupplierService } from '../../src/services';
 import { createMockRequest, createMockResponse } from '../utils/ExpressUtils';
@@ -92,6 +92,61 @@ describe('SuppliersController', () => {
       };
 
       expect(mockSuppliersService.createSupplier).toHaveBeenCalledWith(expectedNewSupplier);
+      expect(mockResponse.status).toHaveBeenCalledWith(500);
+      expect(mockResponse.send).toHaveBeenCalled();
+    });
+  });
+
+  describe('GetSuppliers', () => {
+    it('Should pass default pageSize and pageNumber when such params do not exist', () => {
+      const mockRequest: express.Request = createMockRequest();
+      const mockResponse: express.Response = createMockResponse();
+
+      const getSuppliersDto: GetSuppliersDto = {
+        suppliers: [],
+        totalElements: 100,
+      };
+      (mockSuppliersService.getSuppliers as jest.Mock).mockImplementation(() => getSuppliersDto);
+
+      suppliersController.getSuppliers(mockRequest, mockResponse);
+
+      expect(mockSuppliersService.getSuppliers).toHaveBeenCalledWith(0, 50);
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.send).toHaveBeenCalledWith(getSuppliersDto);
+    });
+
+    it('Should use pageSize and pageNumber from the provided URL params', () => {
+      const mockRequest: express.Request = createMockRequest();
+      mockRequest.query.pageSize = '100';
+      mockRequest.query.pageNumber = '200';
+
+      const mockResponse: express.Response = createMockResponse();
+
+      const getSuppliersDto: GetSuppliersDto = {
+        suppliers: [],
+        totalElements: 100,
+      };
+
+      (mockSuppliersService.getSuppliers as jest.Mock).mockImplementation(() => getSuppliersDto);
+
+      suppliersController.getSuppliers(mockRequest, mockResponse);
+
+      expect(mockSuppliersService.getSuppliers).toHaveBeenCalledWith(200, 100);
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.send).toHaveBeenCalledWith(getSuppliersDto);
+    });
+
+    it('Should return error StatusCode when the Service fails', () => {
+      const mockRequest: express.Request = createMockRequest();
+      const mockResponse: express.Response = createMockResponse();
+
+      (mockSuppliersService.getSuppliers as jest.Mock).mockImplementation(() => {
+        throw new Error('SomeSome');
+      });
+
+      suppliersController.getSuppliers(mockRequest, mockResponse);
+
+      expect(mockSuppliersService.getSuppliers).toHaveBeenCalledWith(0, 50);
       expect(mockResponse.status).toHaveBeenCalledWith(500);
       expect(mockResponse.send).toHaveBeenCalled();
     });
