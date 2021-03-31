@@ -5,7 +5,7 @@ import * as React from 'react';
  * Defines the LandingPage section of the Application.
  * @returns .
  */
-export const LandingPage: React.FunctionComponent = ({}) => {
+export const LandingPage: React.FunctionComponent = () => {
     return (
         <>
             <Container maxWidth='lg'>

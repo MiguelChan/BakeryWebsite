@@ -1,9 +1,6 @@
 import { 
     Supplier,
 } from "../../../Models";
-import { 
-    Nullable,
-} from "../../../Utils";
 
  /**
   * Defines the GetSupplier Response.

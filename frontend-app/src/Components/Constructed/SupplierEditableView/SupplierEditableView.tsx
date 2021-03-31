@@ -72,7 +72,7 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
             }).finally(() => {
                 setIsCreatingSupplier(false);
             });
-    }, [isCreatingSupplier]);
+    }, [isCreatingSupplier, activeSupplier, currentContacts, history]);
 
     function onSupplierChangedListener(newSupplier: Supplier) {
         setActiveSupplier(newSupplier);

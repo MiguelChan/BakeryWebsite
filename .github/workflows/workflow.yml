@@ -1,0 +1,52 @@
+name: Website CI
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+  workflow_dispatch:
+
+jobs:
+  build-api:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: api
+    steps:
+      # Checkout the pull request's source code
+      - name: Checkout the source code
+        uses: actions/checkout@v2
+      # Setup NodeJS
+      - name: SetUp NodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      # Install node dependencies
+      - name: Install Dependencies
+        run: npm ci
+      # Make a release build
+      - name: Run Release
+        run: npm run-script release
+  build-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: frontend-app
+    steps:
+      # Checking out the pull request's source code
+      - name: Checkout the source code
+        uses: actions/checkout@v2
+      # Setup NodeJS
+      - name: SetUp NodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      # Install node dependencies
+      - name: Install dependencies
+        run: npm ci
+      # Make a release build
+      - name: Run Release
+        run: npm run-script release

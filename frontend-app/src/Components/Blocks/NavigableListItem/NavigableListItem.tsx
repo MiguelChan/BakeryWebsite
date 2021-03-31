@@ -40,7 +40,7 @@ export const NavigableListItem: React.FunctionComponent<Properties> = ({
                 sectionTitle: primaryText,
             }
         }} {...itemProps}/>), 
-        [toUrl],
+        [toUrl, primaryText],
     );
 
     return (
