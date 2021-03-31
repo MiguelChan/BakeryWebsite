@@ -11,7 +11,7 @@ import {
   Supplier,
 } from '../models';
 import {
-  GetSupplierDto,
+  GetSuppliersDto,
 } from '../dtos/GetSuppliersDto';
 import {
   CreateSupplierDto,
@@ -22,6 +22,7 @@ import {
 import {
   Types,
 } from '../utils/DITypes';
+import { parseIntegerNumber } from '../utils/ObjectUtils';
 
 const logger: debug.IDebugger = debug('app:SuppliersController');
 
@@ -30,6 +31,10 @@ const logger: debug.IDebugger = debug('app:SuppliersController');
  */
 @injectable()
 export class SuppliersController {
+  private readonly DEFAULT_PAGE_NUMBER = 0;
+
+  private readonly DEFAULT_PAGE_SIZE = 50;
+
   constructor(@inject(Types.SupplierService) private readonly suppliersService: SupplierService) {
     // Need to add this binding statements 'cause ExpressJS loses the reference to "this".
     this.getSuppliers = this.getSuppliers.bind(this);
@@ -39,15 +44,25 @@ export class SuppliersController {
     this.getSupplier = this.getSupplier.bind(this);
   }
 
+  /**
+   * Gets a List of {Supplier}.
+   * @param req .
+   * @param res .
+   */
   async getSuppliers(req: express.Request, res: express.Response) {
     logger('Retrieving Suppliers');
-    const suppliers: Supplier[] = this.suppliersService.getSuppliers();
-    const getSuppliersDto: GetSupplierDto = {
-      pageNumber: 0,
-      paginationCursor: null,
-      suppliers,
-    };
-    res.status(200).send(getSuppliersDto);
+
+    const pageNumber: number = parseIntegerNumber(req.query.pageNumber, this.DEFAULT_PAGE_NUMBER);
+    const pageSize: number = parseIntegerNumber(req.query.pageSize, this.DEFAULT_PAGE_SIZE);
+
+    try {
+      const getSuppliersDto: GetSuppliersDto = this.suppliersService.getSuppliers(pageNumber, pageSize);
+      res.status(200).send(getSuppliersDto);
+    } catch (exception) {
+      res.status(500).send({
+        errorMessage: 'Un error interno ha occurrido. Intenta de nuevo mas tarde',
+      });
+    }
   }
 
   /**

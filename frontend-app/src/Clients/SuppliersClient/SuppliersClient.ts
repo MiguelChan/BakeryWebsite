@@ -29,12 +29,17 @@ class SuppliersClient {
      */
     public getSuppliers(pageNumber: number = 0, pageSize: number = 50): Promise<GetSupplierResponse> {
         return new Promise((accept, reject) => {
-            axios.get(this.SUPPLIERS_URL).then((response: AxiosResponse<GetSupplierResponse>) => {
+            axios.get(this.SUPPLIERS_URL, {
+                params: {
+                    pageSize,
+                    pageNumber,
+                },
+            }).then((response: AxiosResponse<GetSupplierResponse>) => {
                 const supplierResponse: GetSupplierResponse = response.data;
                 accept(supplierResponse);
-            }).catch((error: AxiosError) => {
-                console.error(error.message);
-                reject(error.message);
+            }).catch((error: AxiosError<GetSupplierResponse>) => {
+                const getSuppliersResponse: GetSupplierResponse = error.response!.data;
+                reject(getSuppliersResponse);
             });
         });
     }

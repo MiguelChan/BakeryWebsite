@@ -10,18 +10,17 @@ import {
   */
 export interface GetSupplierResponse {
     suppliers: Supplier[];
-    paginationCursor: Nullable<string>;
-    pageNumber: number;
+    totalElements: number;
+    errorMessage?: string;
 }
 
 /**
  * 
  * @returns An empty {GetSupplierResponse}.
  */
-export const buildEmptyResponse = (): GetSupplierResponse => (
-    {
+export const buildEmptyResponse = (): GetSupplierResponse => {
+    return {
         suppliers: [],
-        paginationCursor: null,
-        pageNumber: 0,
-    }
-);
+        totalElements: 0,
+    };
+}

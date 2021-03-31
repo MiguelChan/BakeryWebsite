@@ -3,6 +3,8 @@ import {
     Divider, 
     Fab,
     makeStyles,
+    Paper,
+    Typography,
 } from '@material-ui/core';
 import { 
     CloudDownload,
@@ -13,7 +15,6 @@ import {
     useHistory,
 } from 'react-router-dom';
 import { 
-    buildEmptyResponse,
     GetSupplierResponse, 
     suppliersClient,
 } from '../../../Clients';
@@ -48,18 +49,23 @@ export const ViewSuppliers: React.FunctionComponent = () => {
 
     const classes = useStyles(theme);
 
-    const [currentSuppliers, setCurrentSuppliers] = React.useState<GetSupplierResponse>(buildEmptyResponse());
+    const [currentSuppliers, setCurrentSuppliers] = React.useState<GetSupplierResponse>({
+        suppliers: [],
+        totalElements: 0,
+    });
+    const [currentPage, setCurrentPage] = React.useState<number>(0);
     const history = useHistory<Supplier>();
+    const [errorMessage, setErrorMessage] = React.useState<string>();
 
     React.useEffect(() => {
-        suppliersClient.getSuppliers()
+        suppliersClient.getSuppliers(currentPage)
         .then((suppliersResponse: GetSupplierResponse) => {
             setCurrentSuppliers(suppliersResponse);
         })
-        .catch((errorFromServer: string) => {
-            console.info(errorFromServer);
+        .catch((errorFromServer: GetSupplierResponse) => {
+            setErrorMessage(errorFromServer.errorMessage);
         });
-    }, []);
+    }, [currentPage]);
 
     function onSupplierClickedListener(supplier: Supplier): void {
         const supplierUrl: string = `suppliers/${supplier.id}`;
@@ -72,12 +78,20 @@ export const ViewSuppliers: React.FunctionComponent = () => {
         });
     }
 
+    function onPageChangedListener(currentPage: number, nextPage: number) {
+        setCurrentPage(nextPage);
+    }
+
     return (
         <Container>
             <SuppliersTable
                 suppliers={currentSuppliers.suppliers}
+                totalSuppliers={currentSuppliers.totalElements}
                 onSupplierClickedListener={onSupplierClickedListener}
+                onPageChangedListener={onPageChangedListener}
+                currentPage={currentPage}
             />
+            {(errorMessage !== undefined && errorMessage !== null && errorMessage !== '') && <Paper><Typography>{errorMessage}</Typography></Paper>}
             <Divider />
             <Container maxWidth='md' className={classes.buttonsContainer}>
                 <Fab 
