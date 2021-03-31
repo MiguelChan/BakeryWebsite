@@ -97,7 +97,7 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
     function onCreateSupplierClickListener() {
         if (isInvalidSupplier()) {
             setDialogProperties({
-                dialogContent: 'Se require el nombre y direccion del proveedor',
+                dialogContent: 'Se require el nombre y telefono del proveedor',
                 dialogTitle: 'Atributos Requeridos',
             });
             setIsShowingModal(true);
@@ -131,7 +131,7 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
     }
 
     function isInvalidSupplier(): boolean {
-        return activeSupplier.name === '' || activeSupplier.addressLine1 === '';
+        return activeSupplier.name === '' || activeSupplier.phoneNumber === '';
     }
     
     function renderCreateError() {

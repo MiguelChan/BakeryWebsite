@@ -5,8 +5,12 @@ import {
     fireEvent,
 } from '@testing-library/react';
 import { 
+    ADDRESS_1_TEST_ID,
+    ADDRESS_2_TEST_ID,
     EditableSupplierForm, 
+    NAME_TEST_ID, 
     OnSupplierChangedListener,
+    PHONE_NUMBER_TEST_ID,
 } from './EditableSupplierForm';
 import { 
     Supplier,
@@ -42,25 +46,25 @@ describe('EditableSupplierForm', () => {
         const supplier: Supplier = buildEmptySupplier();
         setupComponent(mockOnSupplierChangedListener, supplier);
 
-        typeValue('supplierName', testSupplierName);
+        typeValue(NAME_TEST_ID, testSupplierName);
         expect(mockOnSupplierChangedListener).toHaveBeenCalledWith({
             ...supplier,
             name: testSupplierName,
         });
 
-        typeValue('supplierAddress1', testLineAddress1);
+        typeValue(ADDRESS_1_TEST_ID, testLineAddress1);
         expect(mockOnSupplierChangedListener).toHaveBeenCalledWith({
             ...supplier,
             addressLine1: testLineAddress1,
         });
 
-        typeValue('supplierAddress2', testLineAddress2);
+        typeValue(ADDRESS_2_TEST_ID, testLineAddress2);
         expect(mockOnSupplierChangedListener).toHaveBeenCalledWith({
             ...supplier,
             addressLine2: testLineAddress2,
         });
 
-        typeValue('supplierPhoneNumber', testPhoneNumber);
+        typeValue(PHONE_NUMBER_TEST_ID, testPhoneNumber);
         expect(mockOnSupplierChangedListener).toHaveBeenCalledWith({
             ...supplier,
             phoneNumber: testPhoneNumber,

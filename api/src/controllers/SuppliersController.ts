@@ -1,7 +1,11 @@
 import express from 'express';
 import debug from 'debug';
 import {
-  supplierService,
+  inject,
+  injectable,
+} from 'inversify';
+import {
+  SupplierService,
 } from '../services';
 import {
   Supplier,
@@ -15,16 +19,29 @@ import {
 import {
   CreateSupplierResponseDto,
 } from '../dtos/CreateSupplierResponseDto';
+import {
+  Types,
+} from '../utils/DITypes';
 
 const logger: debug.IDebugger = debug('app:SuppliersController');
 
 /**
  * Defines the Suppliers Controller.
  */
-class SuppliersController {
+@injectable()
+export class SuppliersController {
+  constructor(@inject(Types.SupplierService) private readonly suppliersService: SupplierService) {
+    // Need to add this binding statements 'cause ExpressJS loses the reference to "this".
+    this.getSuppliers = this.getSuppliers.bind(this);
+    this.createSupplier = this.createSupplier.bind(this);
+    this.deleteSupplier = this.deleteSupplier.bind(this);
+    this.editSupplier = this.editSupplier.bind(this);
+    this.getSupplier = this.getSupplier.bind(this);
+  }
+
   async getSuppliers(req: express.Request, res: express.Response) {
     logger('Retrieving Suppliers');
-    const suppliers: Supplier[] = supplierService.getSuppliers();
+    const suppliers: Supplier[] = this.suppliersService.getSuppliers();
     const getSuppliersDto: GetSupplierDto = {
       pageNumber: 0,
       paginationCursor: null,
@@ -48,7 +65,7 @@ class SuppliersController {
         ...createSupplierDto.supplier,
         contacts: [...createSupplierDto.contacts],
       };
-      supplierService.createSupplier(newSupplier);
+      this.suppliersService.createSupplier(newSupplier);
       res.status(201).send(createSupplierResponse);
     } catch (exception) {
       createSupplierResponse.errorMessage = exception;
@@ -58,7 +75,7 @@ class SuppliersController {
 
   async deleteSupplier(req: express.Request, res: express.Response) {
     try {
-      supplierService.deleteSupplier(req.body.supplierId);
+      this.suppliersService.deleteSupplier(req.body.supplierId);
       res.status(201).send({ status: 'Deleted' });
     } catch (exception) {
       res.status(500).send(exception);
@@ -67,7 +84,7 @@ class SuppliersController {
 
   async editSupplier(req: express.Request, res: express.Response) {
     try {
-      supplierService.editSupplier(req.body);
+      this.suppliersService.editSupplier(req.body);
     } catch (exception) {
       res.status(500).send(exception);
     }
@@ -76,12 +93,10 @@ class SuppliersController {
   async getSupplier(req: express.Request, res: express.Response) {
     const supplierId: string = req.body.id;
     try {
-      const foundSupplier: Supplier = supplierService.getSupplier(supplierId);
+      const foundSupplier: Supplier = this.suppliersService.getSupplier(supplierId);
       res.status(200).send(foundSupplier);
     } catch (exception) {
       res.status(500).send(JSON.stringify(exception));
     }
   }
 }
-
-export default new SuppliersController();
