@@ -1,23 +1,9 @@
-import { 
-    Supplier,
-} from "../../../Models";
-
- /**
-  * Defines the GetSupplier Response.
-  */
-export interface GetSupplierResponse {
-    suppliers: Supplier[];
-    totalElements: number;
-    errorMessage?: string;
-}
+import { Supplier } from "../../../Models";
 
 /**
- * 
- * @returns An empty {GetSupplierResponse}.
+ * Defines the {GetSupplierResponse}.
  */
-export const buildEmptyResponse = (): GetSupplierResponse => {
-    return {
-        suppliers: [],
-        totalElements: 0,
-    };
+export interface GetSupplierResponse {
+    supplier: Supplier;
+    errorMessage?: string;
 }

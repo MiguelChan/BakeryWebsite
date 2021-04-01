@@ -1,7 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { Contact, ContactType, Supplier } from "../../Models";
 import { CreateSupplierRequest } from "./Requests";
-import { CreateSupplierResponse, GetSupplierResponse } from "./Responses";
+import { CreateSupplierResponse, GetSuppliersResponse } from "./Responses";
+import { GetSupplierResponse } from "./Responses/GetSupplierResponse";
 import { suppliersClient } from "./SuppliersClient";
 
 jest.mock('axios');
@@ -98,16 +99,16 @@ describe('SuppliersClient', () => {
     describe('Get Suppliers', () => {
 
         it('Should return the Suppliers from the Server with default values', () => {
-            const mockGetSuppliersResponse: GetSupplierResponse = {
+            const mockGetSuppliersResponse: GetSuppliersResponse = {
                 suppliers: [],
                 totalElements: 100,
             };
 
-            const axiosResponse: AxiosResponse<GetSupplierResponse> = buildAxiosResponse(mockGetSuppliersResponse);
+            const axiosResponse: AxiosResponse<GetSuppliersResponse> = buildAxiosResponse(mockGetSuppliersResponse);
 
             mockGetFn.mockResolvedValue(axiosResponse);
 
-            return suppliersClient.getSuppliers().then((suppliersResponse: GetSupplierResponse) => {
+            return suppliersClient.getSuppliers().then((suppliersResponse: GetSuppliersResponse) => {
                 expect(mockGetFn).toHaveBeenLastCalledWith(SUPPLIERS_URL, {
                     params: {
                         pageSize: 50,
@@ -120,16 +121,16 @@ describe('SuppliersClient', () => {
         });
 
         it('Should return the Suppliers from the Server with the provided values', () => {
-            const mockGetSuppliersResponse: GetSupplierResponse = {
+            const mockGetSuppliersResponse: GetSuppliersResponse = {
                 suppliers: [],
                 totalElements: 100,
             };
 
-            const axiosResponse: AxiosResponse<GetSupplierResponse> = buildAxiosResponse(mockGetSuppliersResponse);
+            const axiosResponse: AxiosResponse<GetSuppliersResponse> = buildAxiosResponse(mockGetSuppliersResponse);
 
             mockGetFn.mockResolvedValue(axiosResponse);
 
-            return suppliersClient.getSuppliers(100, 1200).then((suppliersResponse: GetSupplierResponse) => {
+            return suppliersClient.getSuppliers(100, 1200).then((suppliersResponse: GetSuppliersResponse) => {
                 expect(mockGetFn).toHaveBeenCalledWith(SUPPLIERS_URL, {
                     params: {
                         pageSize: 1200,
@@ -141,7 +142,7 @@ describe('SuppliersClient', () => {
         });
 
         it('Should send error message when it occurs', () => {
-            const axiosResponse: AxiosError<GetSupplierResponse> = {
+            const axiosResponse: AxiosError<GetSuppliersResponse> = {
                 response: {
                     data: {
                         errorMessage: 'SomeSome'
@@ -151,7 +152,7 @@ describe('SuppliersClient', () => {
 
             mockGetFn.mockRejectedValue(axiosResponse);
 
-            return suppliersClient.getSuppliers(100, 100).catch((error: GetSupplierResponse) => {
+            return suppliersClient.getSuppliers(100, 100).catch((error: GetSuppliersResponse) => {
                 expect(mockGetFn).toHaveBeenCalledWith(SUPPLIERS_URL, {
                     params: {
                         pageSize: 100,
@@ -161,6 +162,47 @@ describe('SuppliersClient', () => {
                 expect(error).toEqual(axiosResponse.response!.data);
             });
         });
+    });
+
+    describe('Get a Single Supplier', () => {
+
+        it('Should return a Single Supplier', () => {
+            const testSupplierId = '12345';
+
+            const expectedSupplier: Supplier = buildRandomSupplier();
+            const mockGetSupplierResponse: GetSupplierResponse = {
+                supplier: expectedSupplier,
+            };
+
+            const axiosResponse = buildAxiosResponse(mockGetSupplierResponse);
+
+            mockGetFn.mockResolvedValue(axiosResponse);
+
+            return suppliersClient.getSupplier(testSupplierId).then((getSupplierResponse: GetSupplierResponse) => {
+                expect(mockGetFn).toHaveBeenCalledWith(`${SUPPLIERS_URL}/${testSupplierId}`);
+                expect(getSupplierResponse).toEqual(mockGetSupplierResponse);
+            });
+        });
+
+        it('Should return the error message from the Server', () => {
+            const testSupplierId = '12345';
+
+            const axiosResponse: AxiosError<GetSuppliersResponse> = {
+                response: {
+                    data: {
+                        errorMessage: 'SomeSome'
+                    } as any,
+                } as any,
+            } as any;
+
+            mockGetFn.mockRejectedValue(axiosResponse);
+
+            return suppliersClient.getSupplier(testSupplierId).catch((getSupplierResponse: GetSupplierResponse) => {
+                expect(mockGetFn).toHaveBeenCalledWith(`${SUPPLIERS_URL}/${testSupplierId}`);
+                expect(getSupplierResponse).toEqual(axiosResponse.response!.data);
+            });
+        });
+
     });
 
     function buildAxiosResponse(data: any): AxiosResponse {

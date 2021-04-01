@@ -15,7 +15,7 @@ import {
     useHistory,
 } from 'react-router-dom';
 import { 
-    GetSupplierResponse, 
+    GetSuppliersResponse, 
     suppliersClient,
 } from '../../../Clients';
 import { 
@@ -49,7 +49,7 @@ export const ViewSuppliers: React.FunctionComponent = () => {
 
     const classes = useStyles(theme);
 
-    const [currentSuppliers, setCurrentSuppliers] = React.useState<GetSupplierResponse>({
+    const [currentSuppliers, setCurrentSuppliers] = React.useState<GetSuppliersResponse>({
         suppliers: [],
         totalElements: 0,
     });
@@ -59,10 +59,10 @@ export const ViewSuppliers: React.FunctionComponent = () => {
 
     React.useEffect(() => {
         suppliersClient.getSuppliers(currentPage)
-        .then((suppliersResponse: GetSupplierResponse) => {
+        .then((suppliersResponse: GetSuppliersResponse) => {
             setCurrentSuppliers(suppliersResponse);
         })
-        .catch((errorFromServer: GetSupplierResponse) => {
+        .catch((errorFromServer: GetSuppliersResponse) => {
             setErrorMessage(errorFromServer.errorMessage);
         });
     }, [currentPage]);
