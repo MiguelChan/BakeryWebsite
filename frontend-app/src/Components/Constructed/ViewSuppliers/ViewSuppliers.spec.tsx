@@ -1,5 +1,5 @@
 import {
-    GetSupplierResponse,
+    GetSuppliersResponse,
     suppliersClient,
 } from '../../../Clients/SuppliersClient';
 import { Supplier } from '../../../Models';
@@ -15,7 +15,7 @@ describe('ViewSuppliers', () => {
 
     const mockGetSuppliersFn = suppliersClient.getSuppliers as jest.Mock;
 
-    function buildSuppliersResponse(suppliers: Supplier[] = [], totalElements: number = 0, errorMessage?: string): GetSupplierResponse {
+    function buildSuppliersResponse(suppliers: Supplier[] = [], totalElements: number = 0, errorMessage?: string): GetSuppliersResponse {
         return {
             suppliers: suppliers,
             totalElements: totalElements,

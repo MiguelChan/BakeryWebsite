@@ -2,9 +2,9 @@ name: Website CI
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches: [ mainline ]
   pull_request:
-    branches: [ $default-branch ]
+    branches: [ 'mainline' ]
   workflow_dispatch:
 
 jobs:

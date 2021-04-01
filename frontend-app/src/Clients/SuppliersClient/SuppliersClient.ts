@@ -11,8 +11,9 @@ import {
 } from "./Requests";
 import { 
     CreateSupplierResponse,
-    GetSupplierResponse,
+    GetSuppliersResponse,
 } from "./Responses";
+import { GetSupplierResponse } from "./Responses/GetSupplierResponse";
 
 /**
  * Defines the Client for all the Suppliers Operations.
@@ -27,18 +28,18 @@ class SuppliersClient {
      * @param pageSize The pageSize
      * @returns A Promise to be fulfilled.
      */
-    public getSuppliers(pageNumber: number = 0, pageSize: number = 50): Promise<GetSupplierResponse> {
+    public getSuppliers(pageNumber: number = 0, pageSize: number = 50): Promise<GetSuppliersResponse> {
         return new Promise((accept, reject) => {
             axios.get(this.SUPPLIERS_URL, {
                 params: {
                     pageSize,
                     pageNumber,
                 },
-            }).then((response: AxiosResponse<GetSupplierResponse>) => {
-                const supplierResponse: GetSupplierResponse = response.data;
+            }).then((response: AxiosResponse<GetSuppliersResponse>) => {
+                const supplierResponse: GetSuppliersResponse = response.data;
                 accept(supplierResponse);
-            }).catch((error: AxiosError<GetSupplierResponse>) => {
-                const getSuppliersResponse: GetSupplierResponse = error.response!.data;
+            }).catch((error: AxiosError<GetSuppliersResponse>) => {
+                const getSuppliersResponse: GetSuppliersResponse = error.response!.data;
                 reject(getSuppliersResponse);
             });
         });
@@ -71,6 +72,22 @@ class SuppliersClient {
                 }
 
                 reject(createResponse);
+            });
+        });
+    }
+
+    /**
+     * Gets a {Supplier} based-off the provided {supplierId}.
+     * @param supplierId  .
+     * @returns .
+     */
+    public getSupplier(supplierId: string): Promise<GetSupplierResponse> {
+        return new Promise((accept, reject) => {
+            const apiUrl: string = `${this.SUPPLIERS_URL}/${supplierId}`;
+            axios.get(apiUrl).then((axiosResponse: AxiosResponse<GetSupplierResponse>) => {
+                accept(axiosResponse.data);
+            }).catch((axiosError: AxiosError<GetSupplierResponse>) => {
+                reject(axiosError.response?.data);
             });
         });
     }

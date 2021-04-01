@@ -5,3 +5,4 @@ export * from './SuppliersContactsTable';
 export * from './SuppliersTableHeader';
 export * from './SuppliersTableRow';
 export * from './LoadingDialog';
+export * from './BasicSupplierDetails';
