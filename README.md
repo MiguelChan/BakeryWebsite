@@ -1,3 +1,5 @@
+[![Website CI](https://github.com/MiguelChan/BakeryWebsite/actions/workflows/workflow.yml/badge.svg?branch=mainline)](https://github.com/MiguelChan/BakeryWebsite/actions/workflows/workflow.yml)
+
 ### Overview
 
 Bakery Website Project
