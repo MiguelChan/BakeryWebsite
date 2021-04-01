@@ -1,6 +1,6 @@
 import express from 'express';
 import { SuppliersController } from '../../src/controllers';
-import { CreateSupplierDto, GetSuppliersDto } from '../../src/dtos';
+import { CreateSupplierDto, GetSupplierResponseDto, GetSuppliersDto } from '../../src/dtos';
 import { Contact, ContactType, Supplier } from '../../src/models';
 import { SupplierService } from '../../src/services';
 import { createMockRequest, createMockResponse } from '../utils/ExpressUtils';
@@ -147,6 +147,47 @@ describe('SuppliersController', () => {
       suppliersController.getSuppliers(mockRequest, mockResponse);
 
       expect(mockSuppliersService.getSuppliers).toHaveBeenCalledWith(0, 50);
+      expect(mockResponse.status).toHaveBeenCalledWith(500);
+      expect(mockResponse.send).toHaveBeenCalled();
+    });
+  });
+
+  describe('GetSupplier', () => {
+    it('Should get the Supplier from the SuppliersService', () => {
+      const testSupplierId = '12345';
+      const supplier: Supplier = buildRandomSupplier();
+
+      (mockSuppliersService.getSupplier as jest.Mock).mockImplementation(() => supplier);
+
+      const mockRequest: express.Request = createMockRequest();
+      mockRequest.body.id = testSupplierId;
+      const mockResponse: express.Response = createMockResponse();
+
+      suppliersController.getSupplier(mockRequest, mockResponse);
+
+      const expectedDto: GetSupplierResponseDto = {
+        supplier,
+      };
+
+      expect(mockSuppliersService.getSupplier).toHaveBeenCalledWith(testSupplierId);
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.send).toHaveBeenCalledWith(expectedDto);
+    });
+
+    it('Should return an error response if the SupplierService fails', () => {
+      const testSupplierId = '12345';
+
+      (mockSuppliersService.getSupplier as jest.Mock).mockImplementation(() => {
+        throw new Error('lololol');
+      });
+
+      const mockRequest: express.Request = createMockRequest();
+      mockRequest.body.id = testSupplierId;
+      const mockResponse: express.Response = createMockResponse();
+
+      suppliersController.getSupplier(mockRequest, mockResponse);
+
+      expect(mockSuppliersService.getSupplier).toHaveBeenCalledWith(testSupplierId);
       expect(mockResponse.status).toHaveBeenCalledWith(500);
       expect(mockResponse.send).toHaveBeenCalled();
     });

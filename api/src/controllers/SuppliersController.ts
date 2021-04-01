@@ -15,14 +15,16 @@ import {
 } from '../dtos/GetSuppliersDto';
 import {
   CreateSupplierDto,
-} from '../dtos';
-import {
   CreateSupplierResponseDto,
-} from '../dtos/CreateSupplierResponseDto';
+  GetSupplierResponseDto,
+} from '../dtos';
 import {
   Types,
 } from '../utils/DITypes';
-import { parseIntegerNumber } from '../utils/ObjectUtils';
+import {
+  parseIntegerNumber,
+} from '../utils/ObjectUtils';
+import { BaseResponseDto } from '../dtos/BaseResponseDto';
 
 const logger: debug.IDebugger = debug('app:SuppliersController');
 
@@ -105,13 +107,26 @@ export class SuppliersController {
     }
   }
 
+  /**
+   * Gets a single Supplier given its SupplierId.
+   * @param req .
+   * @param res .
+   */
   async getSupplier(req: express.Request, res: express.Response) {
     const supplierId: string = req.body.id;
+    logger('Getting Supplier for Id: {}', supplierId);
     try {
       const foundSupplier: Supplier = this.suppliersService.getSupplier(supplierId);
-      res.status(200).send(foundSupplier);
+      const getSupplierDto: GetSupplierResponseDto = {
+        supplier: foundSupplier,
+      };
+
+      res.status(200).send(getSupplierDto);
     } catch (exception) {
-      res.status(500).send(JSON.stringify(exception));
+      const errorMessage: BaseResponseDto = {
+        errorMessage: JSON.stringify(exception),
+      };
+      res.status(500).send(errorMessage);
     }
   }
 }
