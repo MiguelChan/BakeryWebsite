@@ -77,6 +77,7 @@ export const EditableSupplierForm: React.FunctionComponent<Properties> = ({
         isRequired: boolean, 
         fullWidth: boolean, 
         onAttributeChangedListener: (event: React.ChangeEvent<HTMLInputElement>) => void,
+        value: string,
         iconToUse?: any) {
         let inputProps = {
         };
@@ -98,6 +99,7 @@ export const EditableSupplierForm: React.FunctionComponent<Properties> = ({
                 InputProps={inputProps}
                 fullWidth={fullWidth}
                 required={isRequired}
+                value={value}
                 onChange={onAttributeChangedListener}
             />
         );
@@ -112,7 +114,15 @@ export const EditableSupplierForm: React.FunctionComponent<Properties> = ({
                 spacing={2} 
             >
                 <Grid item xs={8} container alignItems='stretch'>
-                    {renderTextField(NAME_TEST_ID, 'Nombre de Proveedor', true, true, onNameChangedListener, <AccountCircle />)}
+                    {renderTextField(
+                        NAME_TEST_ID, 
+                        'Nombre de Proveedor', 
+                        true, 
+                        true, 
+                        onNameChangedListener, 
+                        supplier.name, 
+                        <AccountCircle />,
+                    )}
                 </Grid>
                 <Grid item xs={4} container alignItems='center'>
                     <Button>
@@ -121,13 +131,36 @@ export const EditableSupplierForm: React.FunctionComponent<Properties> = ({
                     </Button>
                 </Grid>
                 <Grid item xs={4}>
-                    {renderTextField(ADDRESS_1_TEST_ID, 'Direccion Linea 1', true, false, onLineAddress1ChangedListener, <Home />)}
+                    {renderTextField(
+                        ADDRESS_1_TEST_ID, 
+                        'Direccion Linea 1', 
+                        true, 
+                        false, 
+                        onLineAddress1ChangedListener, 
+                        supplier.addressLine1,
+                        <Home />,
+                    )}
                 </Grid>
                 <Grid item xs={4}>
-                    {renderTextField(ADDRESS_2_TEST_ID, 'Direccion Linea 2', false, false, onLineAddress2ChangedListener)}
+                    {renderTextField(
+                        ADDRESS_2_TEST_ID, 
+                        'Direccion Linea 2', 
+                        false, 
+                        false, 
+                        onLineAddress2ChangedListener,
+                        supplier.addressLine2,
+                    )}
                 </Grid>
                 <Grid item xs={4}>
-                    {renderTextField(PHONE_NUMBER_TEST_ID, 'Numero de Telefono', false, false, onPhoneNumberChangedListener, <Phone />)}
+                    {renderTextField(
+                        PHONE_NUMBER_TEST_ID, 
+                        'Numero de Telefono', 
+                        false, 
+                        false, 
+                        onPhoneNumberChangedListener, 
+                        supplier.phoneNumber,
+                        <Phone />,
+                    )}
                 </Grid>
             </Grid>
         </Paper>

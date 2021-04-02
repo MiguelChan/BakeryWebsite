@@ -9,11 +9,13 @@ import {
 import { 
     CreateSupplierRequest,
 } from "./Requests";
+import { EditSupplierRequest } from "./Requests/EditSupplierRequest";
 import { 
     CreateSupplierResponse,
     GetSuppliersResponse,
+    EditSupplierResponse,
+    GetSupplierResponse,
 } from "./Responses";
-import { GetSupplierResponse } from "./Responses/GetSupplierResponse";
 
 /**
  * Defines the Client for all the Suppliers Operations.
@@ -92,6 +94,27 @@ class SuppliersClient {
         });
     }
 
+    /**
+     * Edits the given {Supplier} in the backend.
+     * @param editedSupplier .
+     * @param editedContacts .
+     * @returns .
+     */
+    public editSupplier(editedSupplier: Supplier, editedContacts: Contact[]): Promise<EditSupplierResponse> {
+        return new Promise((accept, reject) => {
+            const newUrl = `${this.SUPPLIERS_URL}/${editedSupplier.id}`;
+            const editSupplierRequest: EditSupplierRequest = {
+                contacts: editedContacts,
+                supplier: editedSupplier,
+            };
+
+            axios.put(newUrl, editSupplierRequest).then((response: AxiosResponse<EditSupplierResponse>) => {
+                accept(response.data);
+            }).catch((error: AxiosError<EditSupplierResponse>) => {
+                reject(error.response?.data);
+            });
+        });
+    }
 }
 
 export const suppliersClient: SuppliersClient = new SuppliersClient();

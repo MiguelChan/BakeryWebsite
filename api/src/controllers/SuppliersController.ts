@@ -25,6 +25,7 @@ import {
   parseIntegerNumber,
 } from '../utils/ObjectUtils';
 import { BaseResponseDto } from '../dtos/BaseResponseDto';
+import { EditSupplierRequestDto } from '../dtos/EditSupplierRequestDto';
 
 const logger: debug.IDebugger = debug('app:SuppliersController');
 
@@ -101,7 +102,20 @@ export class SuppliersController {
 
   async editSupplier(req: express.Request, res: express.Response) {
     try {
-      this.suppliersService.editSupplier(req.body);
+      const request: EditSupplierRequestDto = req.body;
+
+      const {
+        contacts,
+        supplier,
+      } = request;
+
+      const supplierToEdit: Supplier = {
+        ...supplier,
+        contacts: [...contacts],
+      };
+
+      this.suppliersService.editSupplier(supplierToEdit);
+      res.status(201).send({});
     } catch (exception) {
       res.status(500).send(exception);
     }

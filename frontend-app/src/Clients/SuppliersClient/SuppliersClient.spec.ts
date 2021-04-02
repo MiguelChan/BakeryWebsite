@@ -1,7 +1,9 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { Contact, ContactType, Supplier } from "../../Models";
 import { CreateSupplierRequest } from "./Requests";
+import { EditSupplierRequest } from "./Requests/EditSupplierRequest";
 import { CreateSupplierResponse, GetSuppliersResponse } from "./Responses";
+import { EditSupplierResponse } from "./Responses/EditSupplierResponse";
 import { GetSupplierResponse } from "./Responses/GetSupplierResponse";
 import { suppliersClient } from "./SuppliersClient";
 
@@ -13,10 +15,12 @@ describe('SuppliersClient', () => {
 
     const mockPostFn = axios.post as jest.Mock;
     const mockGetFn = axios.get as jest.Mock;
+    const mockPutFn = axios.put as jest.Mock;
 
     afterEach(() => {
         mockPostFn.mockClear();
         mockGetFn.mockClear();
+        mockPutFn.mockClear();
     });
 
     describe('Create Supplier', () => {
@@ -203,6 +207,54 @@ describe('SuppliersClient', () => {
             });
         });
 
+    });
+
+    describe('Edit a Supplier', () => {
+
+        it('Should call the suppliersClient for updating the Supplier', () => {
+            const expectedSupplier: Supplier = buildRandomSupplier();
+            const expectedContacts: Contact[] = [];
+
+            const expectedEditSupplierRequest: EditSupplierRequest = {
+                contacts: expectedContacts,
+                supplier: expectedSupplier,
+            };
+
+            const expectedEditSupplierResponse: EditSupplierResponse = {};
+            const axiosResponse: AxiosResponse<EditSupplierRequest> = buildAxiosResponse(expectedEditSupplierResponse);
+
+            mockPutFn.mockResolvedValue(axiosResponse);
+
+            return suppliersClient.editSupplier(expectedSupplier, expectedContacts).then((editSupplierResponse: EditSupplierResponse) => {
+                expect(mockPutFn).toHaveBeenCalledWith(`${SUPPLIERS_URL}/${expectedSupplier.id}`, expectedEditSupplierRequest);
+                expect(editSupplierResponse).toEqual(expectedEditSupplierResponse);
+            });
+        });
+
+        it('Should return the error response when the server fails', () => {
+            const expectedSupplier: Supplier = buildRandomSupplier();
+            const expectedContacts: Contact[] = [];
+
+            const expectedEditSupplierRequest: EditSupplierRequest = {
+                contacts: expectedContacts,
+                supplier: expectedSupplier,
+            };
+
+            const axiosResponse: AxiosError<EditSupplierResponse> = {
+                response: {
+                    data: {
+                        errorMessage: 'SomeSome'
+                    } as any,
+                } as any,
+            } as any;
+
+            mockPutFn.mockRejectedValue(axiosResponse);
+
+            return suppliersClient.editSupplier(expectedSupplier, expectedContacts).catch((error: EditSupplierResponse) => {
+                expect(mockPutFn).toHaveBeenCalledWith(`${SUPPLIERS_URL}/${expectedSupplier.id}`, expectedEditSupplierRequest);
+                expect(error).toEqual(axiosResponse.response!.data);
+            });
+        });
     });
 
     function buildAxiosResponse(data: any): AxiosResponse {

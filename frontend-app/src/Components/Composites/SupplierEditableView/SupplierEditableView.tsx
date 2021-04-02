@@ -1,16 +1,10 @@
 import { 
     Button,
+    Container,
     Paper,
     Typography, 
 } from '@material-ui/core';
 import * as React from 'react';
-import { 
-    useHistory,
-} from 'react-router-dom';
-import { 
-    CreateSupplierResponse, 
-    suppliersClient,
-} from '../../../Clients';
 import { 
     Contact,
     Supplier,
@@ -23,10 +17,18 @@ import {
 import { 
     EditableSupplierContactsTable, 
     EditableSupplierForm,
-} from '../../Composites';
+} from '..';
+import { isNullOrUndefined } from '../../../Utils';
+
+export type OnEditSupplierClickedListener = (supplier: Supplier, contacts: Contact[]) => void;
 
 interface Properties {
     supplier?: Supplier;
+    isPerformingAsyncOperation: boolean;
+    errorMessage?: string;
+    buttonMessage?: string;
+    dialogActionMessage?: string;
+    onEditSupplierClickedListener: OnEditSupplierClickedListener;
 }
 
 /**
@@ -35,6 +37,11 @@ interface Properties {
  */
 export const SupplierEditableView: React.FunctionComponent<Properties> = ({
     supplier,
+    isPerformingAsyncOperation,
+    errorMessage,
+    buttonMessage = 'Crear Proveedor',
+    dialogActionMessage = 'Se creara el Proveedor. Desea continuar?',
+    onEditSupplierClickedListener,
 }) => {
 
     const [activeSupplier, setActiveSupplier] = React.useState<Supplier>({
@@ -52,27 +59,13 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
         dialogContent: '',
         dialogTitle: '',
     });
-    const [isCreatingSupplier, setIsCreatingSupplier] = React.useState<boolean>(false);
-    const [createError, setCreateError] = React.useState<string>('');
-
-    const history = useHistory();
 
     React.useEffect(() => {
-        if (!isCreatingSupplier) {
-            return;
+        if (!isNullOrUndefined(supplier)) {
+            setCurrentContacts(supplier!.contacts)
+            setActiveSupplier(supplier!);
         }
-
-        suppliersClient.createSupplier(activeSupplier, currentContacts)
-            .then((createSupplierResponse: CreateSupplierResponse) => {
-                history.push({
-                    pathname: '/suppliers'
-                });
-            }).catch((createSupplierResponse: CreateSupplierResponse) => {
-                setCreateError(createSupplierResponse.errorMessage!);
-            }).finally(() => {
-                setIsCreatingSupplier(false);
-            });
-    }, [isCreatingSupplier, activeSupplier, currentContacts, history]);
+    }, [supplier]);
 
     function onSupplierChangedListener(newSupplier: Supplier) {
         setActiveSupplier(newSupplier);
@@ -97,7 +90,7 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
     function onCreateSupplierClickListener() {
         if (isInvalidSupplier()) {
             setDialogProperties({
-                dialogContent: 'Se require el nombre y telefono del proveedor',
+                dialogContent: 'Se requiere el nombre y telefono del proveedor',
                 dialogTitle: 'Atributos Requeridos',
             });
             setIsShowingModal(true);
@@ -115,7 +108,7 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
 
         setDialogProperties({
             dialogTitle: 'Confirmar',
-            dialogContent: 'Se creara el Proveedor. Desea continuar?'
+            dialogContent: dialogActionMessage,
         });
         setIsShowingModal(true);
     }
@@ -127,7 +120,8 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
         }
 
         setIsShowingModal(false);
-        setIsCreatingSupplier(true);
+
+        onEditSupplierClickedListener(activeSupplier, currentContacts);
     }
 
     function isInvalidSupplier(): boolean {
@@ -135,10 +129,10 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
     }
     
     function renderCreateError() {
-        if (createError !== '') {
+        if (!isNullOrUndefined(errorMessage) && errorMessage !== '') {
             return (
                 <Paper>
-                    <Typography>{createError}</Typography>
+                    <Typography>{errorMessage}</Typography>
                 </Paper>
             );
         }
@@ -146,28 +140,30 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
     }
 
     return (
-        <Paper>
-            <EditableSupplierForm 
-                onSupplierChangedListener={onSupplierChangedListener} 
-                supplier={activeSupplier}
-            />
-            <EditableSupplierContactsTable 
-                onCreateContactClickListener={onCreateContactClickListener}
-                onDeleteContactClickListener={onDeleteContactClickListener}
-                contacts={currentContacts}
-            />
-            {renderCreateError()}
-            <BasicDialog 
-                dialogProperties={dialogProperties!}
-                isOpen={isShowingModal}
-                onCloseClickedListener={() => setIsShowingModal(false)}
-                onAcceptClickListener={createSupplier}
-            />
-            <LoadingDialog isOpen={isCreatingSupplier} />
-            <Button color='primary' variant='contained' onClick={onCreateSupplierClickListener}>
-                Crear Proveedor
-            </Button>
-        </Paper>
+        <Container>
+            <Paper>
+                <EditableSupplierForm 
+                    onSupplierChangedListener={onSupplierChangedListener} 
+                    supplier={activeSupplier}
+                />
+                <EditableSupplierContactsTable 
+                    onCreateContactClickListener={onCreateContactClickListener}
+                    onDeleteContactClickListener={onDeleteContactClickListener}
+                    contacts={currentContacts}
+                />
+                {renderCreateError()}
+                <BasicDialog 
+                    dialogProperties={dialogProperties!}
+                    isOpen={isShowingModal}
+                    onCloseClickedListener={() => setIsShowingModal(false)}
+                    onAcceptClickListener={createSupplier}
+                />
+                <LoadingDialog isOpen={isPerformingAsyncOperation} />
+                <Button color='primary' variant='contained' onClick={onCreateSupplierClickListener}>
+                    {buttonMessage}
+                </Button>
+            </Paper>
+        </Container>
     );
 
 };
