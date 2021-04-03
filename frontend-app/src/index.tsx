@@ -10,13 +10,17 @@ import {
 import theme from './theme';
 import 'fontsource-roboto';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './Store/Store';
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <BrowserRouter>
       {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
       <CssBaseline />
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </BrowserRouter>
   </MuiThemeProvider>,
   document.getElementById('root'),

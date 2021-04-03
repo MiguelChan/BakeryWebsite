@@ -15,13 +15,18 @@ import {
     useHistory,
 } from 'react-router-dom';
 import { 
-    GetSuppliersResponse, 
-    suppliersClient,
-} from '../../../Clients';
-import { 
     Supplier,
 } from '../../../Models';
+import { 
+    useAppDispatch, 
+    useAppSelector,
+    RootState,
+    fetchSuppliers,
+} from '../../../Store';
 import theme from '../../../theme';
+import { 
+    isNullOrUndefined,
+} from '../../../Utils';
 import { 
     SuppliersTable,
 } from '../../Composites';
@@ -49,26 +54,20 @@ export const ViewSuppliers: React.FunctionComponent = () => {
 
     const classes = useStyles(theme);
 
-    const [currentSuppliers, setCurrentSuppliers] = React.useState<GetSuppliersResponse>({
-        suppliers: [],
-        totalElements: 0,
-    });
     const [currentPage, setCurrentPage] = React.useState<number>(0);
     const history = useHistory<Supplier>();
-    const [errorMessage, setErrorMessage] = React.useState<string>();
 
+    const appDispatch = useAppDispatch();
+    const suppliersState = useAppSelector((selector: RootState) => selector.suppliersReducer);
+    
     React.useEffect(() => {
-        suppliersClient.getSuppliers(currentPage)
-        .then((suppliersResponse: GetSuppliersResponse) => {
-            setCurrentSuppliers(suppliersResponse);
-        })
-        .catch((errorFromServer: GetSuppliersResponse) => {
-            setErrorMessage(errorFromServer.errorMessage);
-        });
-    }, [currentPage]);
+        appDispatch(fetchSuppliers({
+            pageNumber: currentPage,
+        }));
+    }, [currentPage, appDispatch]);
 
     function onSupplierClickedListener(supplier: Supplier): void {
-        const supplierUrl: string = `suppliers/${supplier.id}`;
+        const supplierUrl: string = `wsuppliers/${supplier.id}`;
         history.push(supplierUrl, supplier);   
     }
 
@@ -82,16 +81,22 @@ export const ViewSuppliers: React.FunctionComponent = () => {
         setCurrentPage(nextPage);
     }
 
+    const {
+        suppliers,
+        totalElements,
+        errorMessage,
+    } = suppliersState;
+
     return (
         <Container>
             <SuppliersTable
-                suppliers={currentSuppliers.suppliers}
-                totalSuppliers={currentSuppliers.totalElements}
+                suppliers={suppliers}
+                totalSuppliers={totalElements}
                 onSupplierClickedListener={onSupplierClickedListener}
                 onPageChangedListener={onPageChangedListener}
                 currentPage={currentPage}
             />
-            {(errorMessage !== undefined && errorMessage !== null && errorMessage !== '') && <Paper><Typography>{errorMessage}</Typography></Paper>}
+            {(!isNullOrUndefined(errorMessage) && errorMessage !== '') && <Paper><Typography>{errorMessage}</Typography></Paper>}
             <Divider />
             <Container maxWidth='md' className={classes.buttonsContainer}>
                 <Fab 

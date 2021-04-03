@@ -1,53 +1,110 @@
-import {
-    GetSuppliersResponse,
-    suppliersClient,
-} from '../../../Clients/SuppliersClient';
-import { Supplier } from '../../../Models';
+import { 
+    Supplier,
+} from '../../../Models';
 import {
     render,
     screen,
-    waitFor
 } from '@testing-library/react';
 import { ViewSuppliers } from './ViewSuppliers';
-jest.mock('../../../Clients/SuppliersClient');
+import {
+    Provider,
+} from 'react-redux';
+import {
+    useAppSelector,
+    useAppDispatch,
+    store,
+    SuppliersState,
+    SupplierStatus,
+    fetchSuppliers,
+} from '../../../Store';
+import { Nullable } from '../../../Utils';
+
+jest.mock('../../../Store');
 
 describe('ViewSuppliers', () => {
 
-    const mockGetSuppliersFn = suppliersClient.getSuppliers as jest.Mock;
+    const mockUseAppSelector = useAppSelector as jest.Mock;
+    const mockUseAppDispatch = useAppDispatch as jest.Mock;
+    
+    let mockDispatch: jest.Mock;
+    let suppliersState: SuppliersState;
 
-    function buildSuppliersResponse(suppliers: Supplier[] = [], totalElements: number = 0, errorMessage?: string): GetSuppliersResponse {
-        return {
+    function setupInitialState(
+        suppliers: Supplier[], 
+        totalElements: number, 
+        status: SupplierStatus, 
+        errorMessage: Nullable<string>,
+    ) {
+        suppliersState = {
+            errorMessage: errorMessage,
+            status: status,
             suppliers: suppliers,
             totalElements: totalElements,
-            errorMessage: errorMessage,
+        };
+        mockUseAppSelector.mockImplementation(() => suppliersState);
+    }
+
+    function buildRandomSupplier(): Supplier {
+        return {
+            addressLine1: 'addressLine1',
+            addressLine2: 'addressLine2',
+            contacts: [],
+            id: 'SomeId',
+            name: 'SomeName',
+            phoneNumber: 'phoneNumber',
         };
     }
 
     function setupComponent() {
         render(
-            <ViewSuppliers />
+            <Provider store={store}>
+                <ViewSuppliers />
+            </Provider>
         );
     }
 
-    it('Should display empty message when no Suppliers exist', async () => {
-        const suppliersResponse = buildSuppliersResponse();
-        mockGetSuppliersFn.mockResolvedValue(suppliersResponse);
-
-        setupComponent();
-        await waitFor(() => expect(mockGetSuppliersFn).toHaveBeenCalledTimes(1));
-
-        expect(screen.getByText(/.*No hay proveedores disponibles.*/)).toBeInTheDocument();
+    beforeEach(() => {
+        mockDispatch = jest.fn();
+        mockUseAppDispatch.mockImplementation(() => mockDispatch);
     });
 
-    it('Should display the Add Provider button', async () => {
-        const suppliersResponse = buildSuppliersResponse();
-        mockGetSuppliersFn.mockResolvedValue(suppliersResponse);
+    afterEach(() => {
+        mockUseAppDispatch.mockClear();
+        mockUseAppSelector.mockClear();
+        mockDispatch.mockClear();
+    });
+
+    it('Should fetch Suppliers from the Store and display Empty Message', () => {
+        setupInitialState([], 0, 'idle', null);
+        setupComponent();
+
+        expect(mockDispatch).toHaveBeenCalledWith(fetchSuppliers({
+            pageNumber: 0,
+        }));
+
+        expect(screen.getByText(/.*No hay proveedores disponibles.*/)).toBeInTheDocument();
+        expect(screen.getByText(/.*Agregar Proveedor.*/)).toBeInTheDocument();
+    });
+
+    it('Should display the Providers from the State', async () => {
+        const expectedSupplier: Supplier = buildRandomSupplier();
+
+        setupInitialState([expectedSupplier], 1, 'idle', null);
 
         setupComponent();
-        await waitFor(() => expect(mockGetSuppliersFn).toHaveBeenCalledTimes(1));
 
+        expect(screen.getByText(expectedSupplier.name)).toBeInTheDocument();
         expect(screen.getByText(/Agregar Proveedor/g)).toBeInTheDocument();
         expect(screen.getByText(/Exportar Lista de Proveedores/g)).toBeInTheDocument();
+    });
+
+    it('Should display error messa from the State', () => {
+        const expectedErrorMessage = 'ErrorMessageFromServer';
+        setupInitialState([], 0, 'idle', expectedErrorMessage);
+
+        setupComponent();
+
+        expect(screen.getByText(expectedErrorMessage)).toBeInTheDocument();
     });
 
 });
