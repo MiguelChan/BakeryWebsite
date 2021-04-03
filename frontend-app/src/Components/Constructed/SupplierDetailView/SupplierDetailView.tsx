@@ -1,7 +1,7 @@
 import { Paper, Typography } from '@material-ui/core';
 import * as React from 'react';
 import { 
-    RouteComponentProps,
+    RouteComponentProps, useHistory,
 } from 'react-router';
 import { 
     useLocation,
@@ -22,6 +22,7 @@ export const SupplierDetailView: React.FunctionComponent<RouteComponentProps<Pro
 
     const matchParams: Properties = props.match.params;
     const location = useLocation<Supplier>();
+    const history = useHistory();
 
     const [currentSupplier, setCurrentSupplier] = React.useState<Supplier>();
     const [isLoadingSupplier, setIsLoadingSupplier] = React.useState<boolean>(true);
@@ -38,7 +39,6 @@ export const SupplierDetailView: React.FunctionComponent<RouteComponentProps<Pro
             suppliersClient.getSupplier(supplierId).then((getSupplierResponse: GetSupplierResponse) => {
                 setCurrentSupplier(getSupplierResponse.supplier);
             }).catch((errorResponse: GetSupplierResponse) => {
-
                 setErrorMessage(errorResponse.errorMessage);
             }).finally(() => {
                 setIsLoadingSupplier(false);
@@ -51,7 +51,10 @@ export const SupplierDetailView: React.FunctionComponent<RouteComponentProps<Pro
     }, [location, currentSupplier, matchParams]);
 
     function onEditSupplierClickListener() {
-        // ToDo: Implement Edit Logic.
+        history.push({
+            pathname: `/suppliers/${currentSupplier!.id}/edit`,
+            state: currentSupplier,
+        });
     }
 
     return (
