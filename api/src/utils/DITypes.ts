@@ -4,4 +4,5 @@ export const Types = {
   SuppliersController: Symbol.for('SuppliersController'),
   SuppliersRoutes: Symbol.for('SuppliersRoutes'),
   Application: Symbol.for('express.Application'),
+  SupplierServiceUrl: Symbol.for('SupplierServiceUrl'),
 };

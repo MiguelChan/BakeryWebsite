@@ -1,4 +1,6 @@
-import { GetSuppliersDto } from '../dtos';
+import {
+  GetSuppliersDto,
+} from '../dtos';
 import {
   Supplier,
 } from '../models';
@@ -16,30 +18,30 @@ export interface SupplierService {
    *
    * @returns {Supplier[]} a List of Suppliers.
    */
-  getSuppliers(pageNumber: number, pageSize: number): GetSuppliersDto;
+  getSuppliers(pageNumber: number, pageSize: number): Promise<GetSuppliersDto>;
 
   /**
    * Creates a Supplier.
    * @param {Supplier} supplier The supplier to create.
    */
-  createSupplier(supplier: Supplier): void;
+  createSupplier(supplier: Supplier): Promise<string>;
 
   /**
    * Deletes a Supplier.
    * @param {string} supplierId The id of the supplier to delete.
    */
-  deleteSupplier(supplierId: string): void;
+  deleteSupplier(supplierId: string): Promise<void>;
 
   /**
    * Edits a Supplier.
    * @param {Supplier} supplier The supplier to edit.
    */
-  editSupplier(supplier: Supplier): void;
+  editSupplier(supplier: Supplier): Promise<void>;
 
   /**
    * Gets a Supplier.
    * @param {string} supplierId The supplierId to fetch.
    */
-  getSupplier(supplierId: string): Supplier;
+  getSupplier(supplierId: string): Promise<Supplier>;
 
 }

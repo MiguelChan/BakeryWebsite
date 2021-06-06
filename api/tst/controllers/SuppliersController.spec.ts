@@ -99,7 +99,7 @@ describe('SuppliersController', () => {
   });
 
   describe('GetSuppliers', () => {
-    it('Should pass default pageSize and pageNumber when such params do not exist', () => {
+    it('Should pass default pageSize and pageNumber when such params do not exist', async () => {
       const mockRequest: express.Request = createMockRequest();
       const mockResponse: express.Response = createMockResponse();
 
@@ -109,14 +109,14 @@ describe('SuppliersController', () => {
       };
       (mockSuppliersService.getSuppliers as jest.Mock).mockImplementation(() => getSuppliersDto);
 
-      suppliersController.getSuppliers(mockRequest, mockResponse);
+      await suppliersController.getSuppliers(mockRequest, mockResponse);
 
       expect(mockSuppliersService.getSuppliers).toHaveBeenCalledWith(0, 50);
       expect(mockResponse.status).toHaveBeenCalledWith(200);
       expect(mockResponse.send).toHaveBeenCalledWith(getSuppliersDto);
     });
 
-    it('Should use pageSize and pageNumber from the provided URL params', () => {
+    it('Should use pageSize and pageNumber from the provided URL params', async () => {
       const mockRequest: express.Request = createMockRequest();
       mockRequest.query.pageSize = '100';
       mockRequest.query.pageNumber = '200';
@@ -130,14 +130,14 @@ describe('SuppliersController', () => {
 
       (mockSuppliersService.getSuppliers as jest.Mock).mockImplementation(() => getSuppliersDto);
 
-      suppliersController.getSuppliers(mockRequest, mockResponse);
+      await suppliersController.getSuppliers(mockRequest, mockResponse);
 
       expect(mockSuppliersService.getSuppliers).toHaveBeenCalledWith(200, 100);
       expect(mockResponse.status).toHaveBeenCalledWith(200);
       expect(mockResponse.send).toHaveBeenCalledWith(getSuppliersDto);
     });
 
-    it('Should return error StatusCode when the Service fails', () => {
+    it('Should return error StatusCode when the Service fails', async () => {
       const mockRequest: express.Request = createMockRequest();
       const mockResponse: express.Response = createMockResponse();
 
@@ -145,7 +145,7 @@ describe('SuppliersController', () => {
         throw new Error('SomeSome');
       });
 
-      suppliersController.getSuppliers(mockRequest, mockResponse);
+      await suppliersController.getSuppliers(mockRequest, mockResponse);
 
       expect(mockSuppliersService.getSuppliers).toHaveBeenCalledWith(0, 50);
       expect(mockResponse.status).toHaveBeenCalledWith(500);
@@ -154,7 +154,7 @@ describe('SuppliersController', () => {
   });
 
   describe('GetSupplier', () => {
-    it('Should get the Supplier from the SuppliersService', () => {
+    it('Should get the Supplier from the SuppliersService', async () => {
       const testSupplierId = '12345';
       const supplier: Supplier = buildRandomSupplier();
 
@@ -164,7 +164,7 @@ describe('SuppliersController', () => {
       mockRequest.body.id = testSupplierId;
       const mockResponse: express.Response = createMockResponse();
 
-      suppliersController.getSupplier(mockRequest, mockResponse);
+      await suppliersController.getSupplier(mockRequest, mockResponse);
 
       const expectedDto: GetSupplierResponseDto = {
         supplier,
@@ -175,7 +175,7 @@ describe('SuppliersController', () => {
       expect(mockResponse.send).toHaveBeenCalledWith(expectedDto);
     });
 
-    it('Should return an error response if the SupplierService fails', () => {
+    it('Should return an error response if the SupplierService fails', async () => {
       const testSupplierId = '12345';
 
       (mockSuppliersService.getSupplier as jest.Mock).mockImplementation(() => {
@@ -186,7 +186,7 @@ describe('SuppliersController', () => {
       mockRequest.body.id = testSupplierId;
       const mockResponse: express.Response = createMockResponse();
 
-      suppliersController.getSupplier(mockRequest, mockResponse);
+      await suppliersController.getSupplier(mockRequest, mockResponse);
 
       expect(mockSuppliersService.getSupplier).toHaveBeenCalledWith(testSupplierId);
       expect(mockResponse.status).toHaveBeenCalledWith(500);
@@ -195,7 +195,7 @@ describe('SuppliersController', () => {
   });
 
   describe('PutSupplier', () => {
-    it('Should put the Suppliers', () => {
+    it('Should put the Suppliers', async () => {
       const expectedSupplier: Supplier = buildRandomSupplier();
       const expectedContacts: Contact[] = [buildRandomContact()];
 
@@ -214,7 +214,7 @@ describe('SuppliersController', () => {
 
       const mockResponse: express.Response = createMockResponse();
 
-      suppliersController.editSupplier(mockRequest, mockResponse);
+      await suppliersController.editSupplier(mockRequest, mockResponse);
 
       expect(mockResponse.status).toHaveBeenCalledWith(201);
       expect(mockResponse.send).toHaveBeenCalledWith({});

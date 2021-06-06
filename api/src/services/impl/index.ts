@@ -1,1 +1,3 @@
-export * from './InMemorySupplierService';
+export {
+  SupplierServiceImpl,
+} from './SupplierServiceImpl';

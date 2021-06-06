@@ -7,14 +7,20 @@ import {
   SupplierService,
 } from '../services';
 import {
-  InMemorySupplierService,
-} from '../services/impl';
-import {
   Types,
 } from './DITypes';
-import { SuppliersMiddleware } from '../middlewares';
-import { SuppliersController } from '../controllers';
-import { SuppliersRoutes } from '../routes/SuppliersRoutes';
+import {
+  SuppliersMiddleware,
+} from '../middlewares';
+import {
+  SuppliersController,
+} from '../controllers';
+import {
+  SuppliersRoutes,
+} from '../routes/SuppliersRoutes';
+import {
+  SupplierServiceImpl,
+} from '../services/impl';
 
 const logger: debug.IDebugger = debug('app:InversifyContainer');
 
@@ -33,7 +39,7 @@ export class InversifyContainer {
   private configureContainer() {
     logger('Configuring DI Container');
     this.container.bind<express.Application>(Types.Application).toConstantValue(this.app);
-    this.container.bind<SupplierService>(Types.SupplierService).to(InMemorySupplierService);
+    this.container.bind<SupplierService>(Types.SupplierService).to(SupplierServiceImpl);
     this.container.bind<SuppliersMiddleware>(Types.SuppliersMiddleware).to(SuppliersMiddleware);
     this.container.bind<SuppliersController>(Types.SuppliersController).to(SuppliersController);
     this.container.bind<SuppliersRoutes>(Types.SuppliersRoutes).to(SuppliersRoutes);

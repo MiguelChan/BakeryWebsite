@@ -59,7 +59,7 @@ export class SuppliersController {
     const pageSize: number = parseIntegerNumber(req.query.pageSize, this.DEFAULT_PAGE_SIZE);
 
     try {
-      const getSuppliersDto: GetSuppliersDto = this.suppliersService.getSuppliers(pageNumber, pageSize);
+      const getSuppliersDto: GetSuppliersDto = await this.suppliersService.getSuppliers(pageNumber, pageSize);
       res.status(200).send(getSuppliersDto);
     } catch (exception) {
       res.status(500).send({
@@ -93,7 +93,7 @@ export class SuppliersController {
 
   async deleteSupplier(req: express.Request, res: express.Response) {
     try {
-      this.suppliersService.deleteSupplier(req.body.supplierId);
+      await this.suppliersService.deleteSupplier(req.body.supplierId);
       res.status(201).send({ status: 'Deleted' });
     } catch (exception) {
       res.status(500).send(exception);
@@ -114,7 +114,7 @@ export class SuppliersController {
         contacts: [...contacts],
       };
 
-      this.suppliersService.editSupplier(supplierToEdit);
+      await this.suppliersService.editSupplier(supplierToEdit);
       res.status(201).send({});
     } catch (exception) {
       res.status(500).send(exception);
@@ -130,7 +130,7 @@ export class SuppliersController {
     const supplierId: string = req.body.id;
     logger('Getting Supplier for Id: {}', supplierId);
     try {
-      const foundSupplier: Supplier = this.suppliersService.getSupplier(supplierId);
+      const foundSupplier: Supplier = await this.suppliersService.getSupplier(supplierId);
       const getSupplierDto: GetSupplierResponseDto = {
         supplier: foundSupplier,
       };
