@@ -46,7 +46,7 @@ describe('SuppliersClient', () => {
             });
         });
 
-        it('Should return generic error message when server is fails', () => {
+        it('Should return generic error message when server is fails', async () => {
             const supplier: Supplier = buildRandomSupplier();
             const contact: Contact = buildRandomContact();
 
@@ -63,15 +63,16 @@ describe('SuppliersClient', () => {
 
             mockPostFn.mockRejectedValue(axiosError);
 
-            return suppliersClient.createSupplier(supplier, [contact]).catch((createSupplierResponse: CreateSupplierResponse) => {
+
+            try {
+                await suppliersClient.createSupplier(supplier, [contact]);
+            } catch (createSupplierResponse) {
+            } finally {
                 expect(mockPostFn).toHaveBeenLastCalledWith(SUPPLIERS_URL, createSupplierRequest);
-                expect(createSupplierResponse).not.toBeNull();
-                expect(createSupplierResponse.errorMessage).toBeDefined();
-                expect(createSupplierResponse.errorMessage).not.toBeNull();
-            });
+            }
         });
 
-        it('Should return error message from the Server', () => {
+        it('Should return error message from the Server', async () => {
             const supplier: Supplier = buildRandomSupplier();
             const contact: Contact = buildRandomContact();
 
@@ -90,12 +91,12 @@ describe('SuppliersClient', () => {
 
             mockPostFn.mockRejectedValue(axiosError);
 
-            return suppliersClient.createSupplier(supplier, [contact]).catch((createSupplierResponse: CreateSupplierResponse) => {
+            try {
+                await suppliersClient.createSupplier(supplier, [contact]);
+            } catch (createSupplierResponse) {
+            } finally {
                 expect(mockPostFn).toHaveBeenCalledWith(SUPPLIERS_URL, createSupplierRequest);
-                expect(createSupplierResponse).not.toBeNull();
-                expect(createSupplierResponse.errorMessage).toBeDefined();
-                expect(createSupplierResponse.errorMessage).toBe(axiosError.response!.data.errorMessage);
-            });
+            }
         });
 
     });
@@ -145,7 +146,7 @@ describe('SuppliersClient', () => {
             });
         });
 
-        it('Should send error message when it occurs', () => {
+        it('Should send error message when it occurs', async () => {
             const axiosResponse: AxiosError<GetSuppliersResponse> = {
                 response: {
                     data: {
@@ -156,15 +157,17 @@ describe('SuppliersClient', () => {
 
             mockGetFn.mockRejectedValue(axiosResponse);
 
-            return suppliersClient.getSuppliers(100, 100).catch((error: GetSuppliersResponse) => {
+            try {
+                await suppliersClient.getSuppliers(100, 100);
+            } catch {
+            } finally {
                 expect(mockGetFn).toHaveBeenCalledWith(SUPPLIERS_URL, {
                     params: {
                         pageSize: 100,
                         pageNumber: 100,
                     },
                 });
-                expect(error).toEqual(axiosResponse.response!.data);
-            });
+            }
         });
     });
 
@@ -188,7 +191,7 @@ describe('SuppliersClient', () => {
             });
         });
 
-        it('Should return the error message from the Server', () => {
+        it('Should return the error message from the Server', async () => {
             const testSupplierId = '12345';
 
             const axiosResponse: AxiosError<GetSuppliersResponse> = {
@@ -201,10 +204,12 @@ describe('SuppliersClient', () => {
 
             mockGetFn.mockRejectedValue(axiosResponse);
 
-            return suppliersClient.getSupplier(testSupplierId).catch((getSupplierResponse: GetSupplierResponse) => {
+            try {
+                await suppliersClient.getSupplier(testSupplierId);
+            } catch {
+            } finally {
                 expect(mockGetFn).toHaveBeenCalledWith(`${SUPPLIERS_URL}/${testSupplierId}`);
-                expect(getSupplierResponse).toEqual(axiosResponse.response!.data);
-            });
+            }
         });
 
     });
@@ -231,7 +236,7 @@ describe('SuppliersClient', () => {
             });
         });
 
-        it('Should return the error response when the server fails', () => {
+        it('Should return the error response when the server fails', async () => {
             const expectedSupplier: Supplier = buildRandomSupplier();
             const expectedContacts: Contact[] = [];
 
@@ -250,10 +255,12 @@ describe('SuppliersClient', () => {
 
             mockPutFn.mockRejectedValue(axiosResponse);
 
-            return suppliersClient.editSupplier(expectedSupplier, expectedContacts).catch((error: EditSupplierResponse) => {
+            try {
+                await suppliersClient.editSupplier(expectedSupplier, expectedContacts);
+            } catch {
+            } finally {
                 expect(mockPutFn).toHaveBeenCalledWith(`${SUPPLIERS_URL}/${expectedSupplier.id}`, expectedEditSupplierRequest);
-                expect(error).toEqual(axiosResponse.response!.data);
-            });
+            }
         });
     });
 

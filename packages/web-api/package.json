@@ -1,0 +1,28 @@
+{
+  "name": "@mgl/bakery-api",
+  "version": "1.0.0",
+  "description": "The API for the Bakery Website",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf ./build",
+    "build": "tsc",
+    "start": "tsc && node ./build/src/app.js",
+    "debug": "export DEBUG=* && npm run start",
+    "test": "jest --config jest.config.js",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "release": "npm run clean && npm run lint && npm run test && npm run build"
+  },
+  "author": "Miguel Chan",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "debug": "^4.3.1",
+    "express": "^4.17.1",
+    "express-winston": "^4.1.0",
+    "inversify": "^5.0.5",
+    "reflect-metadata": "^0.1.13",
+    "winston": "^3.3.3"
+  }
+}
