@@ -1,5 +1,5 @@
 {
-  "name": "bakerywebsite",
+  "name": "@mgl/bakery-webapp",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -52,11 +52,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3030",
-  "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/react-redux": "^7.1.16",
-    "@types/redux-mock-store": "^1.0.2",
-    "redux-mock-store": "^1.5.4"
-  }
+  "proxy": "http://localhost:3030"
 }
