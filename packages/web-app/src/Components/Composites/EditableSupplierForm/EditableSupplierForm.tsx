@@ -50,14 +50,14 @@ export const EditableSupplierForm: React.FunctionComponent<Properties> = ({
     function onLineAddress1ChangedListener(event: React.ChangeEvent<HTMLInputElement>) {
         onSupplierChangedListener({
             ...supplier,
-            addressLine1: event.target.value,
+            lineAddress1: event.target.value,
         });
     }
 
     function onLineAddress2ChangedListener(event: React.ChangeEvent<HTMLInputElement>) {
         onSupplierChangedListener({
             ...supplier,
-            addressLine2: event.target.value,
+            lineAddress2: event.target.value,
         });
     }
 
@@ -137,7 +137,7 @@ export const EditableSupplierForm: React.FunctionComponent<Properties> = ({
                         true, 
                         false, 
                         onLineAddress1ChangedListener, 
-                        supplier.addressLine1,
+                        supplier.lineAddress1,
                         <Home />,
                     )}
                 </Grid>
@@ -148,7 +148,7 @@ export const EditableSupplierForm: React.FunctionComponent<Properties> = ({
                         false, 
                         false, 
                         onLineAddress2ChangedListener,
-                        supplier.addressLine2,
+                        supplier.lineAddress2,
                     )}
                 </Grid>
                 <Grid item xs={4}>

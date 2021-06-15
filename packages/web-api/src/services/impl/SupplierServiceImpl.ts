@@ -1,9 +1,12 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { inject, injectable } from 'inversify';
+import debug from 'debug';
 import { GetSuppliersDto } from '../../dtos';
 import { Supplier } from '../../models';
 import { Types } from '../../utils';
 import { SupplierService } from '../SupplierService';
+
+const logger: debug.IDebugger = debug('app:SupplierServiceImpl');
 
 @injectable()
 export class SupplierServiceImpl implements SupplierService {
@@ -37,9 +40,15 @@ export class SupplierServiceImpl implements SupplierService {
     const makeCall: Promise<any> = new Promise((accept, reject) => {
       const url = `${this.suppliersServiceUrl}/suppliers`;
       axios.post(url, createSupplierRequest).then((response: AxiosResponse) => {
+        logger('--RESPONSE FROM AXIOS--');
+        logger(JSON.stringify(response));
+        logger('--RESPONSE FROM AXIOS--');
         accept(response.data.supplierId);
       }).catch((error: AxiosError) => {
-        reject(JSON.stringify(error));
+        logger('--ERROR FROM AXIOS--');
+        logger(JSON.stringify(error));
+        reject(error);
+        logger('--ERROR FROM AXIOS--');
       });
     });
 

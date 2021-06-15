@@ -55,13 +55,13 @@ describe('EditableSupplierForm', () => {
         typeValue(ADDRESS_1_TEST_ID, testLineAddress1);
         expect(mockOnSupplierChangedListener).toHaveBeenCalledWith({
             ...supplier,
-            addressLine1: testLineAddress1,
+            lineAddress1: testLineAddress1,
         });
 
         typeValue(ADDRESS_2_TEST_ID, testLineAddress2);
         expect(mockOnSupplierChangedListener).toHaveBeenCalledWith({
             ...supplier,
-            addressLine2: testLineAddress2,
+            lineAddress2: testLineAddress2,
         });
 
         typeValue(PHONE_NUMBER_TEST_ID, testPhoneNumber);
@@ -78,8 +78,8 @@ describe('EditableSupplierForm', () => {
 
     function buildEmptySupplier(): Supplier {
         return {
-            addressLine1: '',
-            addressLine2: '',
+            lineAddress1: '',
+            lineAddress2: '',
             contacts: [],
             id: '',
             name: '',

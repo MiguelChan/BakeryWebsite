@@ -29,7 +29,7 @@ export const SuppliersTableRow: React.FunctionComponent<Properties> = ({
      * @returns .
      */
     function formatAddress(supplier: Supplier): string {
-        return `${supplier.addressLine1} ${supplier.addressLine2}`;
+        return `${supplier.lineAddress1} ${supplier.lineAddress2}`;
     }
 
     return (

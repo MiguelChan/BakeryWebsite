@@ -19,7 +19,7 @@ describe('SuppliersTableRow', () => {
     it('Should display the provided Supplier', () => {
         const supplier: Supplier = buildSupplier();
 
-        const supplierAddress = `${supplier.addressLine1} ${supplier.addressLine2}`;
+        const supplierAddress = `${supplier.lineAddress1} ${supplier.lineAddress2}`;
 
         setupComponent(supplier, mockOnSupplierClickedListener);
 
@@ -42,8 +42,8 @@ describe('SuppliersTableRow', () => {
         return {
             id: 'SomeSome',
             name: 'Santos Lugo AC',
-            addressLine1: 'Yuc',
-            addressLine2: 'MID',
+            lineAddress1: 'Yuc',
+            lineAddress2: 'MID',
             contacts: [],
             phoneNumber: '123-456-7890'
         };

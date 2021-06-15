@@ -43,5 +43,8 @@ export class InversifyContainer {
     this.container.bind<SuppliersMiddleware>(Types.SuppliersMiddleware).to(SuppliersMiddleware);
     this.container.bind<SuppliersController>(Types.SuppliersController).to(SuppliersController);
     this.container.bind<SuppliersRoutes>(Types.SuppliersRoutes).to(SuppliersRoutes);
+    // ToDo: Replace with Env-Var
+    this.container.bind<string>(Types.SupplierServiceUrl)
+      .toConstantValue('https://mgl-bakery-service.herokuapp.com/api');
   }
 }

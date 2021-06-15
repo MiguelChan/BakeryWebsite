@@ -8,8 +8,8 @@ import {
 export interface Supplier {
     id: string;
     name: string;
-    addressLine1: string;
-    addressLine2: string;
+    lineAddress1: string;
+    lineAddress2: string;
     contacts: Contact[];
     phoneNumber: string;
 }

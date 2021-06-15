@@ -56,8 +56,8 @@ describe('SupplierEditableView', () => {
         fireEvent.click(screen.getByText('Aceptar'));
 
         const expectedSupplier: Supplier = {
-            addressLine1: '',
-            addressLine2: '',
+            lineAddress1: '',
+            lineAddress2: '',
             contacts: [],
             id: '',
             name: 'SomeRandomName',

@@ -83,8 +83,8 @@ describe('SuppliersTable', () => {
             suppliers.push({
                 id: `${i}`,
                 name:`Name: ${i}`,
-                addressLine1: `Line1: ${i}`,
-                addressLine2: `Line2: ${i}`,
+                lineAddress1: `Line1: ${i}`,
+                lineAddress2: `Line2: ${i}`,
                 phoneNumber: `PhoneNumber: ${i}`,
                 contacts: [],
             });
