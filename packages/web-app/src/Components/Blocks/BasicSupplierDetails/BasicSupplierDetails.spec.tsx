@@ -13,8 +13,8 @@ describe('BasicSupplierDetails', () => {
 
     function setupRandomSupplier(): Supplier {
         return {
-            addressLine1: 'AddressLine1',
-            addressLine2: 'AddressLine2',
+            lineAddress1: 'AddressLine1',
+            lineAddress2: 'AddressLine2',
             contacts: [],
             id: '',
             name: 'Name',
@@ -26,8 +26,8 @@ describe('BasicSupplierDetails', () => {
         const supplier: Supplier = setupRandomSupplier();
         setupComponent(supplier);
 
-        expect(screen.getByDisplayValue(supplier.addressLine1)).toBeInTheDocument();
-        expect(screen.getByDisplayValue(supplier.addressLine2)).toBeInTheDocument();
+        expect(screen.getByDisplayValue(supplier.lineAddress1)).toBeInTheDocument();
+        expect(screen.getByDisplayValue(supplier.lineAddress2)).toBeInTheDocument();
         expect(screen.getByDisplayValue(supplier.name)).toBeInTheDocument();
         expect(screen.getByDisplayValue(supplier.phoneNumber)).toBeInTheDocument();
     })

@@ -58,10 +58,10 @@ export const BasicSupplierDetails: React.FunctionComponent<Properties> = ({
                 <Grid item xs={4}>
                 </Grid>
                 <Grid item xs={4}>
-                    {buildTextField('Direccion Linea 1', supplier.addressLine1, <Home />)}
+                    {buildTextField('Direccion Linea 1', supplier.lineAddress1, <Home />)}
                 </Grid>
                 <Grid item xs={4}>
-                    {buildTextField('Direccion Linea 2', supplier.addressLine2)}
+                    {buildTextField('Direccion Linea 2', supplier.lineAddress2)}
                 </Grid>
                 <Grid item xs={4}>
                     {buildTextField('Numero de Telefono', supplier.phoneNumber, <Phone />)}

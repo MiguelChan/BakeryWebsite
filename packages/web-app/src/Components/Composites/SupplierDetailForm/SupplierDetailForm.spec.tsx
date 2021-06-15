@@ -13,8 +13,8 @@ describe('SupplierDetailForm', () => {
     // ToDo: There should be a better way of randomly generate an Object in JS.
     function buildRandomSupplier(): Supplier {
         return {
-            addressLine1: 'AddressLine1',
-            addressLine2: 'AddressLine2',
+            lineAddress1: 'AddressLine1',
+            lineAddress2: 'AddressLine2',
             contacts: [],
             id: '',
             name: 'SupplierName',
@@ -47,8 +47,8 @@ describe('SupplierDetailForm', () => {
         // The Supplier Info is displayed within TextField, therefore they're 
         expect(screen.getByDisplayValue(supplier.name)).toBeInTheDocument();
         expect(screen.getByDisplayValue(supplier.phoneNumber)).toBeInTheDocument();
-        expect(screen.getByDisplayValue(supplier.addressLine1)).toBeInTheDocument();
-        expect(screen.getByDisplayValue(supplier.addressLine2)).toBeInTheDocument();
+        expect(screen.getByDisplayValue(supplier.lineAddress1)).toBeInTheDocument();
+        expect(screen.getByDisplayValue(supplier.lineAddress2)).toBeInTheDocument();
 
         // Contact Info lives within a Table.
         expect(screen.getByText(contact.phoneNumber)).toBeInTheDocument();

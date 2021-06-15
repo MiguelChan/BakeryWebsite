@@ -37,8 +37,8 @@ describe('SuppliersMiddleware', () => {
       supplier: {
         name: 'SomeName',
         phoneNumber: 'SomePhoneNumber',
-        addressLine1: '',
-        addressLine2: '',
+        lineAddress1: '',
+        lineAddress2: '',
         contacts: [],
         id: '',
       },

@@ -45,8 +45,8 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
 }) => {
 
     const [activeSupplier, setActiveSupplier] = React.useState<Supplier>({
-        addressLine1: '',
-        addressLine2: '',
+        lineAddress1: '',
+        lineAddress2: '',
         contacts: [],
         id: '',
         name: '',

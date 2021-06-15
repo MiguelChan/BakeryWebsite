@@ -25,8 +25,8 @@ describe('SuppliersController', () => {
 
   function buildRandomSupplier(): Supplier {
     return {
-      addressLine1: 'AddressLine1',
-      addressLine2: 'AddressLine2',
+      lineAddress1: 'AddressLine1',
+      lineAddress2: 'AddressLine2',
       contacts: [],
       id: '',
       name: 'Name',
