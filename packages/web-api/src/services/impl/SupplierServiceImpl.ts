@@ -40,15 +40,11 @@ export class SupplierServiceImpl implements SupplierService {
     const makeCall: Promise<any> = new Promise((accept, reject) => {
       const url = `${this.suppliersServiceUrl}/suppliers`;
       axios.post(url, createSupplierRequest).then((response: AxiosResponse) => {
-        logger('--RESPONSE FROM AXIOS--');
-        logger(JSON.stringify(response));
-        logger('--RESPONSE FROM AXIOS--');
+        logger('Got Response from Response: %j', response.data);
         accept(response.data.supplierId);
       }).catch((error: AxiosError) => {
-        logger('--ERROR FROM AXIOS--');
-        logger(JSON.stringify(error));
+        logger('Error from Axios: %s', error.message);
         reject(error);
-        logger('--ERROR FROM AXIOS--');
       });
     });
 

@@ -5,14 +5,19 @@ import * as winston from 'winston';
 import * as expressWinston from 'express-winston';
 import cors from 'cors';
 import debug from 'debug';
+import * as path from 'path';
 import {
   CommonRoutesConfig,
 } from './routes/CommonRouteConfig';
 import {
   SuppliersRoutes,
 } from './routes/SuppliersRoutes';
-import { InversifyContainer } from './utils/InversifyContainer';
-import { Types } from './utils';
+import {
+  InversifyContainer,
+} from './utils/InversifyContainer';
+import {
+  Types,
+} from './utils';
 
 // Server Initialization
 const app: express.Application = express();
@@ -60,15 +65,25 @@ app.use(expressWinston.logger(loggerOptions));
 const suppliersRoutes: SuppliersRoutes = inversifyContainer.getContainer().get<SuppliersRoutes>(Types.SuppliersRoutes);
 routes.push(suppliersRoutes);
 
-app.get('/', (request: express.Request, response: express.Response) => {
-  response.status(200).send('Server up and Running');
-});
-
 // The actual server Setup.
 server.listen(port, () => {
   debugLog(`Server running @ http://localhost:${port}`);
+
+  // Routes for Server
   routes.forEach((route: CommonRoutesConfig) => {
     route.configureRoutes();
     debugLog(`Routes configured for ${route.getName()}`);
   });
+
+  // Routes for SPA
+  if (process.env.USE_STATIC_ASSETS) {
+    const staticAssetsPath = path.join('build/website');
+    app.use(express.static(staticAssetsPath));
+
+    app.get('*', (req: express.Request, res: express.Response) => {
+      const resolvedPath = path.resolve(staticAssetsPath, 'index.html');
+      debugLog(`ResolvedPath: ${resolvedPath}`);
+      res.sendFile(resolvedPath);
+    });
+  }
 });
