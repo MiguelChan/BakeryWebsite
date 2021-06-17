@@ -6,14 +6,14 @@ export interface Contact {
   contactType: ContactType;
   phoneNumber: string;
   emailAddress: string;
-  contactFirstName: string;
-  contactLastName: string;
+  firstName: string;
+  lastName: string;
 }
 
 /**
  * Defines the Contact Types.
  */
 export enum ContactType {
-  Returns = 'Returns',
-  SalesRep = 'SalesRep',
+  Returns = 'RETURNS',
+  SalesRep = 'SALES_REP',
 }

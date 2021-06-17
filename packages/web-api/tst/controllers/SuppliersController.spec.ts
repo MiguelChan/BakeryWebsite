@@ -14,8 +14,8 @@ describe('SuppliersController', () => {
 
   function buildRandomContact(): Contact {
     return {
-      contactFirstName: 'ContactFirstName',
-      contactLastName: 'ContactLastName',
+      firstName: 'ContactFirstName',
+      lastName: 'ContactLastName',
       contactType: ContactType.Returns,
       emailAddress: 'emailAddress',
       id: '',

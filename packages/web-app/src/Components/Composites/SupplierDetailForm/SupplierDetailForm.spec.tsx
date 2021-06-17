@@ -24,8 +24,8 @@ describe('SupplierDetailForm', () => {
 
     function buildRandomContact(): Contact {
         return {
-            contactFirstName: 'ContactFirstName',
-            contactLastName: 'ContactLastName',
+            firstName: 'ContactFirstName',
+            lastName: 'ContactLastName',
             contactType: ContactType.SalesRep,
             emailAddress: 'ContactEmailAddress',
             id: '',
