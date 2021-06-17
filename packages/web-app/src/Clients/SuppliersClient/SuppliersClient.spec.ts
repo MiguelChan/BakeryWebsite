@@ -283,8 +283,8 @@ describe('SuppliersClient', () => {
 
     function buildRandomContact(): Contact {
         return {
-            contactFirstName: 'contactFirstName',
-            contactLastName: 'contactLastName',
+            firstName: 'contactFirstName',
+            lastName: 'contactLastName',
             contactType: ContactType.Returns,
             emailAddress: 'emailAddress',
             id: '',

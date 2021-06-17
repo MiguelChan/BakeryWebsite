@@ -66,8 +66,8 @@ describe('CreateContactDialog', () => {
             contactType: ContactType.Returns,
             phoneNumber: testPhoneNumber,
             emailAddress: testEmail,
-            contactFirstName: testFirstName,
-            contactLastName: testLastName,
+            firstName: testFirstName,
+            lastName: testLastName,
             id: '',
         });
     });

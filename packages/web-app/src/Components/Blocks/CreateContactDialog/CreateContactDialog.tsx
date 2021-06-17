@@ -45,8 +45,8 @@ export const CreateContactDialog: React.FunctionComponent<Properties> = ({
 
     const [contact, setContact] = React.useState<Contact>({
         contactType: ContactType.Returns,
-        contactFirstName: '',
-        contactLastName: '',
+        firstName: '',
+        lastName: '',
         emailAddress: '',
         id: '',
         phoneNumber: '',
@@ -57,8 +57,8 @@ export const CreateContactDialog: React.FunctionComponent<Properties> = ({
     function resetContact() {
         setContact({
             contactType: ContactType.Returns,
-            contactFirstName: '',
-            contactLastName: '',
+            firstName: '',
+            lastName: '',
             emailAddress: '',
             id: '',
             phoneNumber: '',
@@ -71,7 +71,7 @@ export const CreateContactDialog: React.FunctionComponent<Properties> = ({
     }
 
     function internalOnCreateClickListener() {
-        if (contact?.contactFirstName === '' || contact?.contactLastName === '') {
+        if (contact?.firstName === '' || contact?.lastName === '') {
             setHasValidationError(true);
             return;
         }
@@ -97,14 +97,14 @@ export const CreateContactDialog: React.FunctionComponent<Properties> = ({
     function onFirstNameChangedListener(event: React.ChangeEvent<HTMLInputElement>) {
         setContact({
             ...contact,
-            contactFirstName: event.target.value,
+            firstName: event.target.value,
         });
     }
 
     function onLastNameChangedListener(event: React.ChangeEvent<HTMLInputElement>) {
         setContact({
             ...contact,
-            contactLastName: event.target.value,
+            lastName: event.target.value,
         });
     }
 
@@ -133,7 +133,7 @@ export const CreateContactDialog: React.FunctionComponent<Properties> = ({
                             fullWidth
                             onChange={onFirstNameChangedListener}
                             required
-                            error={hasValidationError && contact?.contactFirstName === ''}
+                            error={hasValidationError && contact?.firstName === ''}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -146,7 +146,7 @@ export const CreateContactDialog: React.FunctionComponent<Properties> = ({
                             fullWidth
                             onChange={onLastNameChangedListener}
                             required
-                            error={hasValidationError && contact?.contactLastName === ''}
+                            error={hasValidationError && contact?.lastName === ''}
                         />
                     </Grid>
                     <Grid item xs={6}>

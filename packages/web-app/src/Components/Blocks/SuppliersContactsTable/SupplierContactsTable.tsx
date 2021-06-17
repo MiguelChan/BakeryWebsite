@@ -11,7 +11,7 @@ import {
 } from '@material-ui/icons';
 import * as React from 'react';
 import { 
-    Contact,
+    Contact, contactTypeParser,
 } from '../../../Models';
 
 export type OnDeleteContactClickListener = (contact: Contact, contactIndex: number) => void;
@@ -36,12 +36,12 @@ export const SupplierContactsTable: React.FunctionComponent<Properties> = ({
 
     function renderContactRow(contactIndex: number, contact: Contact) {
         return (
-            <TableRow key={contact.contactFirstName} hover>
+            <TableRow key={contact.firstName} hover>
                 <TableCell>
                     {contactIndex}
                 </TableCell>
                 <TableCell>
-                    {`${contact.contactFirstName} ${contact.contactLastName}`}
+                    {`${contact.firstName} ${contact.lastName}`}
                 </TableCell>
                 <TableCell>
                     {`${contact.emailAddress}`}
@@ -50,7 +50,7 @@ export const SupplierContactsTable: React.FunctionComponent<Properties> = ({
                     {`${contact.phoneNumber}`}
                 </TableCell>
                 <TableCell>
-                    {`${contact.contactType}`}
+                    {`${contactTypeParser(contact.contactType)}`}
                 </TableCell>
                 {canDeleteContact &&
                     <TableCell>

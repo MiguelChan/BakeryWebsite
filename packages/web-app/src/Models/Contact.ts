@@ -6,14 +6,30 @@ export interface Contact {
     contactType: ContactType;
     phoneNumber: string;
     emailAddress: string;
-    contactFirstName: string;
-    contactLastName: string;
+    firstName: string;
+    lastName: string;
 }
 
 /**
  * Defines the Contact Types.
  */
 export enum ContactType {
-    Returns = 'Returns',
-    SalesRep = 'SalesRep',
+    Returns = 'RETURNS',
+    SalesRep = 'SALES_REP',
 }
+
+/**
+ * Parses a ContacType to its user-friendly-name.
+ * @param contactType .
+ * @returns The user friendly name.
+ */
+export const contactTypeParser = (contactType: ContactType): string => {
+    switch (contactType) {
+        case ContactType.Returns:
+            return 'Devoluciones';
+        case ContactType.SalesRep:
+            return 'Representante de Ventas';
+        default:
+            return 'Not Supported';
+    }
+};

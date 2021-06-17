@@ -1,7 +1,9 @@
 import { 
+    CircularProgress,
     Container, 
     Divider, 
     Fab,
+    Grid,
     makeStyles,
     Paper,
     Typography,
@@ -22,6 +24,7 @@ import {
     useAppSelector,
     RootState,
     fetchSuppliers,
+    SuppliersState,
 } from '../../../Store';
 import theme from '../../../theme';
 import { 
@@ -58,7 +61,7 @@ export const ViewSuppliers: React.FunctionComponent = () => {
     const history = useHistory<Supplier>();
 
     const appDispatch = useAppDispatch();
-    const suppliersState = useAppSelector((selector: RootState) => selector.suppliersReducer);
+    const suppliersState: SuppliersState = useAppSelector((selector: RootState) => selector.suppliersReducer);
     
     React.useEffect(() => {
         appDispatch(fetchSuppliers({
@@ -87,8 +90,18 @@ export const ViewSuppliers: React.FunctionComponent = () => {
         errorMessage,
     } = suppliersState;
 
-    return (
-        <Container>
+    function renderSuppliersTable(): React.ReactElement {
+        if (suppliersState.status === 'loading') {
+            return (
+                <>
+                    <Grid container justify='center'>
+                        <CircularProgress />
+                    </Grid>
+                </>
+            );
+        }
+
+        return (
             <SuppliersTable
                 suppliers={suppliers}
                 totalSuppliers={totalElements}
@@ -96,6 +109,12 @@ export const ViewSuppliers: React.FunctionComponent = () => {
                 onPageChangedListener={onPageChangedListener}
                 currentPage={currentPage}
             />
+        );
+    }
+
+    return (
+        <Container>
+            {renderSuppliersTable()}
             {(!isNullOrUndefined(errorMessage) && errorMessage !== '') && <Paper><Typography>{errorMessage}</Typography></Paper>}
             <Divider />
             <Container maxWidth='md' className={classes.buttonsContainer}>

@@ -9,13 +9,13 @@ Bakery Website Project
 Since we're going to be building a `ReactJS Application` with `NodeJS` and its TypeScript definitions, the project is split into the following source architecture:
 
 * `RootFolder`
-  * `api` - Here lies all the ServerSide (NodeJS) code.
-  * `frontend-app` - Here lies all the FrontEnd (UI/React) code.
+  * `packages/web-api` - Here lies all the ServerSide (NodeJS) code.
+  * `packages/web-app` - Here lies all the FrontEnd (UI/React) code.
   * `Dockerfile` - For generating the Docker Images 
 
 #### API Folder
 
-* `RootFolder` (API)
+* `RootFolder` (web-api)
   * `src`: Underlying NodeJS code lives under here.
     * `app.ts` - The main entry point for the Application. 
     * `controllers` - The controllers folder. Each Controller should lie in here. 
@@ -40,7 +40,7 @@ Since we're going to be building a `ReactJS Application` with `NodeJS` and its T
   accross the packages.
   
 ### FrontEnd-App
-* `RootFolder` (frontend-app)
+* `RootFolder` (web-app)
   * `src`: Where all the components should live.
     * `Clients`: API Clients to make different calls to different services. It would be nice to have a Client per Module i.e. `SuppliersClient.ts` and `AccountsClient.ts`.
     * `Components`: Main UI Components Folder. Each `Component` should live in its very own folder, and each folder should contain all the related source and test code.
@@ -52,3 +52,9 @@ Since we're going to be building a `ReactJS Application` with `NodeJS` and its T
       * `Models`: UI Models, they should be exported by a barrel file (`index.ts`).
       * `Utils`: UI Utils, they should be exported by a barrel file (`index.ts`).
       
+### Building the Dockerfile
+
+Whenever your want to test the whole WebApp suite, you need to build the Docker image-file. In order to do so, follow these easy steps to generate a Docker Image and use it in your Docker-Desktop App.
+
+* `docker build -t website-app:<PutAVersionInHere> .`: This will generate a Docker image that can be mounted and ready to be used.
+* Now you can mount the image and start testing it. 

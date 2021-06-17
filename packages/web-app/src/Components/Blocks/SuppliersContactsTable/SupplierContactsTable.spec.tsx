@@ -52,8 +52,8 @@ describe('SupplierContactsTable', () => {
                 contactType: ContactType.Returns,
                 phoneNumber: `PhoneNumber: ${i}`,
                 emailAddress: `EmailAddress: ${i}`,
-                contactFirstName: `FirstName: ${i}`,
-                contactLastName: `LastName: ${i}`,
+                firstName: `FirstName: ${i}`,
+                lastName: `LastName: ${i}`,
             });
         }
         return contacts;
