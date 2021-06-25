@@ -57,4 +57,8 @@ Since we're going to be building a `ReactJS Application` with `NodeJS` and its T
 Whenever your want to test the whole WebApp suite, you need to build the Docker image-file. In order to do so, follow these easy steps to generate a Docker Image and use it in your Docker-Desktop App.
 
 * `docker build -t website-app:<PutAVersionInHere> .`: This will generate a Docker image that can be mounted and ready to be used.
+* After building the image create a `.env` file which will contain all the environment variables required to run the image.
+  * `SUPPLIERS_URL`: Point this to the correct URL for your Suppliers Service. This could be either Beta or Localhost.
+    * When using localhost, use the following format: `http://host.docker.internal:<SERVICE_PORT>/api`
+* Now, it is time to actually run the image: `docker run -p 3030:3030 --env-file .env website-app:<PutAVersionInHere>`
 * Now you can mount the image and start testing it. 

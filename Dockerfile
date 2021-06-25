@@ -15,6 +15,7 @@ WORKDIR /app
 
 ENV DEBUG=*
 ENV USE_STATIC_ASSETS=true
+ENV SUPPLIERS_URL=$SUPPLIERS_SERVICE_URL
 
 COPY ./packages/web-api/package*.json ./
 RUN npm install

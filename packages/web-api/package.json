@@ -6,8 +6,10 @@
   "scripts": {
     "clean": "rm -rf ./build",
     "build": "tsc",
-    "start": "tsc && node ./build/src/app.js",
-    "debug": "export DEBUG=* && npm run start",
+    "start:local": "export SUPPLIERS_URL=http://localhost:8090/api && tsc && node ./build/src/app.js",
+    "debug:local": "export DEBUG=* && npm run start:local",
+    "start:beta": "export SUPPLIERS_URL=https://mgl-bakery-service.herokuapp.com/api && tsc && node ./build/src/app.js",
+    "debug:beta": "export DEBUG=* && npm run start:beta",
     "test": "jest --config jest.config.js",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
