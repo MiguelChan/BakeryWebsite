@@ -10,24 +10,18 @@ import {
   CommonRoutesConfig,
 } from './routes/CommonRouteConfig';
 import {
-  SuppliersRoutes,
-} from './routes/SuppliersRoutes';
-import {
   InversifyContainer,
 } from './utils/InversifyContainer';
-import {
-  Types,
-} from './utils';
 
 // Server Initialization
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
 const port = process.env.PORT || 3030;
-const routes: Array<CommonRoutesConfig> = [];
 const debugLog: debug.IDebugger = debug('app');
+const suppliersServiceUrl: string = process.env.SUPPLIERS_URL as string;
 
 // Setting up the DI Container
-const inversifyContainer: InversifyContainer = new InversifyContainer(app);
+const inversifyContainer: InversifyContainer = new InversifyContainer(app, suppliersServiceUrl);
 
 // Adding middleware for parsing all incoming requests as JSON
 app.use(express.json());
@@ -61,9 +55,7 @@ if (process.env.DEBUG) {
 // Initializd the Logger with the above configuration.
 app.use(expressWinston.logger(loggerOptions));
 
-// Adding Routes to the Routes Array.
-const suppliersRoutes: SuppliersRoutes = inversifyContainer.getContainer().get<SuppliersRoutes>(Types.SuppliersRoutes);
-routes.push(suppliersRoutes);
+const routes: Array<CommonRoutesConfig> = inversifyContainer.getAppRoutes();
 
 // The actual server Setup.
 server.listen(port, () => {

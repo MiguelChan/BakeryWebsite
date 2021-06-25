@@ -21,19 +21,36 @@ import {
 import {
   SupplierServiceImpl,
 } from '../services/impl';
+import { isNullOrUndefined } from './ObjectUtils';
+import { CommonRoutesConfig } from '../routes/CommonRouteConfig';
 
 const logger: debug.IDebugger = debug('app:InversifyContainer');
 
 export class InversifyContainer {
   private readonly container: Container;
 
-  constructor(private readonly app: express.Application) {
+  private readonly routesTypes: symbol[] = [
+    Types.SuppliersRoutes,
+  ];
+
+  constructor(private readonly app: express.Application, private readonly suppliersServiceUrl: string) {
+    if (isNullOrUndefined(suppliersServiceUrl)) {
+      throw new Error('SuppliersServiceUrl is not defined');
+    }
+
     this.container = new Container();
     this.configureContainer();
+
+    logger('Using %s as SuppliersService URL', this.suppliersServiceUrl);
+    logger('InversifyContainer Configured');
   }
 
   public getContainer(): Container {
     return this.container;
+  }
+
+  public getAppRoutes(): CommonRoutesConfig[] {
+    return this.routesTypes.map((currentRoute: symbol) => this.container.get<CommonRoutesConfig>(currentRoute));
   }
 
   private configureContainer() {
@@ -43,8 +60,6 @@ export class InversifyContainer {
     this.container.bind<SuppliersMiddleware>(Types.SuppliersMiddleware).to(SuppliersMiddleware);
     this.container.bind<SuppliersController>(Types.SuppliersController).to(SuppliersController);
     this.container.bind<SuppliersRoutes>(Types.SuppliersRoutes).to(SuppliersRoutes);
-    // ToDo: Replace with Env-Var
-    this.container.bind<string>(Types.SupplierServiceUrl)
-      .toConstantValue('https://mgl-bakery-service.herokuapp.com/api');
+    this.container.bind<string>(Types.SupplierServiceUrl).toConstantValue(this.suppliersServiceUrl);
   }
 }
