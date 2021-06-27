@@ -1,12 +1,14 @@
 FROM node:14 as AppBuilder
 
+ENV CI=true
+
 WORKDIR /usr/src/app
 
 COPY ./lerna.json ./
 COPY ./package*.json ./
 COPY ./packages ./packages
 
-RUN npm ci && npm run release
+RUN npm ci && npm run release:install && npm run release
 
 # Final Setup
 FROM node:14

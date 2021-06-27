@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
+    "release:install": "lerna exec --concurrency 1 -- npm install",
     "release": "lerna exec --concurrency 1 -- npm run release"
   },
   "devDependencies": {

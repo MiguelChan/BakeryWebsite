@@ -22,6 +22,8 @@ jobs:
       # Install node dependencies
       - name: Install Dependencies
         run: npm ci
+      - name: Install individual packages dependencies
+        run: npm run release:install
       # Make a release build
       - name: Run Release
         run: npm run release
