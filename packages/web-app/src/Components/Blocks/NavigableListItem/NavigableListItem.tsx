@@ -14,6 +14,7 @@ interface Properties {
     secondaryText: string;
     toUrl: string;
     isSelected: boolean;
+    onClick?: () => void;
 }
 
 /**
@@ -31,21 +32,26 @@ export const NavigableListItem: React.FunctionComponent<Properties> = ({
     secondaryText,
     toUrl,
     isSelected,
+    onClick,
 }) => {
 
     const renderLink = React.useMemo(
-        () => React.forwardRef((itemProps, ref) => <RouterLink to={{
-            pathname: toUrl,
-            state: {
-                sectionTitle: primaryText,
-            }
-        }} {...itemProps}/>), 
-        [toUrl, primaryText],
+        () => React.forwardRef((itemProps, ref) => (
+            <RouterLink to={{
+                pathname: toUrl,
+                state: {
+                    sectionTitle: primaryText,
+                }
+            }} {...itemProps}
+            onClick={onClick}
+            />
+        )),
+        [toUrl, primaryText, onClick],
     );
 
     return (
-        <ListItem 
-            button 
+        <ListItem
+            button
             component={renderLink}
             selected={isSelected}
         >

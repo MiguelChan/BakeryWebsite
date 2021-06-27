@@ -1,6 +1,3 @@
-import { 
-  NavigationBar,
- } from '../Constructed';
 import './App.css';
 import {
   Route,
@@ -13,47 +10,52 @@ import {
   SuppliersPage,
  } from '../Pages';
 import { 
-  AppBar, 
+  createStyles, 
   makeStyles, 
-  Toolbar, 
+  Theme, 
 } from '@material-ui/core';
-
-import theme from '../../theme';
 import React from 'react';
+import { NavigationBar } from '../Blocks';
+import { NavigationDrawer } from '../Constructed';
 
-const drawerWidth = 390;
+const useStyles = makeStyles((theme: Theme) => 
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+    },
+    title: {
+      flexGrow: 1,
+    },
+    appBar: {
+      margin: 0,
+      padding: 0,
+    },
+    content: {
+      marginTop: 70,
+    }
+  }),
+);
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  appBar: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-  },
-  drawer: {
-    width: drawerWidth,
-    maxWidth: drawerWidth,
-    flexShrink: 0,
-  },    
-  toolbar: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing(3),
-    marginTop: 25,
-  },
-}));
+export interface AppProps {
+  toggleDarkMode: () => void;
+}
 
 /**
  * 
  * @returns The main React Application.
  */
-function App() {
+const App: React.FunctionComponent<AppProps> = ({
+  toggleDarkMode,
+}) => {
 
-  const classes = useStyles(theme);
+  const classes = useStyles();
 
   const location: any = useLocation();
+
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
 
   function getSectionTitle(): string {
     if (location.state?.sectionTitle) {
@@ -62,23 +64,32 @@ function App() {
     return 'Administracion';
   }
 
+  /**
+   * Toggles the Drawer.
+   */
+  function toggleDrawer(): void {
+    setIsDrawerOpen(!isDrawerOpen);
+  }
+
   return (
     <>
       <div className={classes.root}>
-        <AppBar className={classes.appBar}>
-            <Toolbar variant='dense'>
-              {getSectionTitle()}
-            </Toolbar>
-        </AppBar>
-        <NavigationBar className={classes.drawer} />
+        <NavigationBar 
+          title={getSectionTitle()} 
+          onOpenMenuClickListener={toggleDrawer} 
+        />
+        <NavigationDrawer 
+          isOpen={isDrawerOpen} 
+          toggleDrawer={toggleDrawer}
+          toggleDarkMode={toggleDarkMode}
+        />
         <main className={classes.content}>
-          <div className={classes.toolbar} />
           <Switch>
-            <Route path='/suppliers'>
-              <SuppliersPage />
-            </Route>
             <Route path='/' exact>
               <LandingPage />
+            </Route>
+            <Route path='/suppliers'>
+              <SuppliersPage />
             </Route>
             <Route>
               <NotFoundPage />

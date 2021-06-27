@@ -32,12 +32,24 @@
     "test:nowatch": "react-scripts test --watchAll=false",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
-    "release": "npm run-script lint && npm run-script test:nowatch && npm run-script build"
+    "release": "npm run-script lint && npm run-script test:nowatch && npm run-script build",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
     ]
   },
   "browserslist": {
@@ -52,5 +64,14 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3030"
+  "proxy": "http://localhost:3030",
+  "devDependencies": {
+    "@storybook/addon-actions": "^6.3.0",
+    "@storybook/addon-essentials": "^6.3.0",
+    "@storybook/addon-links": "^6.3.0",
+    "@storybook/node-logger": "^6.3.0",
+    "@storybook/preset-create-react-app": "^3.1.7",
+    "@storybook/react": "^6.3.0",
+    "storybook-addon-material-ui": "*"
+  }
 }

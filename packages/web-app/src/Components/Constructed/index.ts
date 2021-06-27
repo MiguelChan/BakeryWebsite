@@ -1,4 +1,4 @@
-export * from './NavigationBar';
+export * from './NavigationDrawer';
 export * from './SupplierDetailView';
 export * from './ViewSuppliers';
 export * from './CreateSupplierView';
