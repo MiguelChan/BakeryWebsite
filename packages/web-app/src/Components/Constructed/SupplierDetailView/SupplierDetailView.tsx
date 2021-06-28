@@ -11,7 +11,10 @@ import {
     Supplier,
 } from '../../../Models';
 import { isNullOrUndefined } from '../../../Utils';
-import { LoadingDialog } from '../../Blocks';
+import { 
+    LoadingDialog, 
+    CustomLink,
+ } from '../../Blocks';
 import { SupplierDetailForm } from '../../Composites';
 
 interface Properties {
@@ -29,7 +32,7 @@ export const SupplierDetailView: React.FunctionComponent<RouteComponentProps<Pro
     const [errorMessage, setErrorMessage] = React.useState<string>();
 
     React.useEffect(() => {
-        if (currentSupplier !== null && currentSupplier !== undefined) {
+        if (!isNullOrUndefined(currentSupplier)) {
             return;
         }
 
@@ -59,6 +62,7 @@ export const SupplierDetailView: React.FunctionComponent<RouteComponentProps<Pro
 
     return (
         <>
+            <CustomLink linkText={'Regresar a lista de Proveedores'} to='/suppliers' />
             <LoadingDialog isOpen={isLoadingSupplier} />
             {(!isLoadingSupplier && !isNullOrUndefined(currentSupplier)) && 
             <SupplierDetailForm 

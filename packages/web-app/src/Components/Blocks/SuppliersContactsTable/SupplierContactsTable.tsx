@@ -5,6 +5,7 @@ import {
     TableCell, 
     TableBody,
     IconButton,
+    Grid,
 } from '@material-ui/core';
 import { 
     Delete,
@@ -73,34 +74,36 @@ export const SupplierContactsTable: React.FunctionComponent<Properties> = ({
     }
 
     return (
-        <Table>
-            <TableHead>
-                <TableRow>
-                    <TableCell>
-                        #
-                    </TableCell>
-                    <TableCell>
-                        Nombre completo
-                    </TableCell>
-                    <TableCell>
-                        Correo Electronico
-                    </TableCell>
-                    <TableCell>
-                        Numero de Telefono
-                    </TableCell>
-                    <TableCell>
-                        Tipo
-                    </TableCell>
-                    {canDeleteContact &&
+        <Grid item xs={12}>
+            <Table>
+                <TableHead>
+                    <TableRow>
                         <TableCell>
+                            #
                         </TableCell>
-                    }
-                </TableRow>
-            </TableHead>   
-            <TableBody>
-                {renderContacts()}
-            </TableBody>             
-        </Table>
+                        <TableCell>
+                            Nombre completo
+                        </TableCell>
+                        <TableCell>
+                            Correo Electronico
+                        </TableCell>
+                        <TableCell>
+                            Numero de Telefono
+                        </TableCell>
+                        <TableCell>
+                            Tipo
+                        </TableCell>
+                        {canDeleteContact &&
+                            <TableCell>
+                            </TableCell>
+                        }
+                    </TableRow>
+                </TableHead>   
+                <TableBody>
+                    {renderContacts()}
+                </TableBody>             
+            </Table>
+        </Grid>
     );
 
 };

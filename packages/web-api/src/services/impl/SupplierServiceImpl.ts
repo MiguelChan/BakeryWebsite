@@ -25,7 +25,7 @@ export class SupplierServiceImpl implements SupplierService {
           accept(response.data);
         })
         .catch((error: AxiosError) => {
-          reject(JSON.stringify(error));
+          reject(error);
         });
     });
 
@@ -50,7 +50,7 @@ export class SupplierServiceImpl implements SupplierService {
 
     const response = await makeCall;
 
-    return response.supplierId;
+    return response;
   }
 
   deleteSupplier(supplierId: string): Promise<void> {
@@ -61,7 +61,20 @@ export class SupplierServiceImpl implements SupplierService {
     throw new Error(`Method not implemented.: ${supplier}`);
   }
 
-  getSupplier(supplierId: string): Promise<Supplier> {
-    throw new Error(`Method not implemented: ${supplierId}`);
+  async getSupplier(supplierId: string): Promise<Supplier> {
+    const makeCall: Promise<any> = new Promise((accept, reject) => {
+      const url = `${this.suppliersServiceUrl}/suppliers/${supplierId}`;
+      axios.get(url).then((response: AxiosResponse) => {
+        logger('Got Response from Server: %j', response.data);
+        accept(response.data.supplier);
+      }).catch((error: AxiosError) => {
+        logger('Got error from Server: %j', error);
+        reject(error);
+      });
+    });
+
+    const response = await makeCall;
+
+    return response;
   }
 }

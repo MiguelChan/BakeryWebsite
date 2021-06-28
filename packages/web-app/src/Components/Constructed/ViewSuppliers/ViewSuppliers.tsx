@@ -70,7 +70,7 @@ export const ViewSuppliers: React.FunctionComponent = () => {
     }, [currentPage, appDispatch]);
 
     function onSupplierClickedListener(supplier: Supplier): void {
-        const supplierUrl: string = `wsuppliers/${supplier.id}`;
+        const supplierUrl: string = `/suppliers/${supplier.id}`;
         history.push(supplierUrl, supplier);   
     }
 
