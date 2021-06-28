@@ -75,7 +75,9 @@ export class SuppliersController {
      */
   async createSupplier(req: express.Request, res: express.Response) {
     logger('CreatingSupplier');
-    const createSupplierResponse: CreateSupplierResponseDto = {};
+    const createSupplierResponse: CreateSupplierResponseDto = {
+      supplierId: '',
+    };
 
     try {
       const createSupplierDto: CreateSupplierDto = req.body;
@@ -83,7 +85,8 @@ export class SuppliersController {
         ...createSupplierDto.supplier,
         contacts: [...createSupplierDto.contacts],
       };
-      this.suppliersService.createSupplier(newSupplier);
+      const supplierId = await this.suppliersService.createSupplier(newSupplier);
+      createSupplierResponse.supplierId = supplierId;
       res.status(201).send(createSupplierResponse);
     } catch (exception) {
       createSupplierResponse.errorMessage = exception;
@@ -128,7 +131,7 @@ export class SuppliersController {
    */
   async getSupplier(req: express.Request, res: express.Response) {
     const supplierId: string = req.body.id;
-    logger('Getting Supplier for Id: {}', supplierId);
+    logger('Getting Supplier for Id: %s', supplierId);
     try {
       const foundSupplier: Supplier = await this.suppliersService.getSupplier(supplierId);
       const getSupplierDto: GetSupplierResponseDto = {

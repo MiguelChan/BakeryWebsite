@@ -57,14 +57,16 @@ describe('SuppliersController', () => {
       };
     }
 
-    it('Should call the SuppliersService when a Create is Requested', () => {
+    it('Should call the SuppliersService when a Create is Requested', async () => {
       const createSupplierDto = buildCreateSupplierDto();
       const mockRequest: express.Request = createMockRequest();
       mockRequest.body = createSupplierDto;
+      const expectedSupplierId: string = '12345';
 
       const mockResponse: express.Response = createMockResponse();
+      (mockSuppliersService.createSupplier as jest.Mock).mockResolvedValueOnce(expectedSupplierId);
 
-      suppliersController.createSupplier(mockRequest, mockResponse);
+      await suppliersController.createSupplier(mockRequest, mockResponse);
 
       const expectedNewSupplier: Supplier = {
         ...createSupplierDto.supplier,
@@ -73,7 +75,9 @@ describe('SuppliersController', () => {
 
       expect(mockSuppliersService.createSupplier).toHaveBeenCalledWith(expectedNewSupplier);
       expect(mockResponse.status).toHaveBeenCalledWith(201);
-      expect(mockResponse.send).toHaveBeenCalledWith({});
+      expect(mockResponse.send).toHaveBeenCalledWith({
+        supplierId: expectedSupplierId,
+      });
     });
 
     it('Should return an error code when the SupplierService fails', () => {

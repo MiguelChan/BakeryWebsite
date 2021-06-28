@@ -28,7 +28,7 @@ export const SupplierDetailForm: React.FunctionComponent<Properties> = ({
             <Paper>
                 <SupplierContactsTable 
                     canDeleteContact={false}
-                    contacts={supplier.contacts}
+                    contacts={supplier.contacts ?? []}
                     onDeleteContactClickListener={() => {}}
                 />
             </Paper>

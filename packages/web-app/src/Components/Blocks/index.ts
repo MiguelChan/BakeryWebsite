@@ -8,3 +8,4 @@ export * from './LoadingDialog';
 export * from './BasicSupplierDetails';
 export * from './NavigationBar';
 export * from './LandingPageBlock';
+export * from './CustomLink';
