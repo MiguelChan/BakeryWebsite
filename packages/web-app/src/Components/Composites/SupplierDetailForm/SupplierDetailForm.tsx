@@ -1,9 +1,11 @@
 import { Container, Fab, Paper } from '@material-ui/core';
 import * as React from 'react';
 import { 
+    Contact,
     Supplier,
 } from '../../../Models';
-import { BasicSupplierDetails, OnButtonClickListener, SupplierContactsTable } from '../../Blocks';
+import { isNullOrUndefined } from '../../../Utils';
+import { BasicSupplierDetails, OnButtonClickListener, SupplierContactsTable, ViewContactDialog } from '../../Blocks';
 
 interface Properties {
     supplier: Supplier;
@@ -20,8 +22,24 @@ export const SupplierDetailForm: React.FunctionComponent<Properties> = ({
     supplier,
     onEditSupplierClickListener,
 }) => {
+
+    const [clickedContact, setClickedContact] = React.useState<Contact>();
+
+    function renderContactDialog() {
+        if (isNullOrUndefined(clickedContact)) {
+            return <></>;
+        }
+
+        const onCloseDialog = () => setClickedContact(undefined);
+
+        return <ViewContactDialog contact={clickedContact!} onCloseDialog={onCloseDialog} />;
+    }
+
+    const onContactClickListener = (contact: Contact) => setClickedContact(contact);
+
     return (
         <Container>
+            {renderContactDialog()}
             <BasicSupplierDetails 
                 supplier={supplier}
             />
@@ -30,6 +48,7 @@ export const SupplierDetailForm: React.FunctionComponent<Properties> = ({
                     canDeleteContact={false}
                     contacts={supplier.contacts ?? []}
                     onDeleteContactClickListener={() => {}}
+                    onContactClickListener={onContactClickListener}
                 />
             </Paper>
             <Fab

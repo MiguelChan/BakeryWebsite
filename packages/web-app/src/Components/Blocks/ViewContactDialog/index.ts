@@ -1,0 +1,3 @@
+export {
+    ViewContactDialog,
+} from './ViewContactDialog';

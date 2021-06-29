@@ -63,6 +63,7 @@ export const EditableSupplierContactsTable: React.FunctionComponent<Properties> 
                 contacts={contacts} 
                 canDeleteContact
                 onDeleteContactClickListener={onDeleteContactClickListener}
+                onContactClickListener={() => {}}
             />
             <Button 
                 variant='contained' 

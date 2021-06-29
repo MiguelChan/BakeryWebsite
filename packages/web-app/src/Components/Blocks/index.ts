@@ -9,3 +9,4 @@ export * from './BasicSupplierDetails';
 export * from './NavigationBar';
 export * from './LandingPageBlock';
 export * from './CustomLink';
+export * from './ViewContactDialog';

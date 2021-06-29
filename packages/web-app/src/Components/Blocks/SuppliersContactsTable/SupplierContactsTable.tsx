@@ -16,10 +16,12 @@ import {
 } from '../../../Models';
 
 export type OnDeleteContactClickListener = (contact: Contact, contactIndex: number) => void;
+export type OnContactClickListener = (contact: Contact) => void;
 
 interface Properties {
     contacts: Contact[];
     canDeleteContact: boolean;
+    onContactClickListener: OnContactClickListener;
     onDeleteContactClickListener: OnDeleteContactClickListener;
 }
 
@@ -32,12 +34,16 @@ export const SupplierContactsTable: React.FunctionComponent<Properties> = ({
     contacts,
     canDeleteContact,
     onDeleteContactClickListener,
-
+    onContactClickListener,
 }) => {
 
     function renderContactRow(contactIndex: number, contact: Contact) {
         return (
-            <TableRow key={contact.firstName} hover>
+            <TableRow 
+                key={`${contact.firstName}-${contact.lastName}`} 
+                hover 
+                onClick={() => onContactClickListener(contact)}
+            >
                 <TableCell>
                     {contactIndex}
                 </TableCell>
