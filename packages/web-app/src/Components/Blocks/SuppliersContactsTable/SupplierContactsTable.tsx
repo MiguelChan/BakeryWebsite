@@ -14,7 +14,7 @@ import * as React from 'react';
 import { 
     Contact, contactTypeParser,
 } from '../../../Models';
-import { isNullOrEmpty } from '../../../Utils';
+import { isNullOrEmpty, isNullOrUndefined } from '../../../Utils';
 
 export type OnDeleteContactClickListener = (contact: Contact, contactIndex: number) => void;
 export type OnContactClickListener = (contact: Contact) => void;
@@ -94,6 +94,10 @@ export const SupplierContactsTable: React.FunctionComponent<SupplierContactsTabl
     }
 
     function renderContacts() {
+        if (isNullOrUndefined(currentContacts)) {
+            return <></>;
+        }
+
         return currentContacts.map((currentContact: Contact, index: number) => {
             return renderContactRow(index + 1, currentContact);
         });

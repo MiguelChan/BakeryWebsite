@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { useLocation } from 'react-router-dom';
-import { DeleteContactResponse, EditSupplierResponse, GetSupplierResponse, suppliersClient } from '../../../Clients';
+import { DeleteContactResponse, DeleteSupplierResponse, EditSupplierResponse, GetSupplierResponse, suppliersClient } from '../../../Clients';
 import { Contact, Supplier } from '../../../Models';
 import { isNullOrUndefined } from '../../../Utils';
 import { BasicDialog, CustomLink, DialogProperties, LoadingDialog } from '../../Blocks';
@@ -81,6 +81,19 @@ export const EditSupplierView: React.FunctionComponent<RouteComponentProps<Route
         }
     }, [deleteContact, contactToDelete, currentSupplier]);
 
+    // For deleting a Supplier
+    const [supplierToDelete, setSupplierToDelete] = React.useState<Supplier>();
+    const [deleteSupplier, setDeleteSupplier] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        if (deleteSupplier && !isNullOrUndefined(supplierToDelete)) {
+            suppliersClient.deleteSupplier(supplierToDelete!.id).then((response: DeleteSupplierResponse) => {
+                history.replace('/suppliers');
+            }).catch((error: any) => {
+                setErrorMessage(JSON.stringify(error));
+            });
+        }
+    }, [supplierToDelete, deleteSupplier, history]);
 
     React.useEffect(() => {
         if (!isEditingSupplier) {
@@ -142,9 +155,14 @@ export const EditSupplierView: React.FunctionComponent<RouteComponentProps<Route
     const renderLoadingDialog = (): React.ReactElement => {
         return (
             <LoadingDialog 
-                isOpen={deleteContact}
+                isOpen={deleteContact || deleteSupplier}
             />
         );
+    };
+
+    const onDeleteSupplierClickedListener = (supplier: Supplier): void => {
+        setSupplierToDelete(supplier);
+        setDeleteSupplier(true);
     };
 
     return (
@@ -159,6 +177,7 @@ export const EditSupplierView: React.FunctionComponent<RouteComponentProps<Route
                 dialogActionMessage='Se editara el proveedor. Desea continuar?'
                 buttonMessage='Editar proveedor'
                 onDeleteContactClickedListener={onDeleteContactClickedListener}
+                onDeleteSupplierClickedListener={onDeleteSupplierClickedListener}
             />}
             {renderDeleteContactDialog()}
             {renderLoadingDialog()}

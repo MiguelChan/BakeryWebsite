@@ -22,6 +22,7 @@ import { isNullOrUndefined } from '../../../Utils';
 
 export type OnEditSupplierClickedListener = (supplier: Supplier, contacts: Contact[]) => void;
 export type OnDeleteContactClickedListener = (contact: Contact) => void;
+export type OnDeleteSupplierClickedListener = (supplier: Supplier) => void;
 
 interface Properties {
     supplier?: Supplier;
@@ -31,6 +32,7 @@ interface Properties {
     dialogActionMessage?: string;
     onEditSupplierClickedListener: OnEditSupplierClickedListener;
     onDeleteContactClickedListener: OnDeleteContactClickedListener;
+    onDeleteSupplierClickedListener?: OnDeleteSupplierClickedListener;
 }
 
 /**
@@ -45,6 +47,7 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
     dialogActionMessage = 'Se creara el Proveedor. Desea continuar?',
     onEditSupplierClickedListener,
     onDeleteContactClickedListener,
+    onDeleteSupplierClickedListener,
 }) => {
 
     const [activeSupplier, setActiveSupplier] = React.useState<Supplier>({
@@ -62,6 +65,7 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
         dialogContent: '',
         dialogTitle: '',
     });
+    const [isDeleteSupplierDialogOpen, setDeleteSupplierDialogOpen] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         if (!isNullOrUndefined(supplier)) {
@@ -134,6 +138,31 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
         return <></>;
     }
 
+    const renderDeleteSupplierDialog = (): React.ReactElement => {
+        const dialogProperties: DialogProperties = {
+            dialogTitle: `Eliminar proveedor: ${activeSupplier.name}`,
+            dialogContent: 'El proveedor se eliminara permanentemente. Desea continuar?',
+        };
+
+        const internalOnDeleteClickListener = (): void => {
+            onDeleteSupplierClickedListener!(activeSupplier);
+            setDeleteSupplierDialogOpen(false);
+        };
+
+        const dismissDeleteSupplierDialog = (): void => {
+            setDeleteSupplierDialogOpen(false);
+        };
+
+        return (
+            <BasicDialog 
+                dialogProperties={dialogProperties}
+                isOpen={isDeleteSupplierDialogOpen}
+                onAcceptClickListener={internalOnDeleteClickListener}
+                onCloseClickedListener={dismissDeleteSupplierDialog}
+            />
+        );
+    };
+
     return (
         <Container>
             <Paper>
@@ -157,6 +186,12 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
                 <Button color='primary' variant='contained' onClick={onCreateSupplierClickListener}>
                     {buttonMessage}
                 </Button>
+                {renderDeleteSupplierDialog()}
+                {!isNullOrUndefined(onDeleteSupplierClickedListener) &&
+                    <Button color='secondary' variant='contained' onClick={(): void => setDeleteSupplierDialogOpen(true)}>
+                        Eliminar Proveedor
+                    </Button>
+                }
             </Paper>
         </Container>
     );

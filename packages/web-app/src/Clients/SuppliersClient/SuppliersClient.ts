@@ -8,14 +8,15 @@ import {
 } from "../../Models";
 import { 
     CreateSupplierRequest,
+    EditSupplierRequest,
 } from "./Requests";
-import { EditSupplierRequest } from "./Requests/EditSupplierRequest";
 import { 
     CreateSupplierResponse,
     GetSuppliersResponse,
     EditSupplierResponse,
     GetSupplierResponse,
     DeleteContactResponse,
+    DeleteSupplierResponse,
 } from "./Responses";
 
 /**
@@ -130,6 +131,23 @@ class SuppliersClient {
                 accept(response.data);
             }).catch((error: AxiosError) => {
                 reject(error.response?.data);
+            });
+        });
+    }
+
+    /**
+     * Deletes a Supplier.
+     * @param {string} supplierId  .
+     * 
+     * @returns a Promise.
+     */
+    public deleteSupplier(supplierId: string): Promise<DeleteSupplierResponse> {
+        return new Promise((accept, reject) => {
+            const url = `${this.SUPPLIERS_URL}/${supplierId}`;
+            axios.delete(url).then((response: AxiosResponse<DeleteSupplierResponse>) => {
+                accept(response.data);
+            }).catch((error: AxiosError) => {
+                reject(error);
             });
         });
     }

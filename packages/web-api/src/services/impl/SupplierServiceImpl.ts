@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { inject, injectable } from 'inversify';
 import debug from 'debug';
-import { GetSuppliersDto } from '../../dtos';
+import { DeleteSupplierResponseDto, GetSuppliersDto } from '../../dtos';
 import { Supplier } from '../../models';
 import { Types } from '../../utils';
 import { SupplierService } from '../SupplierService';
@@ -54,8 +54,21 @@ export class SupplierServiceImpl implements SupplierService {
     return response;
   }
 
-  deleteSupplier(supplierId: string): Promise<void> {
-    throw new Error(`Method not implemented.: ${supplierId}`);
+  async deleteSupplier(supplierId: string): Promise<DeleteSupplierResponseDto> {
+    const makeCall: Promise<DeleteSupplierResponseDto> = new Promise((accept, reject) => {
+      const url = `${this.suppliersServiceUrl}/suppliers/${supplierId}`;
+      axios.delete(url).then((response: AxiosResponse<DeleteSupplierResponseDto>) => {
+        logger('Got response from Server: %j', response.data);
+        accept(response.data);
+      }).catch((error: AxiosError) => {
+        logger('Got error from Server while trying to Delete Supplier: %j', error);
+        reject(error);
+      });
+    });
+
+    const response = await makeCall;
+
+    return response;
   }
 
   editSupplier(supplier: Supplier): Promise<void> {

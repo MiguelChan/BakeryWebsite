@@ -16,6 +16,7 @@ import {
 import {
   CreateSupplierDto,
   CreateSupplierResponseDto,
+  DeleteSupplierResponseDto,
   GetSupplierResponseDto,
 } from '../dtos';
 import {
@@ -97,9 +98,11 @@ export class SuppliersController {
   }
 
   async deleteSupplier(req: express.Request, res: express.Response) {
+    const supplierId: string = req.body.id;
+    logger('Attempting to Delete Supplier: %s', supplierId);
     try {
-      await this.suppliersService.deleteSupplier(req.body.supplierId);
-      res.status(201).send({ status: 'Deleted' });
+      const response: DeleteSupplierResponseDto = await this.suppliersService.deleteSupplier(supplierId);
+      res.status(201).send(response);
     } catch (exception) {
       res.status(500).send(exception);
     }
