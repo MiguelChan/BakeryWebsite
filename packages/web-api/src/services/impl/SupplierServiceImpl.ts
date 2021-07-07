@@ -5,6 +5,7 @@ import { GetSuppliersDto } from '../../dtos';
 import { Supplier } from '../../models';
 import { Types } from '../../utils';
 import { SupplierService } from '../SupplierService';
+import { DeleteContactResponseDto } from '../../dtos/DeleteContactResponseDto';
 
 const logger: debug.IDebugger = debug('app:SupplierServiceImpl');
 
@@ -69,6 +70,24 @@ export class SupplierServiceImpl implements SupplierService {
         accept(response.data.supplier);
       }).catch((error: AxiosError) => {
         logger('Got error from Server: %j', error);
+        reject(error);
+      });
+    });
+
+    const response = await makeCall;
+
+    return response;
+  }
+
+  async deleteContact(contactId: string): Promise<DeleteContactResponseDto> {
+    logger('DeleteContact for: %s', contactId);
+    const makeCall: Promise<DeleteContactResponseDto> = new Promise((accept, reject) => {
+      const url = `${this.suppliersServiceUrl}/contacts/${contactId}`;
+      axios.delete(url).then((response: AxiosResponse<DeleteContactResponseDto>) => {
+        logger('Got response from Server: %s', response.data);
+        accept(response.data);
+      }).catch((error: AxiosError) => {
+        logger('Got error from the Server: %s', error);
         reject(error);
       });
     });

@@ -66,7 +66,8 @@ export const CreateSupplierView: React.FunctionComponent = () => {
     return (
         <SupplierEditableView 
             onEditSupplierClickedListener={onEditSupplierClickedListener}
-            isPerformingAsyncOperation={isCreatingSupplier} 
+            onDeleteContactClickedListener={() => {}}
+            isPerformingAsyncOperation={isCreatingSupplier}
             errorMessage={errorMessage}
         />
     );

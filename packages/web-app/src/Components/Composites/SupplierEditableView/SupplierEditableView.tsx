@@ -21,6 +21,7 @@ import {
 import { isNullOrUndefined } from '../../../Utils';
 
 export type OnEditSupplierClickedListener = (supplier: Supplier, contacts: Contact[]) => void;
+export type OnDeleteContactClickedListener = (contact: Contact) => void;
 
 interface Properties {
     supplier?: Supplier;
@@ -29,6 +30,7 @@ interface Properties {
     buttonMessage?: string;
     dialogActionMessage?: string;
     onEditSupplierClickedListener: OnEditSupplierClickedListener;
+    onDeleteContactClickedListener: OnDeleteContactClickedListener;
 }
 
 /**
@@ -42,6 +44,7 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
     buttonMessage = 'Crear Proveedor',
     dialogActionMessage = 'Se creara el Proveedor. Desea continuar?',
     onEditSupplierClickedListener,
+    onDeleteContactClickedListener,
 }) => {
 
     const [activeSupplier, setActiveSupplier] = React.useState<Supplier>({
@@ -76,14 +79,6 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
             ...currentContacts,
             contact,
         ];
-        setCurrentContacts(updatedContacts);
-    }
-
-    function onDeleteContactClickListener(contact: Contact, contactIndex: number) {
-        const updatedContacts: Contact[] = [
-            ...currentContacts,
-        ];
-        updatedContacts.splice(contactIndex, 1);
         setCurrentContacts(updatedContacts);
     }
 
@@ -148,7 +143,7 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
                 />
                 <EditableSupplierContactsTable 
                     onCreateContactClickListener={onCreateContactClickListener}
-                    onDeleteContactClickListener={onDeleteContactClickListener}
+                    onDeleteContactClickListener={onDeleteContactClickedListener}
                     contacts={currentContacts}
                 />
                 {renderCreateError()}

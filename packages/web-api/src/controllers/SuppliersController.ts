@@ -26,6 +26,7 @@ import {
 } from '../utils/ObjectUtils';
 import { BaseResponseDto } from '../dtos/BaseResponseDto';
 import { EditSupplierRequestDto } from '../dtos/EditSupplierRequestDto';
+import { DeleteContactResponseDto } from '../dtos/DeleteContactResponseDto';
 
 const logger: debug.IDebugger = debug('app:SuppliersController');
 
@@ -45,6 +46,7 @@ export class SuppliersController {
     this.deleteSupplier = this.deleteSupplier.bind(this);
     this.editSupplier = this.editSupplier.bind(this);
     this.getSupplier = this.getSupplier.bind(this);
+    this.deleteContact = this.deleteContact.bind(this);
   }
 
   /**
@@ -140,6 +142,30 @@ export class SuppliersController {
 
       res.status(200).send(getSupplierDto);
     } catch (exception) {
+      const errorMessage: BaseResponseDto = {
+        errorMessage: JSON.stringify(exception),
+      };
+      res.status(500).send(errorMessage);
+    }
+  }
+
+  /**
+   * Deletes a Contact from a given Supplier.
+   * @param req .
+   * @param res .
+   */
+  async deleteContact(req: express.Request, res: express.Response) {
+    const supplierId = req.body.id;
+    const { contactId } = req.body;
+    logger('Attempting to Delete Contact: %s for Supplier: %s', contactId, supplierId);
+
+    try {
+      logger('Entering Try-Catch');
+      logger('ServiceInfo: %j', this.suppliersService);
+      const response: DeleteContactResponseDto = await this.suppliersService.deleteContact(contactId);
+      res.status(200).send(response);
+    } catch (exception) {
+      logger('Error while trying to Delete Supplier: %j', exception);
       const errorMessage: BaseResponseDto = {
         errorMessage: JSON.stringify(exception),
       };

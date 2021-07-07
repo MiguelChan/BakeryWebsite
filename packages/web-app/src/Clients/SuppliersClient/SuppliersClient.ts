@@ -15,6 +15,7 @@ import {
     GetSuppliersResponse,
     EditSupplierResponse,
     GetSupplierResponse,
+    DeleteContactResponse,
 } from "./Responses";
 
 /**
@@ -111,6 +112,23 @@ class SuppliersClient {
             axios.put(newUrl, editSupplierRequest).then((response: AxiosResponse<EditSupplierResponse>) => {
                 accept(response.data);
             }).catch((error: AxiosError<EditSupplierResponse>) => {
+                reject(error.response?.data);
+            });
+        });
+    }
+
+    /**
+     * Deletes a Contact.
+     * @param {string} supplierId  .
+     * @param {string} contactId .
+     * @returns A Promise.
+     */
+    public deleteContact(supplierId: string, contactId: string): Promise<DeleteContactResponse> {
+        return new Promise((accept, reject) => {
+            const newUrl = `${this.SUPPLIERS_URL}/${supplierId}/contacts/${contactId}`;
+            axios.delete(newUrl).then((response: AxiosResponse<DeleteContactResponse>) => {
+                accept(response.data);
+            }).catch((error: AxiosError) => {
                 reject(error.response?.data);
             });
         });

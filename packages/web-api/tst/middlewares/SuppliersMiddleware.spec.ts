@@ -31,6 +31,21 @@ describe('SuppliersMiddleware', () => {
     expect(req.body.id).toContain(testSupplierId);
   });
 
+  it('Should add the ContactId as part of the Body Request', () => {
+    const testContactId = '12345';
+
+    const req = createMockRequest();
+    req.params!.contactId = testContactId;
+
+    const res: any = createMockResponse();
+    const next = jest.fn();
+
+    suppliersMiddleware.extractContactId(req, res, next);
+
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(req.body.contactId).toContain(testContactId);
+  });
+
   it('Should call next Function when all required parameters are set', () => {
     const customBody: Partial<CreateSupplierDto> = {
       contacts: [],

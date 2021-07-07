@@ -7,7 +7,6 @@ import {
 import { 
     Contact,
 } from '../../../Models';
-import theme from '../../../theme';
 import { 
     CreateContactDialog, 
     OnCreateContactClickListener,
@@ -23,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-interface Properties {
+export interface EditableSupplierContactsTableProps {
     contacts: Contact[];
     onCreateContactClickListener: OnCreateContactClickListener;
     onDeleteContactClickListener: OnDeleteContactClickListener;
@@ -34,15 +33,20 @@ interface Properties {
  * @param 
  * @returns The Editable SupplierContactsTable.
  */
-export const EditableSupplierContactsTable: React.FunctionComponent<Properties> = ({
+export const EditableSupplierContactsTable: React.FunctionComponent<EditableSupplierContactsTableProps> = ({
     contacts,
     onCreateContactClickListener,
     onDeleteContactClickListener,
 }) => {
 
-    const classes = useStyles(theme);
+    const classes = useStyles();
 
     const [isShowingContactModal, setIsShowingContactModal] = React.useState<boolean>(false);
+    const [currentContacts, setCurrentContacts] = React.useState<Contact[]>(contacts);
+
+    React.useEffect(() => {
+        setCurrentContacts(contacts);
+    }, [contacts]);
 
     function closeCreateModalDialog () {
         setIsShowingContactModal(false);
@@ -60,18 +64,18 @@ export const EditableSupplierContactsTable: React.FunctionComponent<Properties> 
     return (
         <Paper>
             <SupplierContactsTable 
-                contacts={contacts} 
+                contacts={currentContacts} 
                 canDeleteContact
                 onDeleteContactClickListener={onDeleteContactClickListener}
                 onContactClickListener={() => {}}
             />
-            <Button 
+            {false && <Button 
                 variant='contained' 
                 className={classes.addButton}
                 onClick={onAddContactClickListener}
             >
                 Agregar nuevo Contacto
-            </Button>
+            </Button>}
             <CreateContactDialog 
                 isOpen={isShowingContactModal} 
                 onCloseModalClickListener={closeCreateModalDialog}

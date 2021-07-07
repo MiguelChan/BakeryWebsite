@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { Contact, ContactType, Supplier } from "../../Models";
 import { CreateSupplierRequest } from "./Requests";
 import { EditSupplierRequest } from "./Requests/EditSupplierRequest";
-import { CreateSupplierResponse, GetSuppliersResponse } from "./Responses";
+import { CreateSupplierResponse, DeleteContactResponse, GetSuppliersResponse } from "./Responses";
 import { EditSupplierResponse } from "./Responses/EditSupplierResponse";
 import { GetSupplierResponse } from "./Responses/GetSupplierResponse";
 import { suppliersClient } from "./SuppliersClient";
@@ -16,11 +16,13 @@ describe('SuppliersClient', () => {
     const mockPostFn = axios.post as jest.Mock;
     const mockGetFn = axios.get as jest.Mock;
     const mockPutFn = axios.put as jest.Mock;
+    const mockDeleteFn = axios.delete as jest.Mock;
 
     afterEach(() => {
         mockPostFn.mockClear();
         mockGetFn.mockClear();
         mockPutFn.mockClear();
+        mockDeleteFn.mockClear();
     });
 
     describe('Create Supplier', () => {
@@ -264,6 +266,46 @@ describe('SuppliersClient', () => {
         });
     });
 
+    describe('Contacts Operations', () => {
+        describe('Delete Contacts', () => {
+
+            const contactId: string = 'SomeContactId';
+            const supplierId: string = 'SomeSupplierId';
+            const expectedUrl = `${SUPPLIERS_URL}/${supplierId}/contacts/${contactId}`;
+
+            it('Should delete a Contact', () => {
+                const expectedResponse: DeleteContactResponse = {
+                    contact: {} as Contact,
+                    deleted: true,
+                };
+
+                const axiosResponse = buildAxiosResponse(expectedResponse);
+                
+                mockDeleteFn.mockResolvedValueOnce(axiosResponse);
+                
+                return suppliersClient.deleteContact(supplierId, contactId).then((response: DeleteContactResponse) => {
+                    expect(response).toEqual(expectedResponse);
+                    expect(mockDeleteFn).toHaveBeenCalledWith(expectedUrl);
+                });
+            });
+
+            it('Should handle exceptions gracefully', async () => {
+                const expectedError: Error = new Error('SomeSome');
+
+                const axiosResponse = buildAxiosResponse(expectedError);
+                const axiosError: Partial<AxiosError> = {
+                    response: axiosResponse,
+                };
+
+                mockDeleteFn.mockRejectedValueOnce(axiosError);
+
+                await expect(suppliersClient.deleteContact(supplierId, contactId)).rejects.toThrow(expectedError);
+                expect(mockDeleteFn).toHaveBeenCalledWith(expectedUrl);
+            });
+
+        });
+    });
+
     function buildAxiosResponse(data: any): AxiosResponse {
         return {
             data: data,
@@ -273,8 +315,8 @@ describe('SuppliersClient', () => {
     function buildRandomSupplier(): Supplier {
         return {
             contacts: [],
-            addressLine1: 'AddressLine1',
-            addressLine2: 'AddressLine2',
+            lineAddress1: 'AddressLine1',
+            lineAddress2: 'AddressLine2',
             id: '',
             name: 'Name',
             phoneNumber: 'PhoneNumber',

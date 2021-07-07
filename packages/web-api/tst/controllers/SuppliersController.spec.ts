@@ -1,6 +1,9 @@
 import express from 'express';
 import { SuppliersController } from '../../src/controllers';
-import { CreateSupplierDto, GetSupplierResponseDto, GetSuppliersDto } from '../../src/dtos';
+import {
+  BaseResponseDto, CreateSupplierDto, GetSupplierResponseDto, GetSuppliersDto,
+} from '../../src/dtos';
+import { DeleteContactResponseDto } from '../../src/dtos/DeleteContactResponseDto';
 import { EditSupplierRequestDto } from '../../src/dtos/EditSupplierRequestDto';
 import { Contact, ContactType, Supplier } from '../../src/models';
 import { SupplierService } from '../../src/services';
@@ -41,6 +44,7 @@ describe('SuppliersController', () => {
       editSupplier: jest.fn(),
       getSupplier: jest.fn(),
       getSuppliers: jest.fn(),
+      deleteContact: jest.fn(),
     };
 
     suppliersController = new SuppliersController(mockSuppliersService);
@@ -251,6 +255,59 @@ describe('SuppliersController', () => {
       expect(mockSuppliersService.editSupplier).toHaveBeenCalledWith(expectedEditedSupplier);
       expect(mockResponse.status).toHaveBeenCalledWith(500);
       expect(mockResponse.send).toHaveBeenCalled();
+    });
+  });
+
+  describe('DeleteContact', () => {
+    it('Should delete the Contact', async () => {
+      const expectedContactId = 'contactId';
+      const expectedSupplierId = 'supplierId';
+
+      const mockRes: express.Response = createMockResponse();
+      const mockReq: express.Request = createMockRequest();
+
+      mockReq.body.id = expectedSupplierId;
+      mockReq.body.contactId = expectedContactId;
+
+      const deleteContactDto: DeleteContactResponseDto = {
+        contact: {} as Contact,
+        deleted: true,
+      };
+
+      (mockSuppliersService.deleteContact as jest.Mock).mockResolvedValueOnce(deleteContactDto);
+
+      await suppliersController.deleteContact(mockReq, mockRes);
+
+      expect(mockSuppliersService.deleteContact).toHaveBeenCalledWith(expectedContactId);
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      expect(mockRes.send).toHaveBeenCalledWith(deleteContactDto);
+    });
+
+    it('Should handle exceptions gracefully', async () => {
+      const expectedContactId = 'contactId';
+      const expectedSupplierId = 'supplierId';
+
+      const mockRes: express.Response = createMockResponse();
+      const mockReq: express.Request = createMockRequest();
+
+      mockReq.body.id = expectedSupplierId;
+      mockReq.body.contactId = expectedContactId;
+
+      const expectedError: Error = new Error('SomeError');
+      const expectedResponse: BaseResponseDto = {
+        errorMessage: JSON.stringify(expectedError),
+      };
+
+      (mockSuppliersService.deleteContact as jest.Mock).mockRejectedValueOnce(expectedError);
+
+      try {
+        await suppliersController.deleteContact(mockReq, mockRes);
+      } catch (exception) {
+        expect(exception).toEqual(expectedResponse);
+      }
+
+      expect(mockSuppliersService.deleteContact).toHaveBeenCalledWith(expectedContactId);
+      expect(mockRes.status).toHaveBeenCalledWith(500);
     });
   });
 });
