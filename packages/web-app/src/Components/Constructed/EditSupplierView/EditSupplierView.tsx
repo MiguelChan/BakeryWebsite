@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { useLocation } from 'react-router-dom';
-import { EditSupplierResponse, GetSupplierResponse, suppliersClient } from '../../../Clients';
+import { DeleteContactResponse, EditSupplierResponse, GetSupplierResponse, suppliersClient } from '../../../Clients';
 import { Contact, Supplier } from '../../../Models';
 import { isNullOrUndefined } from '../../../Utils';
+import { BasicDialog, CustomLink, DialogProperties, LoadingDialog } from '../../Blocks';
 import { SupplierEditableView } from '../../Composites';
 
 interface RouteProperties {
@@ -26,6 +27,23 @@ export const EditSupplierView: React.FunctionComponent<RouteComponentProps<Route
     const [errorMessage, setErrorMessage] = React.useState<string>();
     const [supplierDataHolder, setSupplierDataHolder] = React.useState<SupplierDataHolder>();
     const [isEditingSupplier, setIsEditingSupplier] = React.useState<boolean>(false);
+    const [loadSupplier, setLoadSupplier] = React.useState<boolean>(false);
+
+    const loadSupplierFromServer = React.useCallback(() => {
+        suppliersClient.getSupplier(matchParams.supplierId).then((getSupplierResponse: GetSupplierResponse) => {
+            setCurrentSupplier(getSupplierResponse.supplier);
+        }).catch((errorResponse: GetSupplierResponse) => {
+            setErrorMessage(errorResponse.errorMessage);
+        }).finally(() => {
+            setLoadSupplier(false);
+        });
+    }, [matchParams.supplierId]);
+
+    React.useEffect(() => {
+        if (loadSupplier) {
+            loadSupplierFromServer();
+        }
+    }, [loadSupplier, loadSupplierFromServer]);
 
     React.useEffect(() => {
         const supplier = location.state;
@@ -33,13 +51,36 @@ export const EditSupplierView: React.FunctionComponent<RouteComponentProps<Route
             setCurrentSupplier(supplier);
             return;
         }
+        loadSupplierFromServer();
+    }, [location, matchParams, loadSupplierFromServer]);
 
-        suppliersClient.getSupplier(matchParams.supplierId).then((getSupplierResponse: GetSupplierResponse) => {
-            setCurrentSupplier(getSupplierResponse.supplier);
-        }).catch((errorResponse: GetSupplierResponse) => {
-            setErrorMessage(errorResponse.errorMessage);
-        });
-    }, [location, matchParams]);
+    // For deleting a Contact
+    const [isDeletingContact, setIsDeletingContact] = React.useState<boolean>(false);
+    const [contactToDelete, setContactToDelete] = React.useState<Contact>();
+    const [deleteContact, setDeleteContact] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        if (deleteContact) {
+            const {
+                id: supplierId,
+            } = currentSupplier!;
+
+            const {
+                id: contactId,
+            } = contactToDelete!;
+
+            suppliersClient.deleteContact(supplierId, contactId).then((response: DeleteContactResponse) => {
+                setLoadSupplier(true);
+            }).catch((error: any) => {
+                setErrorMessage(JSON.stringify(error));
+            }).finally(() => {
+                setDeleteContact(false);
+                setIsDeletingContact(false);
+                setContactToDelete(undefined);
+            });
+        }
+    }, [deleteContact, contactToDelete, currentSupplier]);
+
 
     React.useEffect(() => {
         if (!isEditingSupplier) {
@@ -68,8 +109,47 @@ export const EditSupplierView: React.FunctionComponent<RouteComponentProps<Route
         setIsEditingSupplier(true);
     }
 
+    const onDeleteContactClickedListener = (contact: Contact) => {
+        setIsDeletingContact(true);
+        setContactToDelete(contact);
+    };
+
+    const renderDeleteContactDialog = (): React.ReactElement => {
+        const dialogProperties: DialogProperties = {
+            dialogContent: 'El contacto se eliminara para siempre. Desea continuar?',
+            dialogTitle: `Eliminar Contacto: ${contactToDelete?.firstName} ${contactToDelete?.lastName}`
+        };
+
+        const onCloseDialogClickListener = (): void => {
+            setIsDeletingContact(false);
+            setContactToDelete(undefined);
+        };
+
+        const onAcceptContactDeletion = (): void => {
+            setDeleteContact(true);
+        };
+
+        return (
+            <BasicDialog 
+                isOpen={isDeletingContact} 
+                dialogProperties={dialogProperties}
+                onAcceptClickListener={onAcceptContactDeletion}
+                onCloseClickedListener={onCloseDialogClickListener}
+            />
+        );
+    };
+
+    const renderLoadingDialog = (): React.ReactElement => {
+        return (
+            <LoadingDialog 
+                isOpen={deleteContact}
+            />
+        );
+    };
+
     return (
         <>
+            <CustomLink linkText='Volver a Vista de Proveedor' to={`/suppliers/${currentSupplier?.id}`} />
             {!isNullOrUndefined(currentSupplier) &&
             <SupplierEditableView 
                 onEditSupplierClickedListener={onEditSupplierClickedListener}
@@ -78,7 +158,10 @@ export const EditSupplierView: React.FunctionComponent<RouteComponentProps<Route
                 supplier={currentSupplier}
                 dialogActionMessage='Se editara el proveedor. Desea continuar?'
                 buttonMessage='Editar proveedor'
+                onDeleteContactClickedListener={onDeleteContactClickedListener}
             />}
+            {renderDeleteContactDialog()}
+            {renderLoadingDialog()}
         </>
     );
 };

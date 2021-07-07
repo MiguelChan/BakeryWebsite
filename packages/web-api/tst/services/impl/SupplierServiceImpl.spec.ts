@@ -2,7 +2,8 @@ import axios, { AxiosResponse } from 'axios';
 import { SupplierService } from '../../../src/services';
 import { SupplierServiceImpl } from '../../../src/services/impl';
 import { GetSuppliersDto } from '../../../src/dtos';
-import { Supplier } from '../../../src/models';
+import { Contact, Supplier } from '../../../src/models';
+import { DeleteContactResponseDto } from '../../../src/dtos/DeleteContactResponseDto';
 
 jest.mock('axios');
 
@@ -13,6 +14,7 @@ describe('SupplierServiceImpl', () => {
 
   const axiosGetFn = axios.get as jest.Mock;
   const axiosPostFn = axios.post as jest.Mock;
+  const axiosDeleteFn = axios.delete as jest.Mock;
 
   beforeEach(() => {
     supplierService = new SupplierServiceImpl(SERVICE_URL);
@@ -21,6 +23,7 @@ describe('SupplierServiceImpl', () => {
   afterEach(() => {
     axiosGetFn.mockClear();
     axiosPostFn.mockClear();
+    axiosDeleteFn.mockClear();
   });
 
   describe('getSuppliers', () => {
@@ -140,6 +143,43 @@ describe('SupplierServiceImpl', () => {
       return supplierService.getSupplier(supplierId).catch((error) => {
         expect(error).toEqual(expectedError);
         expect(axiosGetFn).toHaveBeenCalledWith(`${SERVICE_URL}/suppliers/${supplierId}`);
+      });
+    });
+  });
+
+  describe('deleteContact', () => {
+    it('Should delete the Contact', () => {
+      const expectedContactId = 'SomeContactId';
+      const url = `${SERVICE_URL}/contacts/${expectedContactId}`;
+
+      const expectedResponse: DeleteContactResponseDto = {
+        contact: {} as Contact,
+        deleted: true,
+      };
+
+      const axiosResponse: Partial<AxiosResponse> = {
+        data: expectedResponse,
+      };
+
+      axiosDeleteFn.mockResolvedValueOnce(axiosResponse);
+
+      return supplierService.deleteContact(expectedContactId).then((response: DeleteContactResponseDto) => {
+        expect(response).toEqual(expectedResponse);
+        expect(axiosDeleteFn).toHaveBeenCalledWith(url);
+      });
+    });
+
+    it('Should bubble up exception when found', () => {
+      const expectedContactId = 'SomeContactId';
+      const url = `${SERVICE_URL}/contacts/${expectedContactId}`;
+
+      const expectedError: Error = new Error('SomeError');
+
+      axiosDeleteFn.mockRejectedValueOnce(expectedError);
+
+      return supplierService.deleteContact(expectedContactId).catch((error) => {
+        expect(error).toEqual(expectedError);
+        expect(axiosDeleteFn).toHaveBeenCalledWith(url);
       });
     });
   });

@@ -14,11 +14,12 @@ import * as React from 'react';
 import { 
     Contact, contactTypeParser,
 } from '../../../Models';
+import { isNullOrEmpty } from '../../../Utils';
 
 export type OnDeleteContactClickListener = (contact: Contact, contactIndex: number) => void;
 export type OnContactClickListener = (contact: Contact) => void;
 
-interface Properties {
+export interface SupplierContactsTableProps {
     contacts: Contact[];
     canDeleteContact: boolean;
     onContactClickListener: OnContactClickListener;
@@ -30,17 +31,36 @@ interface Properties {
  * @param contacts The contacts.
  * @returns 
  */
-export const SupplierContactsTable: React.FunctionComponent<Properties> = ({
+export const SupplierContactsTable: React.FunctionComponent<SupplierContactsTableProps> = ({
     contacts,
     canDeleteContact,
     onDeleteContactClickListener,
     onContactClickListener,
 }) => {
 
+    const [currentContacts, setCurrentContacts] = React.useState<Contact[]>(contacts);
+
+    React.useEffect(() => {
+        setCurrentContacts(contacts);
+    }, [contacts]);
+
+    function internalOnDeleteContact(event: React.MouseEvent<HTMLButtonElement>, contact: Contact, index: number) {
+        event.stopPropagation();
+        onDeleteContactClickListener(contact, index);
+    }
+
+    const getContactKey = (contact: Contact): string => {
+        if (isNullOrEmpty(contact.id)) {
+            return `${contact.firstName}-${contact.lastName}-${contact.contactType}`;
+        }
+
+        return contact.id;
+    };
+
     function renderContactRow(contactIndex: number, contact: Contact) {
         return (
             <TableRow 
-                key={`${contact.firstName}-${contact.lastName}`} 
+                key={getContactKey(contact)} 
                 hover 
                 onClick={() => onContactClickListener(contact)}
             >
@@ -62,8 +82,8 @@ export const SupplierContactsTable: React.FunctionComponent<Properties> = ({
                 {canDeleteContact &&
                     <TableCell>
                         <IconButton 
-                            aria-label={`delete-${contactIndex}`}
-                            onClick={() => onDeleteContactClickListener(contact, contactIndex - 1)}
+                            aria-label='Delete Contact'
+                            onClick={(event): void => internalOnDeleteContact(event, contact, contactIndex - 1)}
                         >
                             <Delete />
                         </IconButton>
@@ -74,7 +94,7 @@ export const SupplierContactsTable: React.FunctionComponent<Properties> = ({
     }
 
     function renderContacts() {
-        return contacts.map((currentContact: Contact, index: number) => {
+        return currentContacts.map((currentContact: Contact, index: number) => {
             return renderContactRow(index + 1, currentContact);
         });
     }
@@ -101,6 +121,7 @@ export const SupplierContactsTable: React.FunctionComponent<Properties> = ({
                         </TableCell>
                         {canDeleteContact &&
                             <TableCell>
+                                <IconButton />
                             </TableCell>
                         }
                     </TableRow>

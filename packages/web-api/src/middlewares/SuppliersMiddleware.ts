@@ -53,6 +53,18 @@ export class SuppliersMiddleware {
     next();
   }
 
+  /**
+   * Extracts the {contactId} and places it in the req.body.
+   * @param req .
+   * @param res .
+   * @param next .
+   */
+  public async extractContactId(req: express.Request, res: express.Response, next: express.NextFunction) {
+    logger('Extracting ContactId from Request');
+    req.body.contactId = req.params.contactId;
+    next();
+  }
+
   private isValidCreateRequest(createSupplierRequest: CreateSupplierDto): boolean {
     const {
       supplier,
