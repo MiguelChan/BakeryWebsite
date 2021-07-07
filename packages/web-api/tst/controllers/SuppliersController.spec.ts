@@ -1,7 +1,11 @@
 import express from 'express';
 import { SuppliersController } from '../../src/controllers';
 import {
-  BaseResponseDto, CreateSupplierDto, GetSupplierResponseDto, GetSuppliersDto,
+  BaseResponseDto,
+  CreateSupplierDto,
+  DeleteSupplierResponseDto,
+  GetSupplierResponseDto,
+  GetSuppliersDto,
 } from '../../src/dtos';
 import { DeleteContactResponseDto } from '../../src/dtos/DeleteContactResponseDto';
 import { EditSupplierRequestDto } from '../../src/dtos/EditSupplierRequestDto';
@@ -308,6 +312,47 @@ describe('SuppliersController', () => {
 
       expect(mockSuppliersService.deleteContact).toHaveBeenCalledWith(expectedContactId);
       expect(mockRes.status).toHaveBeenCalledWith(500);
+    });
+  });
+
+  describe('DeleteSupplier', () => {
+    const supplierId: string = 'SomeSupplierId';
+
+    it('Should delete the Supplier', async () => {
+      const expectedResponse: DeleteSupplierResponseDto = {
+        supplier: {} as Supplier,
+        deleted: true,
+      };
+
+      const mockReq: express.Request = createMockRequest();
+      const mockRes: express.Response = createMockResponse();
+
+      mockReq.body.id = supplierId;
+
+      (mockSuppliersService.deleteSupplier as jest.Mock).mockResolvedValueOnce(expectedResponse);
+
+      await suppliersController.deleteSupplier(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(201);
+      expect(mockRes.send).toHaveBeenCalledWith(expectedResponse);
+      expect(mockSuppliersService.deleteSupplier).toHaveBeenCalledWith(supplierId);
+    });
+
+    it('Should handle errors gracefully', async () => {
+      const expectedError: Error = new Error('SomeError');
+
+      const mockReq: express.Request = createMockRequest();
+      const mockRes: express.Response = createMockResponse();
+
+      mockReq.body.id = supplierId;
+
+      (mockSuppliersService.deleteSupplier as jest.Mock).mockRejectedValueOnce(expectedError);
+
+      await suppliersController.deleteSupplier(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(500);
+      expect(mockRes.send).toHaveBeenCalledWith(expectedError);
+      expect(mockSuppliersService.deleteSupplier).toHaveBeenCalledWith(supplierId);
     });
   });
 });

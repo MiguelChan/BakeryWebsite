@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { SupplierService } from '../../../src/services';
 import { SupplierServiceImpl } from '../../../src/services/impl';
-import { GetSuppliersDto } from '../../../src/dtos';
+import { DeleteSupplierResponseDto, GetSuppliersDto } from '../../../src/dtos';
 import { Contact, Supplier } from '../../../src/models';
 import { DeleteContactResponseDto } from '../../../src/dtos/DeleteContactResponseDto';
 
@@ -181,6 +181,37 @@ describe('SupplierServiceImpl', () => {
         expect(error).toEqual(expectedError);
         expect(axiosDeleteFn).toHaveBeenCalledWith(url);
       });
+    });
+  });
+
+  describe('deleteSupplier', () => {
+    const supplierId: string = 'SomeSupplierId';
+
+    it('Should delete the Supplier', () => {
+      const expectedResponse: DeleteSupplierResponseDto = {
+        deleted: true,
+        supplier: {} as Supplier,
+      };
+
+      const axiosResponse: Partial<AxiosResponse<DeleteSupplierResponseDto>> = {
+        data: expectedResponse,
+      };
+
+      axiosDeleteFn.mockResolvedValueOnce(axiosResponse);
+
+      return supplierService.deleteSupplier(supplierId).then((response: DeleteSupplierResponseDto) => {
+        expect(response).toEqual(expectedResponse);
+        expect(axiosDeleteFn).toHaveBeenCalledWith(`${SERVICE_URL}/suppliers/${supplierId}`);
+      });
+    });
+
+    it('Should handle errors gracefully', async () => {
+      const expectedError: Error = new Error('SomeSome');
+
+      axiosDeleteFn.mockRejectedValueOnce(expectedError);
+
+      await expect(supplierService.deleteSupplier(supplierId)).rejects.toThrowError(expectedError);
+      expect(axiosDeleteFn).toHaveBeenCalledWith(`${SERVICE_URL}/suppliers/${supplierId}`);
     });
   });
 });

@@ -46,7 +46,7 @@ const Template: Story = () => (
     <MemoryRouter {...memoryRouter} >
         <Route component={EditSupplierView} location={{
             state: {
-                supplier: defaultSupplier,
+                // supplier: defaultSupplier,
             },
             hash: '#',
             pathname: '/',

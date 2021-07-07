@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { Contact, ContactType, Supplier } from "../../Models";
 import { CreateSupplierRequest } from "./Requests";
 import { EditSupplierRequest } from "./Requests/EditSupplierRequest";
-import { CreateSupplierResponse, DeleteContactResponse, GetSuppliersResponse } from "./Responses";
+import { CreateSupplierResponse, DeleteContactResponse, DeleteSupplierResponse, GetSuppliersResponse } from "./Responses";
 import { EditSupplierResponse } from "./Responses/EditSupplierResponse";
 import { GetSupplierResponse } from "./Responses/GetSupplierResponse";
 import { suppliersClient } from "./SuppliersClient";
@@ -303,6 +303,40 @@ describe('SuppliersClient', () => {
                 expect(mockDeleteFn).toHaveBeenCalledWith(expectedUrl);
             });
 
+        });
+    });
+
+    describe('Deleta a Supplier', () => {
+
+        const supplierId: string = 'SomeSome';
+
+        it('Should delete a Supplier', () => {
+            const expectedUrl = `${SUPPLIERS_URL}/${supplierId}`;
+
+            const expectedResponse: DeleteSupplierResponse = {
+                deleted: true,
+                supplier: {} as Supplier,
+            };
+
+            const axiosResponse = buildAxiosResponse(expectedResponse);
+
+            mockDeleteFn.mockResolvedValueOnce(axiosResponse);
+
+            return suppliersClient.deleteSupplier(supplierId).then((response: DeleteSupplierResponse) => {
+                expect(response).toEqual(expectedResponse);
+                expect(mockDeleteFn).toHaveBeenCalledWith(expectedUrl);
+            });
+        });
+
+        it('Should handle errors gracefully', async () => {
+            const expectedUrl = `${SUPPLIERS_URL}/${supplierId}`;
+
+            const expectedError: Error = new Error('SomeSome');
+
+            mockDeleteFn.mockRejectedValueOnce(expectedError);
+
+            await expect(suppliersClient.deleteSupplier(supplierId)).rejects.toThrowError(expectedError);
+            expect(mockDeleteFn).toHaveBeenCalledWith(expectedUrl);
         });
     });
 
