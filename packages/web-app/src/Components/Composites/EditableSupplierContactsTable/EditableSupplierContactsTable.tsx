@@ -12,6 +12,7 @@ import {
     OnCreateContactClickListener,
 } from '../../Blocks/CreateContactDialog';
 import { 
+    OnContactClickListener,
     OnDeleteContactClickListener,
     SupplierContactsTable,
 } from '../../Blocks/SuppliersContactsTable';
@@ -26,6 +27,7 @@ export interface EditableSupplierContactsTableProps {
     contacts: Contact[];
     onCreateContactClickListener: OnCreateContactClickListener;
     onDeleteContactClickListener: OnDeleteContactClickListener;
+    onContactClickListener: OnContactClickListener;
 }
 
 /**
@@ -37,6 +39,7 @@ export const EditableSupplierContactsTable: React.FunctionComponent<EditableSupp
     contacts,
     onCreateContactClickListener,
     onDeleteContactClickListener,
+    onContactClickListener,
 }) => {
 
     const classes = useStyles();
@@ -67,16 +70,16 @@ export const EditableSupplierContactsTable: React.FunctionComponent<EditableSupp
                 contacts={currentContacts} 
                 canDeleteContact
                 onDeleteContactClickListener={onDeleteContactClickListener}
-                onContactClickListener={() => {}}
+                onContactClickListener={onContactClickListener}
             />
-            {false && <Button 
+            <Button 
                 variant='contained' 
                 className={classes.addButton}
                 onClick={onAddContactClickListener}
             >
                 Agregar nuevo Contacto
-            </Button>}
-            <CreateContactDialog 
+            </Button>
+            <CreateContactDialog
                 isOpen={isShowingContactModal} 
                 onCloseModalClickListener={closeCreateModalDialog}
                 onCreateContactClickListener={internalOnCreateContactClickListener}

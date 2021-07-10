@@ -8,3 +8,5 @@ export * from './GetSupplierResponseDto';
 export * from './GetSuppliersDto';
 export * from './DeleteSupplierResponseDto';
 export * from './DeleteContactResponseDto';
+export * from './EditContactResponseDto';
+export * from './EditContactRequestDto';

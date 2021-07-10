@@ -13,6 +13,7 @@ import {
     BasicDialog, 
     DialogProperties,
     LoadingDialog,
+    OnContactClickListener,
 } from '../../Blocks';
 import { 
     EditableSupplierContactsTable, 
@@ -33,6 +34,8 @@ interface Properties {
     onEditSupplierClickedListener: OnEditSupplierClickedListener;
     onDeleteContactClickedListener: OnDeleteContactClickedListener;
     onDeleteSupplierClickedListener?: OnDeleteSupplierClickedListener;
+    onContactClickListener: OnContactClickListener;
+    onContactAddedListener?: (contact: Contact) => void;
 }
 
 /**
@@ -48,6 +51,8 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
     onEditSupplierClickedListener,
     onDeleteContactClickedListener,
     onDeleteSupplierClickedListener,
+    onContactClickListener,
+    onContactAddedListener,
 }) => {
 
     const [activeSupplier, setActiveSupplier] = React.useState<Supplier>({
@@ -84,6 +89,9 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
             contact,
         ];
         setCurrentContacts(updatedContacts);
+        if (!isNullOrUndefined(onContactAddedListener)) {
+            onContactAddedListener!(contact);
+        }
     }
 
     function onCreateSupplierClickListener() {
@@ -173,6 +181,7 @@ export const SupplierEditableView: React.FunctionComponent<Properties> = ({
                 <EditableSupplierContactsTable 
                     onCreateContactClickListener={onCreateContactClickListener}
                     onDeleteContactClickListener={onDeleteContactClickedListener}
+                    onContactClickListener={onContactClickListener}
                     contacts={currentContacts}
                 />
                 {renderCreateError()}

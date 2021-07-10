@@ -4,6 +4,7 @@ import {
   BaseResponseDto,
   CreateSupplierDto,
   DeleteSupplierResponseDto,
+  EditContactResponseDto,
   GetSupplierResponseDto,
   GetSuppliersDto,
 } from '../../src/dtos';
@@ -49,6 +50,7 @@ describe('SuppliersController', () => {
       getSupplier: jest.fn(),
       getSuppliers: jest.fn(),
       deleteContact: jest.fn(),
+      editContact: jest.fn(),
     };
 
     suppliersController = new SuppliersController(mockSuppliersService);
@@ -353,6 +355,60 @@ describe('SuppliersController', () => {
       expect(mockRes.status).toHaveBeenCalledWith(500);
       expect(mockRes.send).toHaveBeenCalledWith(expectedError);
       expect(mockSuppliersService.deleteSupplier).toHaveBeenCalledWith(supplierId);
+    });
+  });
+
+  describe('EditContact', () => {
+    it('Should edit the Supplier', async () => {
+      const expectedContact: Contact = {
+        id: 'id',
+      } as Contact;
+
+      const mockRes: express.Response = createMockResponse();
+      const mockReq: express.Request = createMockRequest();
+
+      mockReq.body = {
+        contact: expectedContact,
+        id: 'supplierId',
+      };
+
+      const expectedResponse: EditContactResponseDto = {
+        message: '',
+        success: true,
+      };
+
+      (mockSuppliersService.editContact as jest.Mock).mockResolvedValueOnce(expectedResponse);
+
+      await suppliersController.editContact(mockReq, mockRes);
+
+      expect(mockSuppliersService.editContact).toHaveBeenCalledWith(expectedContact);
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      expect(mockRes.send).toHaveBeenCalledWith(expectedResponse);
+    });
+
+    it('Should handle errors gracefully', async () => {
+      const expectedContact: Contact = {
+        id: 'id',
+      } as Contact;
+
+      const expectedError: Error = new Error('SomeError');
+      (mockSuppliersService.editContact as jest.Mock).mockRejectedValueOnce(expectedError);
+
+      const mockRes: express.Response = createMockResponse();
+      const mockReq: express.Request = createMockRequest();
+
+      mockReq.body = {
+        id: 'supplierId',
+        contact: expectedContact,
+      };
+
+      await suppliersController.editContact(mockReq, mockRes);
+
+      expect(mockSuppliersService.editContact).toHaveBeenCalledWith(expectedContact);
+      expect(mockRes.status).toHaveBeenCalledWith(500);
+      expect(mockRes.send).toHaveBeenCalledWith({
+        errorMessage: JSON.stringify(expectedError),
+      });
     });
   });
 });

@@ -1,7 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 import { SupplierService } from '../../../src/services';
 import { SupplierServiceImpl } from '../../../src/services/impl';
-import { DeleteSupplierResponseDto, GetSuppliersDto } from '../../../src/dtos';
+import {
+  DeleteSupplierResponseDto, EditContactRequestDto, EditContactResponseDto, GetSuppliersDto,
+} from '../../../src/dtos';
 import { Contact, Supplier } from '../../../src/models';
 import { DeleteContactResponseDto } from '../../../src/dtos/DeleteContactResponseDto';
 
@@ -15,6 +17,7 @@ describe('SupplierServiceImpl', () => {
   const axiosGetFn = axios.get as jest.Mock;
   const axiosPostFn = axios.post as jest.Mock;
   const axiosDeleteFn = axios.delete as jest.Mock;
+  const axiosPutFn = axios.put as jest.Mock;
 
   beforeEach(() => {
     supplierService = new SupplierServiceImpl(SERVICE_URL);
@@ -212,6 +215,55 @@ describe('SupplierServiceImpl', () => {
 
       await expect(supplierService.deleteSupplier(supplierId)).rejects.toThrowError(expectedError);
       expect(axiosDeleteFn).toHaveBeenCalledWith(`${SERVICE_URL}/suppliers/${supplierId}`);
+    });
+  });
+
+  describe('editContact', () => {
+    it('Should edit the Contact', () => {
+      const contact: Contact = {
+        id: 'someId',
+      } as Contact;
+
+      const expectedRequest: EditContactRequestDto = {
+        contact,
+      };
+
+      const expectedResponse: EditContactResponseDto = {
+        message: '',
+        success: true,
+      };
+
+      const axiosResponse: Partial<AxiosResponse<EditContactResponseDto>> = {
+        data: expectedResponse,
+      };
+
+      axiosPutFn.mockResolvedValueOnce(axiosResponse);
+
+      const expectedUrl = `${SERVICE_URL}/contacts/someId`;
+
+      return supplierService.editContact(contact).then((response: EditContactResponseDto) => {
+        expect(axiosPutFn).toHaveBeenCalledWith(expectedUrl, expectedRequest);
+        expect(response).toEqual(expectedResponse);
+      });
+    });
+
+    it('Should handle errors gracefully', async () => {
+      const expectedError: Error = new Error('SomeErro');
+
+      axiosPutFn.mockRejectedValueOnce(expectedError);
+
+      const contact: Contact = {
+        id: 'someId',
+      } as Contact;
+
+      const expectedRequest: EditContactRequestDto = {
+        contact,
+      };
+
+      const expectedUrl: string = `${SERVICE_URL}/contacts/someId`;
+
+      expect(supplierService.editContact(contact)).rejects.toThrowError(expectedError);
+      expect(axiosPutFn).toHaveBeenCalledWith(expectedUrl, expectedRequest);
     });
   });
 });
