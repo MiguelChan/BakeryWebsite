@@ -17,6 +17,8 @@ import {
   CreateSupplierDto,
   CreateSupplierResponseDto,
   DeleteSupplierResponseDto,
+  EditContactRequestDto,
+  EditContactResponseDto,
   GetSupplierResponseDto,
 } from '../dtos';
 import {
@@ -48,6 +50,7 @@ export class SuppliersController {
     this.editSupplier = this.editSupplier.bind(this);
     this.getSupplier = this.getSupplier.bind(this);
     this.deleteContact = this.deleteContact.bind(this);
+    this.editContact = this.editContact.bind(this);
   }
 
   /**
@@ -163,12 +166,30 @@ export class SuppliersController {
     logger('Attempting to Delete Contact: %s for Supplier: %s', contactId, supplierId);
 
     try {
-      logger('Entering Try-Catch');
-      logger('ServiceInfo: %j', this.suppliersService);
       const response: DeleteContactResponseDto = await this.suppliersService.deleteContact(contactId);
       res.status(200).send(response);
     } catch (exception) {
       logger('Error while trying to Delete Supplier: %j', exception);
+      const errorMessage: BaseResponseDto = {
+        errorMessage: JSON.stringify(exception),
+      };
+      res.status(500).send(errorMessage);
+    }
+  }
+
+  async editContact(req: express.Request, res: express.Response) {
+    const supplierId = req.body.id;
+    const {
+      contact,
+    } = req.body as EditContactRequestDto;
+
+    logger('Attempting to Edit Contact: %s for Supplier: %s', contact.id, supplierId);
+
+    try {
+      const response: EditContactResponseDto = await this.suppliersService.editContact(contact);
+      res.status(200).send(response);
+    } catch (exception) {
+      logger('Error while trying to EditContact: %j', exception);
       const errorMessage: BaseResponseDto = {
         errorMessage: JSON.stringify(exception),
       };

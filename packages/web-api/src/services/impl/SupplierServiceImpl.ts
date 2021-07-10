@@ -1,8 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { inject, injectable } from 'inversify';
 import debug from 'debug';
-import { DeleteSupplierResponseDto, GetSuppliersDto } from '../../dtos';
-import { Supplier } from '../../models';
+import {
+  DeleteSupplierResponseDto, EditContactRequestDto, EditContactResponseDto, GetSuppliersDto,
+} from '../../dtos';
+import { Contact, Supplier } from '../../models';
 import { Types } from '../../utils';
 import { SupplierService } from '../SupplierService';
 import { DeleteContactResponseDto } from '../../dtos/DeleteContactResponseDto';
@@ -101,6 +103,29 @@ export class SupplierServiceImpl implements SupplierService {
         accept(response.data);
       }).catch((error: AxiosError) => {
         logger('Got error from the Server: %s', error);
+        reject(error);
+      });
+    });
+
+    const response = await makeCall;
+
+    return response;
+  }
+
+  async editContact(contact: Contact): Promise<EditContactResponseDto> {
+    logger('Editing Contact: %s', contact.id);
+
+    const makeCall: Promise<EditContactResponseDto> = new Promise((accept, reject) => {
+      const editContactRequest: EditContactRequestDto = {
+        contact,
+      };
+
+      const url = `${this.suppliersServiceUrl}/contacts/${contact.id}`;
+      axios.put(url, editContactRequest).then((response: AxiosResponse<EditContactResponseDto>) => {
+        logger('Got response from Server: %s', response.data);
+        accept(response.data);
+      }).catch((error: AxiosError) => {
+        logger('Got error from Server: %j', error);
         reject(error);
       });
     });

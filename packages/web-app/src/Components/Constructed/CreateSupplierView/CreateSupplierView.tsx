@@ -69,6 +69,7 @@ export const CreateSupplierView: React.FunctionComponent = () => {
             onDeleteContactClickedListener={() => {}}
             isPerformingAsyncOperation={isCreatingSupplier}
             errorMessage={errorMessage}
+            onContactClickListener={(): void => {}}
         />
     );
 };

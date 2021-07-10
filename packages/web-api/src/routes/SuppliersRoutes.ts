@@ -45,7 +45,8 @@ export class SuppliersRoutes extends CommonRoutesConfig {
 
     this.app.param('contactId', this.suppliersMiddleware.extractContactId);
     this.app.route('/api/suppliers/:supplierId/contacts/:contactId')
-      .delete(this.suppliersController.deleteContact);
+      .delete(this.suppliersController.deleteContact)
+      .put(this.suppliersController.editContact);
 
     return this.app;
   }

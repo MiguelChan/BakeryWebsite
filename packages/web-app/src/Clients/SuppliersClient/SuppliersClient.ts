@@ -10,6 +10,7 @@ import {
     CreateSupplierRequest,
     EditSupplierRequest,
 } from "./Requests";
+import { EditContactRequest } from "./Requests/EditContactRequest";
 import { 
     CreateSupplierResponse,
     GetSuppliersResponse,
@@ -18,6 +19,7 @@ import {
     DeleteContactResponse,
     DeleteSupplierResponse,
 } from "./Responses";
+import { EditContactResponse } from "./Responses/EditContactResponse";
 
 /**
  * Defines the Client for all the Suppliers Operations.
@@ -145,6 +147,21 @@ class SuppliersClient {
         return new Promise((accept, reject) => {
             const url = `${this.SUPPLIERS_URL}/${supplierId}`;
             axios.delete(url).then((response: AxiosResponse<DeleteSupplierResponse>) => {
+                accept(response.data);
+            }).catch((error: AxiosError) => {
+                reject(error);
+            });
+        });
+    }
+
+    public editContact(supplierId: string, contact: Contact): Promise<EditContactResponse> {
+        return new Promise((accept, reject) => {
+            const editContactRequest: EditContactRequest = {
+                contact,
+            };
+
+            const url = `${this.SUPPLIERS_URL}/${supplierId}/contacts/${contact.id}`;
+            axios.put(url, editContactRequest).then((response: AxiosResponse<EditContactResponse>) => {
                 accept(response.data);
             }).catch((error: AxiosError) => {
                 reject(error);

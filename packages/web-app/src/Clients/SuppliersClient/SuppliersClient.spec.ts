@@ -1,8 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { Contact, ContactType, Supplier } from "../../Models";
 import { CreateSupplierRequest } from "./Requests";
+import { EditContactRequest } from "./Requests/EditContactRequest";
 import { EditSupplierRequest } from "./Requests/EditSupplierRequest";
 import { CreateSupplierResponse, DeleteContactResponse, DeleteSupplierResponse, GetSuppliersResponse } from "./Responses";
+import { EditContactResponse } from "./Responses/EditContactResponse";
 import { EditSupplierResponse } from "./Responses/EditSupplierResponse";
 import { GetSupplierResponse } from "./Responses/GetSupplierResponse";
 import { suppliersClient } from "./SuppliersClient";
@@ -306,7 +308,7 @@ describe('SuppliersClient', () => {
         });
     });
 
-    describe('Deleta a Supplier', () => {
+    describe('Delete a Supplier', () => {
 
         const supplierId: string = 'SomeSome';
 
@@ -337,6 +339,57 @@ describe('SuppliersClient', () => {
 
             await expect(suppliersClient.deleteSupplier(supplierId)).rejects.toThrowError(expectedError);
             expect(mockDeleteFn).toHaveBeenCalledWith(expectedUrl);
+        });
+    });
+
+    describe('Edit a Contact', () => {
+
+        const SUPPLIER_ID = 'SomeSupplierId';
+
+        it('Should edit a Contact', () => {
+            const expectedUrl = `${SUPPLIERS_URL}/${SUPPLIER_ID}/contacts/id`;
+
+            const expectedContact: Contact = {
+                id: 'id',
+            } as Contact;
+
+            const expectedResponse: EditContactResponse = {
+                message: '',
+                success: true,
+            };
+
+            const axiosResponse: Partial<AxiosResponse<EditContactResponse>> = {
+                data: expectedResponse,
+            };
+
+            const expectedRequest: EditContactRequest = {
+                contact: expectedContact,
+            };
+
+            mockPutFn.mockResolvedValueOnce(axiosResponse);
+
+            return suppliersClient.editContact(SUPPLIER_ID, expectedContact).then((response: EditContactResponse) => {
+                expect(response).toEqual(expectedResponse);
+                expect(mockPutFn).toHaveBeenCalledWith(expectedUrl, expectedRequest);
+            });
+        });
+
+        it('Should handle errors gracefully', async () => {
+            const expectedUrl = `${SUPPLIERS_URL}/${SUPPLIER_ID}/contacts/id`;
+            const expectedError: Error = new Error('SomeError');
+
+            const contact: Contact = {
+                id: 'id',
+            } as Contact;
+
+            const expectedRequest: EditContactRequest = {
+                contact,
+            };
+
+            mockPutFn.mockRejectedValueOnce(expectedError);
+
+            await expect(suppliersClient.editContact(SUPPLIER_ID, contact)).rejects.toThrowError(expectedError);
+            expect(mockPutFn).toHaveBeenCalledWith(expectedUrl, expectedRequest);
         });
     });
 

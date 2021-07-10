@@ -2,9 +2,10 @@ import * as React from 'react';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import { DeleteContactResponse, DeleteSupplierResponse, EditSupplierResponse, GetSupplierResponse, suppliersClient } from '../../../Clients';
+import { useEditContact, UseEditContactState } from '../../../Hooks';
 import { Contact, Supplier } from '../../../Models';
-import { isNullOrUndefined } from '../../../Utils';
-import { BasicDialog, CustomLink, DialogProperties, LoadingDialog } from '../../Blocks';
+import { isNullOrEmpty, isNullOrUndefined } from '../../../Utils';
+import { BasicDialog, CustomLink, DialogProperties, EditableContactDialog, LoadingDialog } from '../../Blocks';
 import { SupplierEditableView } from '../../Composites';
 
 interface RouteProperties {
@@ -15,7 +16,8 @@ interface SupplierDataHolder {
     supplier: Supplier;
     contacts: Contact[];
 }
-
+// ToDo: Add support for Editting Contacts that do not have an ID
+// ToDo: Add support for both Edit and Create.
 export const EditSupplierView: React.FunctionComponent<RouteComponentProps<RouteProperties>> = ({
     match,
 }) => {
@@ -29,14 +31,19 @@ export const EditSupplierView: React.FunctionComponent<RouteComponentProps<Route
     const [isEditingSupplier, setIsEditingSupplier] = React.useState<boolean>(false);
     const [loadSupplier, setLoadSupplier] = React.useState<boolean>(false);
 
+    // For editing a Contact
+    const useEditContactState: UseEditContactState = useEditContact();
+
     const loadSupplierFromServer = React.useCallback(() => {
         suppliersClient.getSupplier(matchParams.supplierId).then((getSupplierResponse: GetSupplierResponse) => {
             setCurrentSupplier(getSupplierResponse.supplier);
+            useEditContactState.resetState();
         }).catch((errorResponse: GetSupplierResponse) => {
             setErrorMessage(errorResponse.errorMessage);
         }).finally(() => {
             setLoadSupplier(false);
         });
+        // eslint-disable-next-line
     }, [matchParams.supplierId]);
 
     React.useEffect(() => {
@@ -46,12 +53,38 @@ export const EditSupplierView: React.FunctionComponent<RouteComponentProps<Route
     }, [loadSupplier, loadSupplierFromServer]);
 
     React.useEffect(() => {
+        if (useEditContactState.isSuccess) {
+            if (isNullOrEmpty(useEditContactState.currentContact.id)) {
+                const currentContactJson = JSON.stringify(useEditContactState.contact);
+                const updatedContacts: Contact[] = currentSupplier!.contacts.filter((contact: Contact) => {
+                    const jsonContact = JSON.stringify(contact);
+                    return jsonContact !== currentContactJson;
+                });
+
+                const updatedSupplier: Supplier = {
+                    ...currentSupplier!,
+                    contacts: [useEditContactState.currentContact, ...updatedContacts],
+                };
+
+                setCurrentSupplier(updatedSupplier);
+                useEditContactState.resetState();
+                return;
+            }
+
+
+            setLoadSupplier(true);
+        }
+    }, [useEditContactState, currentSupplier]);
+
+    React.useEffect(() => {
         const supplier = location.state;
         if (!isNullOrUndefined(supplier)) {
             setCurrentSupplier(supplier);
             return;
         }
         loadSupplierFromServer();
+        useEditContactState.setSupplierId(matchParams.supplierId);
+        // eslint-disable-next-line
     }, [location, matchParams, loadSupplierFromServer]);
 
     // For deleting a Contact
@@ -68,6 +101,26 @@ export const EditSupplierView: React.FunctionComponent<RouteComponentProps<Route
             const {
                 id: contactId,
             } = contactToDelete!;
+
+            // Handling the case for deleting non-created Contacts.
+            if (isNullOrEmpty(contactId)) {
+                const contactJson = JSON.stringify(contactToDelete!);
+                const updatedContactList: Contact[] = currentSupplier!.contacts.filter((contact: Contact) => {
+                    const currentContactJson = JSON.stringify(contact);
+                    console.info('CurrentJson', currentContactJson);
+                    console.info(currentContactJson === contactJson);
+                    return currentContactJson !== contactJson;
+                });
+                const updatedSupplier: Supplier = {
+                    ...currentSupplier!,
+                    contacts: [...updatedContactList],
+                }
+                setCurrentSupplier(updatedSupplier);
+                setDeleteContact(false);
+                setIsDeletingContact(false);
+                setContactToDelete(undefined);
+                return;
+            }
 
             suppliersClient.deleteContact(supplierId, contactId).then((response: DeleteContactResponse) => {
                 setLoadSupplier(true);
@@ -155,7 +208,7 @@ export const EditSupplierView: React.FunctionComponent<RouteComponentProps<Route
     const renderLoadingDialog = (): React.ReactElement => {
         return (
             <LoadingDialog 
-                isOpen={deleteContact || deleteSupplier}
+                isOpen={deleteContact || deleteSupplier || useEditContactState.isUpdatingContact}
             />
         );
     };
@@ -165,11 +218,33 @@ export const EditSupplierView: React.FunctionComponent<RouteComponentProps<Route
         setDeleteSupplier(true);
     };
 
+    const onContactAddedListener = (contact: Contact): void => {
+        const currentContacts = [...currentSupplier!.contacts];
+
+        const updatedSupplier: Supplier = {
+            ...currentSupplier!,
+            contacts: [contact, ...currentContacts],
+        };
+        setCurrentSupplier(updatedSupplier);
+    };
+
+    const renderEditContactDialog = (): React.ReactElement => {
+        return (
+            <EditableContactDialog 
+                contact={useEditContactState.contact}
+                isDialogOpen={useEditContactState.shouldDisplayDialog}
+                onCloseDialogClickListener={useEditContactState.onCloseDialogClickListener}
+                onEditContactClickListener={useEditContactState.onEditContactClickListener}
+                errorMessage={useEditContactState.errorMessage}
+            />
+        );
+    };
+
     return (
         <>
             <CustomLink linkText='Volver a Vista de Proveedor' to={`/suppliers/${currentSupplier?.id}`} />
             {!isNullOrUndefined(currentSupplier) &&
-            <SupplierEditableView 
+            <SupplierEditableView
                 onEditSupplierClickedListener={onEditSupplierClickedListener}
                 isPerformingAsyncOperation={isNullOrUndefined(currentSupplier) || isEditingSupplier}
                 errorMessage={errorMessage}
@@ -178,9 +253,12 @@ export const EditSupplierView: React.FunctionComponent<RouteComponentProps<Route
                 buttonMessage='Editar proveedor'
                 onDeleteContactClickedListener={onDeleteContactClickedListener}
                 onDeleteSupplierClickedListener={onDeleteSupplierClickedListener}
+                onContactClickListener={useEditContactState.setContact}
+                onContactAddedListener={onContactAddedListener}
             />}
             {renderDeleteContactDialog()}
             {renderLoadingDialog()}
+            {renderEditContactDialog()}
         </>
     );
 };

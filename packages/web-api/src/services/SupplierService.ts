@@ -2,8 +2,10 @@ import {
   DeleteSupplierResponseDto,
   GetSuppliersDto,
   DeleteContactResponseDto,
+  EditContactResponseDto,
 } from '../dtos';
 import {
+  Contact,
   Supplier,
 } from '../models';
 
@@ -51,5 +53,12 @@ export interface SupplierService {
    * @param {string} contactId The id of the contact to delete.
    */
   deleteContact(contactId: string): Promise<DeleteContactResponseDto>;
+
+  /**
+   * Edits a Contact.
+   *
+   * @param {Contact} contact The contact to edit.
+   */
+  editContact(contact: Contact): Promise<EditContactResponseDto>;
 
 }
