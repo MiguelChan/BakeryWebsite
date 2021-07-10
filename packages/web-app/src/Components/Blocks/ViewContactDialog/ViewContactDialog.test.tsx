@@ -4,7 +4,8 @@ import {
     screen,
     fireEvent,
 } from '@testing-library/react';
-import { Primary, WithNullValues } from './ViewContactDialog.stories';
+import { Primary,
+WithNullValues } from './ViewContactDialog.stories';
 import { Contact } from '../../../Models';
 
 describe('ViewContactDialog', () => {

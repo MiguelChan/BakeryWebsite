@@ -1,8 +1,10 @@
 import { Grid } from '@material-ui/core';
-import { AccountTree, ContactMail } from '@material-ui/icons';
+import { AccountTree,
+ContactMail } from '@material-ui/icons';
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
-import { LandingPageBlock, LandingPageBlockProps } from '../../Blocks';
+import { LandingPageBlock,
+LandingPageBlockProps } from '../../Blocks';
 
 /**
  * Defines the LandingPage section of the Application.

@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { Supplier } from '../../../Models';
-import { render, screen } from '@testing-library/react';
-import { Table, TableBody } from '@material-ui/core';
-import { OnSupplierClickedListener, SuppliersTableRow } from './SuppliersTableRow';
+import { render,
+screen } from '@testing-library/react';
+import { Table,
+TableBody } from '@material-ui/core';
+import { OnSupplierClickedListener,
+SuppliersTableRow } from './SuppliersTableRow';
 
 describe('SuppliersTableRow', () => {
 

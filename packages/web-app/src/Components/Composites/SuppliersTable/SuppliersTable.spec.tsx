@@ -4,7 +4,8 @@ import {
     render,
     screen,
 } from '@testing-library/react';
-import { OnPageChangedListener, SuppliersTable } from './SuppliersTable';
+import { OnPageChangedListener,
+SuppliersTable } from './SuppliersTable';
 import { 
     Supplier,
 } from '../../../Models';

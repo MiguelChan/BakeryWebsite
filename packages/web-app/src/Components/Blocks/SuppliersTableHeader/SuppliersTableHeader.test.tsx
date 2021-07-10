@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render,
+screen } from '@testing-library/react';
 import { Table } from '@material-ui/core';
 import { SuppliersTableHeader } from './SuppliersTableHeader';
 

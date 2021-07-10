@@ -7,7 +7,8 @@ import {
     OnEditSupplierClickedListener,
     SupplierEditableView,
 } from './SupplierEditableView';
-import { NAME_TEST_ID, PHONE_NUMBER_TEST_ID } from '..';
+import { NAME_TEST_ID,
+PHONE_NUMBER_TEST_ID } from '..';
 import { Supplier } from '../../../Models';
 
 describe('SupplierEditableView', () => {

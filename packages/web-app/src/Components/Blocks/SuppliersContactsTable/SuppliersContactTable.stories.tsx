@@ -3,8 +3,10 @@ import {
     Story,
     Meta,
 } from '@storybook/react';
-import { SupplierContactsTable, SupplierContactsTableProps } from './SupplierContactsTable';
-import { Contact, ContactType } from '../../../Models';
+import { SupplierContactsTable,
+SupplierContactsTableProps } from './SupplierContactsTable';
+import { Contact,
+ContactType } from '../../../Models';
 
 export default {
     title: 'Components/Blocks/SuppliersContactsTable',

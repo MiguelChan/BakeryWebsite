@@ -5,7 +5,8 @@ import {
 } from '@storybook/react';
 import { ViewContactDialog } from '.';
 import { ViewContactDialogProps } from './ViewContactDialog';
-import { Contact, ContactType } from '../../../Models';
+import { Contact,
+ContactType } from '../../../Models';
 
 export default {
     title: 'Components/Blocks/ViewContactDialog',

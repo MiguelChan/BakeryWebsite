@@ -3,6 +3,7 @@ import {
   GetSuppliersDto,
   DeleteContactResponseDto,
   EditContactResponseDto,
+  EditSupplierResponseDto,
 } from '../dtos';
 import {
   Contact,
@@ -40,7 +41,7 @@ export interface SupplierService {
    * Edits a Supplier.
    * @param {Supplier} supplier The supplier to edit.
    */
-  editSupplier(supplier: Supplier): Promise<void>;
+  editSupplier(supplier: Supplier): Promise<EditSupplierResponseDto>;
 
   /**
    * Gets a Supplier.

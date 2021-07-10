@@ -1,12 +1,15 @@
-import { Paper, Typography } from '@material-ui/core';
+import { Paper,
+Typography } from '@material-ui/core';
 import * as React from 'react';
 import { 
-    RouteComponentProps, useHistory,
+    RouteComponentProps,
+useHistory,
 } from 'react-router';
 import { 
     useLocation,
 } from 'react-router-dom';
-import { GetSupplierResponse, suppliersClient } from '../../../Clients';
+import { GetSupplierResponse,
+suppliersClient } from '../../../Clients';
 import { 
     Supplier,
 } from '../../../Models';

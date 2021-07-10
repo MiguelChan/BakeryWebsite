@@ -3,8 +3,10 @@ import {
     Meta,
     Story,
 } from '@storybook/react';
-import { EditableContactDialog, EditableContactDialogProps } from './EditableContactDialog';
-import { Contact, ContactType } from '../../../Models';
+import { EditableContactDialog,
+EditableContactDialogProps } from './EditableContactDialog';
+import { Contact,
+ContactType } from '../../../Models';
 
 export default {
     title: 'Components/Blocks/EditableContactDialog',

@@ -1,7 +1,20 @@
 import React from 'react';
-import { Contact, ContactType } from '../../../Models';
+import { Contact,
+ContactType } from '../../../Models';
 import { OnButtonClickListener } from '../BasicDialog';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from '@material-ui/core';
+import { Button,
+Dialog,
+DialogActions,
+DialogContent,
+DialogTitle,
+FormControl,
+FormControlLabel,
+FormLabel,
+Grid,
+Radio,
+RadioGroup,
+TextField,
+Typography } from '@material-ui/core';
 import { isNullOrEmpty } from '../../../Utils';
 
 export type OnEditContactClickListener = (updatedContact: Contact) => void;

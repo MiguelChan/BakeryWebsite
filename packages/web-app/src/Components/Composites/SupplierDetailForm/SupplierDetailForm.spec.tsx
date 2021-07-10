@@ -3,7 +3,9 @@ import {
     screen,
     fireEvent
 } from '@testing-library/react';
-import { Contact, ContactType, Supplier } from '../../../Models';
+import { Contact,
+ContactType,
+Supplier } from '../../../Models';
 import { OnButtonClickListener } from '../../Blocks';
 import { SupplierDetailForm } from './SupplierDetailForm';
 describe('SupplierDetailForm', () => {

@@ -10,7 +10,8 @@ import {
     SupplierContactsTable,
 } from './SupplierContactsTable';
 import { 
-    Contact, ContactType,
+    Contact,
+ContactType,
 } from '../../../Models';
 
 describe('SupplierContactsTable', () => {

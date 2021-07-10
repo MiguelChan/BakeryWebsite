@@ -7,12 +7,20 @@ import {
   EditContactResponseDto,
   GetSupplierResponseDto,
   GetSuppliersDto,
+  DeleteContactResponseDto,
+  EditSupplierRequestDto,
+  EditSupplierResponseDto,
 } from '../../src/dtos';
-import { DeleteContactResponseDto } from '../../src/dtos/DeleteContactResponseDto';
-import { EditSupplierRequestDto } from '../../src/dtos/EditSupplierRequestDto';
-import { Contact, ContactType, Supplier } from '../../src/models';
+import {
+  Contact,
+  ContactType,
+  Supplier,
+} from '../../src/models';
 import { SupplierService } from '../../src/services';
-import { createMockRequest, createMockResponse } from '../utils/ExpressUtils';
+import {
+  createMockRequest,
+  createMockResponse,
+} from '../utils/ExpressUtils';
 
 jest.mock('../../src/services');
 
@@ -210,57 +218,55 @@ describe('SuppliersController', () => {
 
   describe('PutSupplier', () => {
     it('Should put the Suppliers', async () => {
-      const expectedSupplier: Supplier = buildRandomSupplier();
-      const expectedContacts: Contact[] = [buildRandomContact()];
+      const supplier: Supplier = {
+        id: 'id',
+      } as Supplier;
 
-      const expectedEditedSupplier: Supplier = {
-        ...expectedSupplier,
-        contacts: [...expectedContacts],
+      const editSupplierRequest: EditSupplierRequestDto = {
+        supplier,
       };
 
-      const editSupplierRequestDto: EditSupplierRequestDto = {
-        contacts: expectedContacts,
-        supplier: expectedSupplier,
+      const expectedResponse: EditSupplierResponseDto = {
+        message: '',
+        success: true,
       };
 
-      const mockRequest: express.Request = createMockRequest();
-      mockRequest.body = editSupplierRequestDto;
+      (mockSuppliersService.editSupplier as jest.Mock).mockResolvedValueOnce(expectedResponse);
 
-      const mockResponse: express.Response = createMockResponse();
+      const mockReq: express.Request = createMockRequest();
+      const mockRes: express.Response = createMockResponse();
 
-      await suppliersController.editSupplier(mockRequest, mockResponse);
+      mockReq.body = editSupplierRequest;
 
-      expect(mockResponse.status).toHaveBeenCalledWith(201);
-      expect(mockResponse.send).toHaveBeenCalledWith({});
-      expect(mockSuppliersService.editSupplier).toHaveBeenCalledWith(expectedEditedSupplier);
+      await suppliersController.editSupplier(mockReq, mockRes);
+
+      expect(mockSuppliersService.editSupplier).toHaveBeenCalledWith(supplier);
+      expect(mockRes.status).toHaveBeenCalledWith(201);
+      expect(mockRes.send).toHaveBeenCalledWith(expectedResponse);
     });
 
-    it('Should return an error when the SuppliersService fails', () => {
-      const expectedSupplier: Supplier = buildRandomSupplier();
-      const expectedContacts: Contact[] = [buildRandomContact()];
+    it('Should return an error when the SuppliersService fails', async () => {
+      const supplier: Supplier = {
+        id: 'id',
+      } as Supplier;
 
-      const editSupplierRequestDto: EditSupplierRequestDto = {
-        contacts: expectedContacts,
-        supplier: expectedSupplier,
+      const editSupplierRequest: EditSupplierRequestDto = {
+        supplier,
       };
 
-      const expectedEditedSupplier: Supplier = {
-        ...expectedSupplier,
-        contacts: [...expectedContacts],
-      };
+      const expectedError: Error = new Error('SomeSome');
+      (mockSuppliersService.editSupplier as jest.Mock).mockRejectedValueOnce(expectedError);
 
-      (mockSuppliersService.editSupplier as jest.Mock).mockImplementation(() => { throw new Error('Error'); });
+      const mockReq: express.Request = createMockRequest();
+      const mockRes: express.Response = createMockResponse();
 
-      const mockRequest: express.Request = createMockRequest();
-      mockRequest.body = editSupplierRequestDto;
+      mockReq.body = editSupplierRequest;
 
-      const mockResponse: express.Response = createMockResponse();
+      await suppliersController.editSupplier(mockReq, mockRes);
 
-      suppliersController.editSupplier(mockRequest, mockResponse);
-
-      expect(mockSuppliersService.editSupplier).toHaveBeenCalledWith(expectedEditedSupplier);
-      expect(mockResponse.status).toHaveBeenCalledWith(500);
-      expect(mockResponse.send).toHaveBeenCalled();
+      expect(mockSuppliersService.editSupplier).toHaveBeenCalledWith(supplier);
+      expect(mockRes.status).toHaveBeenCalledWith(500);
+      expect(mockRes.send).toHaveBeenCalledWith(expectedError);
     });
   });
 

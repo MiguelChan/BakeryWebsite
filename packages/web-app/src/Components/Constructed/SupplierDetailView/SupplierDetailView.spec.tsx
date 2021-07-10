@@ -3,11 +3,14 @@ import {
     render,
     waitFor,
 } from '@testing-library/react';
-import { Router, Route } from 'react-router-dom';
+import { Router,
+Route } from 'react-router-dom';
 import { SupplierDetailView } from './SupplierDetailView';
-import { createMemoryHistory, MemoryHistory } from 'history'
+import { createMemoryHistory,
+MemoryHistory } from 'history'
 import React from 'react';
-import { GetSupplierResponse, suppliersClient } from '../../../Clients';
+import { GetSupplierResponse,
+suppliersClient } from '../../../Clients';
 import { Supplier } from '../../../Models';
 
 jest.mock('../../../Clients/SuppliersClient')

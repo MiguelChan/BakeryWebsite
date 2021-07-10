@@ -2,9 +2,17 @@ import axios, { AxiosResponse } from 'axios';
 import { SupplierService } from '../../../src/services';
 import { SupplierServiceImpl } from '../../../src/services/impl';
 import {
-  DeleteSupplierResponseDto, EditContactRequestDto, EditContactResponseDto, GetSuppliersDto,
+  DeleteSupplierResponseDto,
+  EditContactRequestDto,
+  EditContactResponseDto,
+  EditSupplierRequestDto,
+  EditSupplierResponseDto,
+  GetSuppliersDto,
 } from '../../../src/dtos';
-import { Contact, Supplier } from '../../../src/models';
+import {
+  Contact,
+  Supplier,
+} from '../../../src/models';
 import { DeleteContactResponseDto } from '../../../src/dtos/DeleteContactResponseDto';
 
 jest.mock('axios');
@@ -263,6 +271,53 @@ describe('SupplierServiceImpl', () => {
       const expectedUrl: string = `${SERVICE_URL}/contacts/someId`;
 
       expect(supplierService.editContact(contact)).rejects.toThrowError(expectedError);
+      expect(axiosPutFn).toHaveBeenCalledWith(expectedUrl, expectedRequest);
+    });
+  });
+
+  describe('editSupplier', () => {
+    it('Should edit the Supplier', () => {
+      const supplier: Supplier = {
+        id: 'id',
+      } as Supplier;
+
+      const expectedUrl = `${SERVICE_URL}/suppliers/id`;
+
+      const expectedResponse: EditSupplierResponseDto = {
+        message: '',
+        success: true,
+      };
+
+      const expectedRequest: EditSupplierRequestDto = {
+        supplier,
+      };
+
+      const axiosResponse: Partial<AxiosResponse<EditSupplierResponseDto>> = {
+        data: expectedResponse,
+      };
+
+      axiosPutFn.mockResolvedValueOnce(axiosResponse);
+
+      return supplierService.editSupplier(supplier).then((response: EditSupplierResponseDto) => {
+        expect(response).toEqual(expectedResponse);
+        expect(axiosPutFn).toHaveBeenCalledWith(expectedUrl, expectedRequest);
+      });
+    });
+
+    it('Should handle errors gracefully', async () => {
+      const supplier: Supplier = {
+        id: 'id',
+      } as Supplier;
+      const expectedUrl = `${SERVICE_URL}/suppliers/id`;
+
+      const expectedError: Error = new Error('SomeError');
+      const expectedRequest: EditSupplierRequestDto = {
+        supplier,
+      };
+
+      axiosPutFn.mockRejectedValueOnce(expectedError);
+
+      await expect(supplierService.editSupplier(supplier)).rejects.toThrowError(expectedError);
       expect(axiosPutFn).toHaveBeenCalledWith(expectedUrl, expectedRequest);
     });
   });

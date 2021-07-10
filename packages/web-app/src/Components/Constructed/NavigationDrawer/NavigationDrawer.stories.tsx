@@ -4,7 +4,8 @@ import {
     Meta,
 } from '@storybook/react';
 import { 
-    NavigationDrawer, NavigationDrawerProps,
+    NavigationDrawer,
+NavigationDrawerProps,
 } from '.';
 import { MemoryRouter } from 'react-router';
 

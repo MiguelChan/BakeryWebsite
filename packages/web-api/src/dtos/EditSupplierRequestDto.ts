@@ -1,6 +1,10 @@
-import { Contact, Supplier } from '../models';
+import {
+  Supplier,
+} from '../models';
 
+/**
+ * DTO for Editing a Supplier.
+ */
 export interface EditSupplierRequestDto {
   supplier: Supplier;
-  contacts: Contact[];
 }

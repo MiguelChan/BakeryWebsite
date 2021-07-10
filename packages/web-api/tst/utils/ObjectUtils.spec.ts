@@ -1,4 +1,7 @@
-import { isNullOrUndefined, parseIntegerNumber } from '../../src/utils/ObjectUtils';
+import {
+  isNullOrUndefined,
+  parseIntegerNumber,
+} from '../../src/utils/ObjectUtils';
 
 describe('ObjectUtils', () => {
   describe('isNullOrUndefined', () => {

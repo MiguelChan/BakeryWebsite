@@ -10,3 +10,4 @@ export * from './DeleteSupplierResponseDto';
 export * from './DeleteContactResponseDto';
 export * from './EditContactResponseDto';
 export * from './EditContactRequestDto';
+export * from './EditSupplierResponseDto';
