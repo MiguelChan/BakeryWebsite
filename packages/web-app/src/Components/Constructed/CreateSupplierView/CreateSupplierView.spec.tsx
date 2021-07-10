@@ -5,7 +5,8 @@ import {
     fireEvent,
     waitFor,
 } from '@testing-library/react';
-import { NAME_TEST_ID, PHONE_NUMBER_TEST_ID } from "../../Composites";
+import { NAME_TEST_ID,
+PHONE_NUMBER_TEST_ID } from "../../Composites";
 import { suppliersClient } from "../../../Clients";
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom';

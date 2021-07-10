@@ -12,9 +12,11 @@ import {
 } from '@material-ui/icons';
 import * as React from 'react';
 import { 
-    Contact, contactTypeParser,
+    Contact,
+contactTypeParser,
 } from '../../../Models';
-import { isNullOrEmpty, isNullOrUndefined } from '../../../Utils';
+import { isNullOrEmpty,
+isNullOrUndefined } from '../../../Utils';
 
 export type OnDeleteContactClickListener = (contact: Contact, contactIndex: number) => void;
 export type OnContactClickListener = (contact: Contact) => void;

@@ -26,5 +26,8 @@
     "inversify": "^5.0.5",
     "reflect-metadata": "^0.1.13",
     "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint-plugin-modules-newline": "^0.0.6"
   }
 }

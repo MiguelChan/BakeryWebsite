@@ -3,7 +3,8 @@ import {
     Story,
     Meta
 } from '@storybook/react';
-import { LandingPageBlock, LandingPageBlockProps } from '.';
+import { LandingPageBlock,
+LandingPageBlockProps } from '.';
 import { AccountTree } from '@material-ui/icons';
 
 export default {

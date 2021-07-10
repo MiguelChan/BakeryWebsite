@@ -1,11 +1,16 @@
-import { Container, Fab, Paper } from '@material-ui/core';
+import { Container,
+Fab,
+Paper } from '@material-ui/core';
 import * as React from 'react';
 import { 
     Contact,
     Supplier,
 } from '../../../Models';
 import { isNullOrUndefined } from '../../../Utils';
-import { BasicSupplierDetails, OnButtonClickListener, SupplierContactsTable, ViewContactDialog } from '../../Blocks';
+import { BasicSupplierDetails,
+OnButtonClickListener,
+SupplierContactsTable,
+ViewContactDialog } from '../../Blocks';
 
 interface Properties {
     supplier: Supplier;

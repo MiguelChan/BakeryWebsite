@@ -4,8 +4,11 @@ import {
     Meta,
 } from '@storybook/react';
 import { EditSupplierView } from './EditSupplierView';
-import { MemoryRouter, MemoryRouterProps, Route } from 'react-router';
-import { ContactType, Supplier } from '../../../Models';
+import { MemoryRouter,
+MemoryRouterProps,
+Route } from 'react-router';
+import { ContactType,
+Supplier } from '../../../Models';
 
 const defaultSupplier: Supplier = {
     id: '123456',

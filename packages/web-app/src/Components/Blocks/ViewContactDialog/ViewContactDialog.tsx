@@ -1,7 +1,19 @@
-import { Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from '@material-ui/core';
+import { Button,
+Dialog,
+DialogContent,
+DialogTitle,
+FormControl,
+FormControlLabel,
+FormLabel,
+Grid,
+Radio,
+RadioGroup,
+TextField } from '@material-ui/core';
 import React from 'react';
-import { Contact, ContactType } from '../../../Models';
-import { isNullOrEmpty, isNullOrUndefined } from '../../../Utils';
+import { Contact,
+ContactType } from '../../../Models';
+import { isNullOrEmpty,
+isNullOrUndefined } from '../../../Utils';
 
 export interface ViewContactDialogProps {
     contact: Contact;

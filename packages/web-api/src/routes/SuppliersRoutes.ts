@@ -1,5 +1,8 @@
 import express from 'express';
-import { inject, injectable } from 'inversify';
+import {
+  inject,
+  injectable,
+} from 'inversify';
 import {
   CommonRoutesConfig,
 } from './CommonRouteConfig';

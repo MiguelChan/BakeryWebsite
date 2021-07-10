@@ -19,6 +19,7 @@ import {
   DeleteSupplierResponseDto,
   EditContactRequestDto,
   EditContactResponseDto,
+  EditSupplierResponseDto,
   GetSupplierResponseDto,
 } from '../dtos';
 import {
@@ -112,21 +113,16 @@ export class SuppliersController {
   }
 
   async editSupplier(req: express.Request, res: express.Response) {
+    const supplierId: string = req.body.id;
+    logger('Attempting to EditSupplier: %s', supplierId);
     try {
       const request: EditSupplierRequestDto = req.body;
 
       const {
-        contacts,
         supplier,
       } = request;
-
-      const supplierToEdit: Supplier = {
-        ...supplier,
-        contacts: [...contacts],
-      };
-
-      await this.suppliersService.editSupplier(supplierToEdit);
-      res.status(201).send({});
+      const response: EditSupplierResponseDto = await this.suppliersService.editSupplier(supplier);
+      res.status(201).send(response);
     } catch (exception) {
       res.status(500).send(exception);
     }

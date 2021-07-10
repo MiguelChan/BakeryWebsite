@@ -1,11 +1,23 @@
 import * as React from 'react';
-import { RouteComponentProps, useHistory } from 'react-router';
+import { RouteComponentProps,
+useHistory } from 'react-router';
 import { useLocation } from 'react-router-dom';
-import { DeleteContactResponse, DeleteSupplierResponse, EditSupplierResponse, GetSupplierResponse, suppliersClient } from '../../../Clients';
-import { useEditContact, UseEditContactState } from '../../../Hooks';
-import { Contact, Supplier } from '../../../Models';
-import { isNullOrEmpty, isNullOrUndefined } from '../../../Utils';
-import { BasicDialog, CustomLink, DialogProperties, EditableContactDialog, LoadingDialog } from '../../Blocks';
+import { DeleteContactResponse,
+DeleteSupplierResponse,
+EditSupplierResponse,
+GetSupplierResponse,
+suppliersClient } from '../../../Clients';
+import { useEditContact,
+UseEditContactState } from '../../../Hooks';
+import { Contact,
+Supplier } from '../../../Models';
+import { isNullOrEmpty,
+isNullOrUndefined } from '../../../Utils';
+import { BasicDialog,
+CustomLink,
+DialogProperties,
+EditableContactDialog,
+LoadingDialog } from '../../Blocks';
 import { SupplierEditableView } from '../../Composites';
 
 interface RouteProperties {

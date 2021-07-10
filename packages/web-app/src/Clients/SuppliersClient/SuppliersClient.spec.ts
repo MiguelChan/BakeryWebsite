@@ -1,9 +1,16 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { Contact, ContactType, Supplier } from "../../Models";
+import axios, {
+ AxiosError,
+AxiosResponse } from "axios";
+import { Contact,
+ContactType,
+Supplier } from "../../Models";
 import { CreateSupplierRequest } from "./Requests";
 import { EditContactRequest } from "./Requests/EditContactRequest";
 import { EditSupplierRequest } from "./Requests/EditSupplierRequest";
-import { CreateSupplierResponse, DeleteContactResponse, DeleteSupplierResponse, GetSuppliersResponse } from "./Responses";
+import { CreateSupplierResponse,
+DeleteContactResponse,
+DeleteSupplierResponse,
+GetSuppliersResponse } from "./Responses";
 import { EditContactResponse } from "./Responses/EditContactResponse";
 import { EditSupplierResponse } from "./Responses/EditSupplierResponse";
 import { GetSupplierResponse } from "./Responses/GetSupplierResponse";

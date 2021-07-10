@@ -1,9 +1,11 @@
 import React from "react";
 import { suppliersClient } from "../../Clients";
 import { EditContactResponse } from "../../Clients/SuppliersClient/Responses/EditContactResponse";
-import { OnButtonClickListener, OnContactClickListener } from "../../Components/Blocks";
+import { OnButtonClickListener,
+OnContactClickListener } from "../../Components/Blocks";
 import { OnEditContactClickListener } from "../../Components/Blocks/EditableContactDialog";
-import { Contact, ContactType } from "../../Models";
+import { Contact,
+ContactType } from "../../Models";
 import { isNullOrEmpty } from "../../Utils";
 
 export interface UseEditContactState {

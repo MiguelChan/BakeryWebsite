@@ -1,10 +1,24 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { inject, injectable } from 'inversify';
+import axios, {
+  AxiosError,
+  AxiosResponse,
+} from 'axios';
+import {
+  inject,
+  injectable,
+} from 'inversify';
 import debug from 'debug';
 import {
-  DeleteSupplierResponseDto, EditContactRequestDto, EditContactResponseDto, GetSuppliersDto,
+  DeleteSupplierResponseDto,
+  EditContactRequestDto,
+  EditContactResponseDto,
+  EditSupplierRequestDto,
+  EditSupplierResponseDto,
+  GetSuppliersDto,
 } from '../../dtos';
-import { Contact, Supplier } from '../../models';
+import {
+  Contact,
+  Supplier,
+} from '../../models';
 import { Types } from '../../utils';
 import { SupplierService } from '../SupplierService';
 import { DeleteContactResponseDto } from '../../dtos/DeleteContactResponseDto';
@@ -73,8 +87,25 @@ export class SupplierServiceImpl implements SupplierService {
     return response;
   }
 
-  editSupplier(supplier: Supplier): Promise<void> {
-    throw new Error(`Method not implemented.: ${supplier}`);
+  async editSupplier(supplier: Supplier): Promise<EditSupplierResponseDto> {
+    const makeCall: Promise<EditSupplierResponseDto> = new Promise((accept, reject) => {
+      const url = `${this.suppliersServiceUrl}/suppliers/${supplier.id}`;
+      const editSupplierRequest: EditSupplierRequestDto = {
+        supplier,
+      };
+
+      axios.put(url, editSupplierRequest).then((response: AxiosResponse<EditSupplierResponseDto>) => {
+        logger('Got response from Server: %s', response.data);
+        accept(response.data);
+      }).catch((error: AxiosError) => {
+        logger('Got an error while trying to Update the Supplier: %j', error);
+        reject(error);
+      });
+    });
+
+    const response = await makeCall;
+
+    return response;
   }
 
   async getSupplier(supplierId: string): Promise<Supplier> {

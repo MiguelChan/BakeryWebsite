@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render,
+screen } from '@testing-library/react';
 import { NavigableListItem } from './NavigableListItem';
 import { List } from '@material-ui/core';
 import { ContactMail } from '@material-ui/icons';
-import { createMemoryHistory, MemoryHistory } from 'history'
+import { createMemoryHistory,
+MemoryHistory } from 'history'
 import { Router } from 'react-router-dom';
 
 describe('NavigableListItem', () => {
