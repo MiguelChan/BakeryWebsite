@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",
+      "module": "commonjs",
+      "outDir": "./build",
+      "declarationDir": "build",
+      "declaration": true,
+      "lib": ["ESNext"],
+      "types": ["node", "jest"]
+    },
+    "include": [
+      "src/**/*",
+      "tst/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "build"
+    ]
+  }

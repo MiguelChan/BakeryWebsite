@@ -9,6 +9,6 @@
         "lib": ["ESNext"],
         "types": ["reflect-metadata", "@types/jest", "node", "jest", "@types/node"],
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
     }
 }

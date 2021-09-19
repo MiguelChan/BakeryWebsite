@@ -1,0 +1,43 @@
+{
+  "name": "@mgl/suppliers-web-api",
+  "version": "1.1.0",
+  "description": "The suppliers Web API Module",
+  "main": "./build/src/index.js",
+  "types": "./build/src/index.d.ts",
+  "files": [
+    "./build/src"
+  ],
+  "scripts": {
+    "clean": "rm -rf build",
+    "build": "ttsc",
+    "test": "jest --config jest.config.js",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "release": "npm run clean && npm run lint && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@mgl/shared-components": "*",
+    "@zerollup/ts-transform-paths": "^1.7.18",
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "debug": "^4.3.1",
+    "eslint-plugin-modules-newline": "^0.0.6",
+    "express": "^4.17.1",
+    "express-winston": "^4.1.0",
+    "inversify": "^5.0.5",
+    "reflect-metadata": "^0.1.13",
+    "ttypescript": "^1.5.12",
+    "winston": "^3.3.3"
+  },
+  "peerDependencies": {
+    "@mgl/shared-components": "*",
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "debug": "^4.3.1",
+    "express": "^4.17.1",
+    "express-winston": "^4.1.0",
+    "inversify": "^5.0.5",
+    "reflect-metadata": "^0.1.13",
+    "winston": "^3.3.3"
+  }
+}
