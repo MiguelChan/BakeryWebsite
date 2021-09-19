@@ -6,11 +6,11 @@
   "scripts": {
     "clean": "rm -rf ./build",
     "build": "tsc",
-    "start:local": "export SUPPLIERS_URL=http://localhost:8090/api && tsc && node ./build/src/app.js",
+    "start:local": "export SUPPLIERS_URL=http://localhost:8090/api && tsc && node ./build/app.js",
     "debug:local": "export DEBUG=* && npm run start:local",
-    "start:beta": "export SUPPLIERS_URL=https://mgl-bakery-service.herokuapp.com/api && tsc && node ./build/src/app.js",
+    "start:beta": "export SUPPLIERS_URL=https://mgl-bakery-service.herokuapp.com/api && tsc && node ./build/app.js",
     "debug:beta": "export DEBUG=* && npm run start:beta",
-    "test": "jest --config jest.config.js",
+    "test": "jest --config jest.config.js --passWithNoTests",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "release": "npm run clean && npm run lint && npm run test && npm run build"
@@ -18,6 +18,8 @@
   "author": "Miguel Chan",
   "license": "ISC",
   "dependencies": {
+    "@mgl/shared-components": "*",
+    "@mgl/suppliers-web-api": "*",
     "axios": "^0.21.1",
     "cors": "^2.8.5",
     "debug": "^4.3.1",
