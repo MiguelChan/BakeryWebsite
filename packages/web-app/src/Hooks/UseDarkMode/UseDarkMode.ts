@@ -1,11 +1,15 @@
-import { createMuiTheme,
-Theme } from "@material-ui/core";
-import { red } from "@material-ui/core/colors";
+import { 
+    createTheme, 
+    Theme, 
+} from "@mui/material";
+import { 
+    red,
+} from "@mui/material/colors";
 import React from 'react';
 
-const theme: Theme = createMuiTheme({
+const theme: Theme = createTheme({
     palette: {
-        type: localStorage['DarkMode'] ?? 'light',
+        mode: localStorage['DarkMode'] ?? 'light',
         primary: {
         main: '#6a1b9a',
         light: '#9c4dcc',
@@ -23,17 +27,21 @@ const theme: Theme = createMuiTheme({
         // default: '#282c34',
         },
     },
-    overrides: {
+    components: {
         MuiPaper: {
-        root: {
-            padding: '20px 10px',
-            margin: '10px',
-        },
+            styleOverrides: {
+                root: {
+                    padding: '20px 10px',
+                    maring: '10px',
+                },
+            },
         },
         MuiButton: {
-        root: {
-            margin: '5px',
-        },
+            styleOverrides: {
+                root: {
+                    maring: '5px',
+                },
+            },
         },
     },
 });
@@ -51,7 +59,7 @@ export const useDarkMode = (): [Theme, () => void] => {
             ...currentTheme,
             palette: {
                 ...currentTheme.palette,
-                type: currentDarkMode,
+                mode: currentDarkMode,
             },
         };
         setCurrentTheme(updatedTheme);
@@ -60,7 +68,7 @@ export const useDarkMode = (): [Theme, () => void] => {
 
     const {
         palette: {
-            type,
+            mode,
         }
     } = currentTheme;
 
@@ -69,11 +77,11 @@ export const useDarkMode = (): [Theme, () => void] => {
             ...currentTheme,
             palette: {
                 ...currentTheme.palette,
-                type: type === 'light' ? 'dark' : 'light',
+                mode: mode === 'light' ? 'dark' : 'light',
             },
         };
 
-        localStorage['DarkMode'] = updatedTheme.palette.type;
+        localStorage['DarkMode'] = updatedTheme.palette.mode;
         setCurrentTheme(updatedTheme);
     };
 

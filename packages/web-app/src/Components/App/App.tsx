@@ -7,16 +7,29 @@ import {
 import { 
   LandingPage, 
   NotFoundPage,
-  SuppliersPage,
- } from '../Pages';
+} from '../Pages';
 import { 
-  createStyles, 
-  makeStyles, 
-  Theme, 
-} from '@material-ui/core';
+  Theme,
+} from '@mui/material';
+import {
+  createStyles,
+  makeStyles,
+} from '@mui/styles';
 import React from 'react';
-import { NavigationBar } from '../Blocks';
-import { NavigationDrawer } from '../Constructed';
+import { 
+  NavigationBar,
+} from '../Blocks';
+import { 
+  NavigationDrawer,
+} from '../Constructed';
+// @ts-ignore
+import {
+  // @ts-ignore
+  SuppliersPage,
+  // @ts-ignore
+} from '@mgl/suppliers-web-app';
+
+// https://stackoverflow.com/questions/56021112/react-hooks-in-react-library-giving-invalid-hook-call-error
 
 const useStyles = makeStyles((theme: Theme) => 
   createStyles({

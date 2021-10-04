@@ -93,8 +93,8 @@ export class SuppliersController {
       const supplierId = await this.suppliersService.createSupplier(newSupplier);
       createSupplierResponse.supplierId = supplierId;
       res.status(201).send(createSupplierResponse);
-    } catch (exception) {
-      createSupplierResponse.errorMessage = exception;
+    } catch (exception: any) {
+      createSupplierResponse.errorMessage = (exception as Error).message;
       res.status(500).send(createSupplierResponse);
     }
   }

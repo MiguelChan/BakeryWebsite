@@ -1,5 +1,3 @@
-import { Contact } from "../Models";
-
 /**
  * Defines a Type that can be Null.
  */
@@ -14,5 +12,3 @@ export type Undefinable<T> = T | undefined;
  * Defines a Type that can be either Null or Undefined.
  */
 export type NullOrUndef<T> = Nullable<T> | Undefinable<T>;
-
-export type OnCloseContactDialogListener = (contact: Contact) => void;

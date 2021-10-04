@@ -13,6 +13,8 @@ COPY ./packages ./packages
 RUN npx lerna bootstrap
 RUN npm install
 RUN npm run release
+RUN npx lerna link
+RUN npm run prod:release
 
 # # Final Setup
 FROM node:14

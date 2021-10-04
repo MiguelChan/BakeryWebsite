@@ -2,8 +2,8 @@ import * as React from 'react';
 import { render,
 screen } from '@testing-library/react';
 import { NavigableListItem } from './NavigableListItem';
-import { List } from '@material-ui/core';
-import { ContactMail } from '@material-ui/icons';
+import { List } from '@mui/material';
+import { ContactMail } from '@mui/icons-material';
 import { createMemoryHistory,
 MemoryHistory } from 'history'
 import { Router } from 'react-router-dom';

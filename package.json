@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "release:install": "lerna bootstrap",
-    "release": "lerna exec --concurrency 1 -- npm run release",
+    "release": "lerna exec --ignore @mgl/bakery-webapp --concurrency 1 -- npm run release",
+    "prod:release": "lerna exec --scope @mgl/bakery-webapp -- npm run release",
     "lint": "lerna exec --concurrency 1 -- npm run lint",
     "lint:fix": "lerna exec --concurrency 1 -- npm run lint:fix"
   },
