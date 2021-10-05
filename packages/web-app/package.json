@@ -88,5 +88,17 @@
     "react-app-rewire-alias": "^1.0.3",
     "react-app-rewired": "^2.1.8",
     "storybook-addon-material-ui": "^0.9.0-alpha.24"
+  },
+  "peerDependencies": {
+    "@mgl/shared-components": "*",
+    "axios": "^0.21.1",
+    "debug": "^4.3.1",
+    "eslint-plugin-modules-newline": "^0.0.6",
+    "express": "^4.17.1",
+    "express-winston": "^4.1.0",
+    "inversify": "^5.0.5",
+    "reflect-metadata": "^0.1.13",
+    "ttypescript": "^1.5.12",
+    "winston": "^3.3.3"
   }
 }

@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "commonjs",
+    "outDir": "./build",
+    "declarationDir": "build",
+    "declaration": true,
+    "esModuleInterop": true,
+    "inlineSourceMap": true,
+    "lib": ["ESNext"],
+    "types": ["node", "jest", "@types/jest", "@types/node"],
+    "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": ".",
+    "paths": {
+      "models": [
+        "src/models/index"
+      ],
+      "utils": [
+        "src/utils/index"
+      ],
+      "routes": [
+        "src/routes/index"
+      ],
+      "middlewares": [
+        "src/middlewares/index"
+      ],
+      "services": [
+        "src/services/index"
+      ],
+      "controllers": [
+        "src/controllers/index"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "tst/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
+}

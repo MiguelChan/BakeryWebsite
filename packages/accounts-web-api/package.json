@@ -1,27 +1,36 @@
 {
-  "name": "@mgl/shared-components",
+  "name": "@mgl/accounts-web-api",
   "version": "1.1.0",
-  "description": "The WebApp components library",
   "main": "./build/src/index.js",
   "types": "./build/src/index.d.ts",
-  "files": [
-    "./build/src/index.js"
-  ],
   "scripts": {
-    "clean": "rm -rf build",
-    "build": "tsc",
     "test": "jest --config jest.config.js",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
+    "build": "ttsc",
+    "clean": "rm -rf build",
     "release": "npm run clean && npm run lint && npm run test && npm run build"
   },
   "devDependencies": {
-    "eslint-plugin-modules-newline": "^0.0.6"
-  },
-  "peerDependencies": {
+    "@mgl/shared-components": "*",
+    "@types/jest": "^26.0.2",
+    "@zerollup/ts-transform-paths": "^1.7.18",
     "axios": "^0.21.1",
     "debug": "^4.3.1",
+    "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-modules-newline": "^0.0.6",
+    "express": "^4.17.1",
+    "express-winston": "^4.1.0",
+    "inversify": "^5.0.5",
+    "jest": "^26.6.0",
+    "reflect-metadata": "^0.1.13",
+    "ttypescript": "^1.5.12",
+    "winston": "^3.3.3"
+  },
+  "peerDependencies": {
+    "@mgl/shared-components": "*",
+    "axios": "^0.21.1",
+    "debug": "^4.3.1",
     "express": "^4.17.1",
     "express-winston": "^4.1.0",
     "inversify": "^5.0.5",

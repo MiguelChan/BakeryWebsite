@@ -13,6 +13,9 @@ import {
 import {
   SuppliersWebApiModule,
 } from '@mgl/suppliers-web-api';
+import {
+  AccountsWebApiModule,
+} from '@mgl/accounts-web-api';
 
 // Server Initialization
 const app: express.Application = express();
@@ -20,6 +23,7 @@ const server: http.Server = http.createServer(app);
 const port = process.env.PORT || 3030;
 const debugLog: debug.IDebugger = debug('app');
 const suppliersServiceUrl: string = process.env.SUPPLIERS_URL as string;
+const accountsServiceUrl: string = process.env.ACCOUNTS_URL as string;
 
 // Adding middleware for parsing all incoming requests as JSON
 app.use(express.json());
@@ -56,6 +60,7 @@ app.use(expressWinston.logger(loggerOptions));
 // Setting up the Modules
 const appModules: WebAppModule[] = [
   new SuppliersWebApiModule(app, suppliersServiceUrl),
+  new AccountsWebApiModule(app, accountsServiceUrl),
 ];
 
 // Is required D:
