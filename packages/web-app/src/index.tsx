@@ -3,35 +3,40 @@ import './index.css';
 import App from './Components/App/App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import CssBaseline from '@mui/material/CssBaseline';
 import { 
-  createMuiTheme,
-  MuiThemeProvider,
-} from '@material-ui/core/styles';
+  createTheme, 
+  ThemeProvider, 
+  Theme, 
+  StyledEngineProvider,
+} from '@mui/material/styles';
 import 'fontsource-roboto';
 import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from './Store/Store';
 import { useDarkMode } from './Hooks';
+
+
+declare module '@mui/styles/defaultTheme' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
 
 const ReactApplication: React.FunctionComponent = () => {
 
   const [currentTheme, toggleDarkMode] = useDarkMode();
-
-  const themeConfig = createMuiTheme(currentTheme);
+  const theme = createTheme({
+    ...currentTheme,
+  });
 
   return (
-    <MuiThemeProvider theme={themeConfig}>
-      <BrowserRouter>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <Provider store={store}>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <CssBaseline />
           <App toggleDarkMode={toggleDarkMode} />
-        </Provider>
-      </BrowserRouter>
-    </MuiThemeProvider>
+        </BrowserRouter>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
-
 };
 
 ReactDOM.render(

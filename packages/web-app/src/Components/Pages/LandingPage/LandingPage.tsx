@@ -1,6 +1,6 @@
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { AccountTree,
-ContactMail } from '@material-ui/icons';
+ContactMail } from '@mui/icons-material';
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import { LandingPageBlock,

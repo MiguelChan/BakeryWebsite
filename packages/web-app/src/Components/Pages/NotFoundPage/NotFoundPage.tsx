@@ -3,7 +3,7 @@ import {
     CardContent, 
     Container, 
     Typography,
- } from '@material-ui/core';
+ } from '@mui/material';
 import * as React from 'react';
 
 interface Properties {

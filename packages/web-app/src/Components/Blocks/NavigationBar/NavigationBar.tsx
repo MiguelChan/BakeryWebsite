@@ -1,12 +1,12 @@
 import { AppBar,
-createStyles,
 IconButton,
-makeStyles,
 Theme,
 Toolbar,
-Typography } from '@material-ui/core';
+Typography } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import React from 'react';
-import MenuIcon from '@material-ui/icons/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
 
 export interface NavigationBarProps {
     title: string;
@@ -45,13 +45,13 @@ export const NavigationBar: React.FunctionComponent<NavigationBarProps> = ({
     return (
         <AppBar className={classes.appBar}>
           <Toolbar variant='regular'>
-            <IconButton 
-                edge='start' 
-                className={classes.menuButton} 
-                color='inherit' 
+            <IconButton
+                edge='start'
+                className={classes.menuButton}
+                color='inherit'
                 aria-label='menu'
                 onClick={onOpenMenuClickListener}
-            >
+                size="large">
               <MenuIcon />
             </IconButton>
             <Typography variant='h6' className={classes.title}>

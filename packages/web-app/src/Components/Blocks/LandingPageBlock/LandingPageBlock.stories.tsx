@@ -5,7 +5,7 @@ import {
 } from '@storybook/react';
 import { LandingPageBlock,
 LandingPageBlockProps } from '.';
-import { AccountTree } from '@material-ui/icons';
+import { AccountTree } from '@mui/icons-material';
 
 export default {
     title: 'Components/Blocks/LandingPageBlock',

@@ -1,20 +1,18 @@
-import { 
-    createStyles,
-    Divider, 
-    Drawer, 
-    FormControlLabel, 
-    List,
-    ListItem,
-    makeStyles,
-    Switch,
-    Theme,
-    useTheme,  
- } from '@material-ui/core';
+import { Divider,
+Drawer,
+FormControlLabel,
+List,
+ListItem,
+Switch,
+Theme,
+useTheme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import { 
     AccountTree,
     ContactMail,
     Home,
- } from '@material-ui/icons';
+ } from '@mui/icons-material';
 import * as React from 'react';
 import { 
     NavigableListItem,
@@ -108,7 +106,7 @@ export const NavigationDrawer: React.FunctionComponent<NavigationDrawerProps> = 
                 onClick={toggleDarkMode}
                 size='small'
                 color = 'primary'
-                checked={currentTheme.palette.type === 'dark'}
+                checked={currentTheme.palette.mode === 'dark'}
             />
         );
 
