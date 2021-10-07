@@ -1,0 +1,34 @@
+import express from 'express';
+import {
+  WebAppModule,
+  WebApplication,
+} from '@mgl/shared-components';
+import debug from 'debug';
+
+const logger: debug.IDebugger = debug('entryPointModule');
+
+/**
+ * Installs the {<ModuleName>} Module.
+ *
+ * This module is meant to be used for holding all the required configuration and setup for the Accounts Website.
+ * This is meant to be used with {express}.
+ */
+export class <ModuleName>WebApiModule implements WebAppModule {
+  /**
+   * Default constructor.
+   * @param {express.Application} app .
+   * @param {string} serviceUrl The backend-service URL.
+   */
+  public constructor(private readonly app: express.Application, private readonly serviceUrl: string) {
+    logger(`Attaching into: ${serviceUrl}`);
+  }
+
+  /**
+   * Installs the Module.
+   *
+   * @param {WebApplication} app .
+   */
+  installModule(app: WebApplication) {
+    logger(`Application: ${app}`);
+  }
+}

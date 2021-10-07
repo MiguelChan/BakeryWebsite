@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "commonjs",
+    "outDir": "./build",
+    "declarationDir": "build",
+    "declaration": true,
+    "esModuleInterop": true,
+    "inlineSourceMap": true,
+    "lib": ["ESNext"],
+    "types": ["node", "jest", "@types/jest", "@types/node"],
+    "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "models": [
+        "src/models/index"
+      ],
+      "utils": [
+        "src/utils/index"
+      ],
+      "cmd": [
+        "src/cmd/index"
+      ],
+      "engine": [
+        "src/engine/index"
+      ],
+      "engine/builders": [
+        "src/engine/builders/index"
+      ],
+      "engine/handlers": [
+        "src/engine/handlers/index"
+      ]
+    },
+    "plugins": [
+      {
+        "transform": "@zerollup/ts-transform-paths",
+        "exclude": ["*"]
+      }
+    ]
+  },
+  "include": [
+    "src/**/*",
+    "tst/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
+}
