@@ -28,6 +28,9 @@ import {
   SuppliersPage,
   // @ts-ignore
 } from '@mgl/suppliers-web-app';
+import {
+  AccountsPage,
+} from '@mgl/accounts-web-app';
 
 // https://stackoverflow.com/questions/56021112/react-hooks-in-react-library-giving-invalid-hook-call-error
 
@@ -103,6 +106,9 @@ const App: React.FunctionComponent<AppProps> = ({
             </Route>
             <Route path='/suppliers'>
               <SuppliersPage />
+            </Route>
+            <Route path='/accounts'>
+              <AccountsPage />
             </Route>
             <Route>
               <NotFoundPage />
