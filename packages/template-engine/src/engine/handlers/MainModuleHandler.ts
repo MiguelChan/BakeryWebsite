@@ -1,29 +1,39 @@
-import { AppDefinition } from "models";
+import { AppDefinition } from 'models';
 import fs from 'fs';
 import readline from 'readline';
 import path from 'path';
-import _, { template } from 'lodash';
+import _ from 'lodash';
 import debug from 'debug';
 import { createFile } from 'utils';
+import { injectable } from 'inversify';
+import { Handler } from './Handler';
 
 const logger: debug.IDebugger = debug('mainModuleHandler');
 
 /**
  * Class that creates the Main Entry point of our Module.
  */
-export class MainModuleHandler {
-
+@injectable()
+export class MainModuleHandler implements Handler {
   private readonly ModuleNameToken = '<ModuleName>';
+
   private readonly EntryPointTemplateDir = 'src/templates/web-api/EntryPointTemplate.template';
+
   private readonly IndexTsTemplateDir = 'src/templates/web-api/EntryPointIndex.template';
 
-  public async buildMainModule(appDefinition: AppDefinition): Promise<void> {
+  public async handle(appDefinition: AppDefinition): Promise<void> {
+    logger('Creating Module for AppDefinition: %j', appDefinition);
+
     const {
       appName,
     } = appDefinition;
 
     const moduleName = this.getModuleName(appName);
-    const mainEntryPointPath = createFile(path.resolve(process.cwd(), 'samples', 'src'), `${moduleName}WebApiModule.ts`, '');
+    const mainEntryPointPath = createFile(
+      path.resolve(process.cwd(), 'samples', 'src'),
+      `${moduleName}WebApiModule.ts`,
+      '',
+    );
     const indexTsPath = createFile(path.resolve(process.cwd(), 'samples', 'src'), 'index.ts', '');
     this.writeFile(mainEntryPointPath, moduleName, this.EntryPointTemplateDir);
     this.writeFile(indexTsPath, moduleName, this.IndexTsTemplateDir);

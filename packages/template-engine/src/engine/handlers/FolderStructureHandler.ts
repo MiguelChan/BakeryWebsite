@@ -1,67 +1,51 @@
-import { 
-  AppDefinition, AppType,
-} from "models";
-import { 
+import debug from 'debug';
+import {
+  injectable,
+} from 'inversify';
+import {
+  AppDefinition,
+} from 'models';
+import {
   createDirectory,
   FileSystemStructure,
-  IndexableType,
-} from "utils";
+} from 'utils';
+import {
+  Handler,
+} from './Handler';
 
+const logger: debug.IDebugger = debug('folderStructureHandler');
+
+/**
+ * Handler that handles the creation of the FolderStructure for a given project.
+ */
 // ToDo: Input correct File Path
-export class FolderStructureHandler {
+@injectable()
+export class FolderStructureHandler implements Handler {
+  /**
+   * Default constructor.
+   * @param {FileSystemStructure} fileSystem The fileSystem to be used against this Module.
+   */
+  public constructor(private readonly fileSystem: FileSystemStructure) {
+    logger('Creating FolderStructureHandler for FileSystem: %j', fileSystem);
+  }
 
-  private readonly webApiFolderStructure: FileSystemStructure = {
-    src: {
-      controllers: {
-      },
-      middlewares: {
-      },
-      models: {
-      },
-      routes: {
-      },
-      services: {
-      },
-      utils: {
-      },
-    },
-    tst: {
-      controllers: {
-      },
-      middlewares: {
-      },
-      models: {
-      },
-      routes: {
-      },
-      services: {
-      },
-      utils: {
-      },
-    },
-  };
-
-  public buildFolderStructure(appDefinition: AppDefinition): void {
-    const fileSystem = this.getFileSystemStructure(appDefinition.appType);
-    this.createFileSystem(fileSystem, 'samples');
+  /**
+   * Handles the creation of the FolderStructure.
+   *
+   * @param {AppDefinition} appDefinition The app definition.
+   */
+  async handle(appDefinition: AppDefinition): Promise<void> {
+    logger(appDefinition);
+    this.createFileSystem(this.fileSystem, 'samples');
   }
 
   private createFileSystem(currentNode: FileSystemStructure, currentPath: string): void {
     Object.keys(currentNode).forEach((currentLeaf) => {
       const currentFolder = `${currentPath}/${currentLeaf}`;
-      console.info('Attempting to Create: ', currentFolder);
+      logger('Attempting to Create: ', currentFolder);
       createDirectory(process.cwd(), currentFolder);
       const newNode = currentNode[currentLeaf] as FileSystemStructure;
       this.createFileSystem(newNode, currentFolder);
     });
-  }
-
-  private getFileSystemStructure(appType: AppType): FileSystemStructure {
-    switch (appType) {
-      case AppType.WebApi:
-        return this.webApiFolderStructure;
-      default:
-        throw new Error('Not Implemented');
-    }
   }
 }

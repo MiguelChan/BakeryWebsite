@@ -1,35 +1,40 @@
 import {
-  PackageJsonHandler,
-  FolderStructureHandler,
+  Handler,
 } from 'engine/handlers';
+import {
+  inject,
+  injectable,
+} from 'inversify';
 import {
   AppDefinition,
 } from 'models';
-import { ConfigFilesHandler } from '../handlers/ConfigFilesHandler';
-import { MainModuleHandler } from '../handlers/MainModuleHandler';
 import {
   ModuleBuilder,
-} from './ModuleBuilder';
+} from 'engine/builders';
+import {
+  Types,
+} from '../../di/InversifyContainer';
 
 // ToDo: Add dependency Injection
+@injectable()
 export class WebApiModuleBuilder implements ModuleBuilder {
-  private readonly packageJsonHander: PackageJsonHandler;
-  private readonly fileStructureHandler: FolderStructureHandler;
-  private readonly mainModuleHandler: MainModuleHandler;
-  private readonly configFilesHandler: ConfigFilesHandler;
+  private readonly handlers: Handler[];
 
-  constructor(private readonly appDefinition: AppDefinition) {
-    this.packageJsonHander = new PackageJsonHandler();
-    this.fileStructureHandler = new FolderStructureHandler();
-    this.mainModuleHandler = new MainModuleHandler();
-    this.configFilesHandler = new ConfigFilesHandler();
+  constructor(
+  @inject(Types.PackageJsonHandler) packageJsonHandler: Handler,
+    @inject(Types.WebApiFolderHandler) webApiFolderHandler: Handler,
+    @inject(Types.WebApiConfigHandler) configFilesHandler: Handler,
+    @inject(Types.MainModuleHandler) mainModuleHandler: Handler,
+  ) {
+    this.handlers = [
+      packageJsonHandler,
+      webApiFolderHandler,
+      configFilesHandler,
+      mainModuleHandler,
+    ];
   }
 
-  buildModule(): void {
-    console.log('Proceeding to Build a WebAPI Module');
-    this.packageJsonHander.buildPackageJson(this.appDefinition);
-    this.fileStructureHandler.buildFolderStructure(this.appDefinition);
-    this.mainModuleHandler.buildMainModule(this.appDefinition);
-    this.configFilesHandler.buildConfigFiles(this.appDefinition);
+  buildModule(appDefinition: AppDefinition): void {
+    this.handlers.forEach((currentHandler: Handler) => currentHandler.handle(appDefinition));
   }
 }

@@ -1,3 +1,7 @@
+import {
+  AppDefinition,
+} from 'models';
+
 export interface ModuleBuilder {
-  buildModule(): void;
+  buildModule(appDefinition: AppDefinition): void;
 }

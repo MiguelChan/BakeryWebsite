@@ -32,6 +32,9 @@
       ],
       "engine/handlers": [
         "src/engine/handlers/index"
+      ],
+      "di": [
+        "src/di/index"
       ]
     },
     "plugins": [

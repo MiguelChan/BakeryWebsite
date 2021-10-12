@@ -1,24 +1,10 @@
 import {
-  ModuleBuilderFactory,
-} from 'engine/builders';
+  Main,
+} from 'cmd';
 import {
-  AppDefinition,
-  AppType,
-} from 'models';
+  InversifyContainer,
+} from 'di';
 
-// const appDefBuilder: AppDefinitionBuilder = new AppDefinitionBuilder();
-// appDefBuilder.fetchAppDefinition().then((result: AppDefinition) => {
-//   const moduleBuilderFactory = new ModuleBuilderFactory();
-//   const moduleBuilder = moduleBuilderFactory.getModuleBuilder(result);
-//   moduleBuilder.buildModule();
-// });
-const appDefinition: AppDefinition = {
-  appName: '@mgl/test-test',
-  appType: AppType.WebApi,
-  appDescription: '',
-  version: '1.1.0',
-};
-
-const moduleBuilderFactory = new ModuleBuilderFactory();
-const moduleBuilder = moduleBuilderFactory.getModuleBuilder(appDefinition);
-moduleBuilder.buildModule();
+const inversifyContainer: InversifyContainer = new InversifyContainer();
+const mainApp: Main = inversifyContainer.getApp();
+mainApp.runApp();

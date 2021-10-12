@@ -1,40 +1,52 @@
-import { AppDefinition } from "models";
+import {
+  AppDefinition,
+} from 'models';
 import debug from 'debug';
 import fs from 'fs';
 import readline from 'readline';
 import path from 'path';
-import { 
+import {
   IndexableType,
 } from 'utils';
+import {
+  injectable,
+} from 'inversify';
+import {
+  Handler,
+} from './Handler';
 
 const logger: debug.Debugger = debug('configFilesHandler');
 
 /**
- * Handler that handles the creation of the Configuration Files, based off the AppType.
- * 
+ * Handler that handles the creation of the Configuration Files.
+ * This handler is meant to copy the Template Files provided in the Constructor into the correct folders
+ * of the created Module.
+ *
  * ToDo: Add jest config files
  */
-export class ConfigFilesHandler {
-
-  private readonly TEMPLATE_FILES: IndexableType = {
-    'src/templates/web-api/BabelConfig.template': 'babel.config.js',
-    'src/templates/web-api/EsLint.template': '.eslintrc.js',
-    'src/templates/web-api/JestConfig.template': 'jest.config.js',
-    'src/templates/web-api/tsconfig-template.json': 'tsconfig.json',
-  };
-
-  constructor() {
-    this.buildConfigFiles = this.buildConfigFiles.bind(this);
+@injectable()
+export class ConfigFilesHandler implements Handler {
+  /**
+   * Default constructor.
+   *
+   * @param {IndexableType} templateFiles The template files to copy. This is expecting that the "Key" of the
+   * IndexableType to be the Route of the TemplateFile and the "Value" is the final name of the File.
+   */
+  constructor(private readonly templateFiles: IndexableType) {
+    this.handle = this.handle.bind(this);
     this.writeFile = this.writeFile.bind(this);
+    logger('Initializing ConfigurationFilesHandler with Templates: %j', templateFiles);
   }
 
-  public async buildConfigFiles(appDefinition: AppDefinition): Promise<void> {
-    const {
-      appType,
-    } = appDefinition;
-
-    Object.keys(this.TEMPLATE_FILES).forEach((currentTemplate: string): void => {
-      const currentConfigFile = this.TEMPLATE_FILES[currentTemplate];
+  /**
+   * Copies all the template files into it's correct destinion.
+   *
+   * @param {AppDefinition} appDefinition .
+   */
+  public async handle(appDefinition: AppDefinition): Promise<void> {
+    logger('Creating Configuration Files for: %j', appDefinition);
+    Object.keys(this.templateFiles).forEach((currentTemplate: string): void => {
+      const currentConfigFile = this.templateFiles[currentTemplate];
       const configFilePath = path.resolve(process.cwd(), 'samples', currentConfigFile);
       this.writeFile(configFilePath, currentTemplate);
     });
@@ -59,5 +71,4 @@ export class ConfigFilesHandler {
     outputFile.close();
     templateReadLine.close();
   }
-
 }

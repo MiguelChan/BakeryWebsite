@@ -8,11 +8,20 @@ import {
   createFile,
 } from 'utils';
 import * as webApiPackageJson from '../../templates/web-api/package-template.json';
+import { Handler } from './Handler';
 
 const logger: debug.IDebugger = debug('packageJsonHandler');
 
-export class PackageJsonHandler {
-  public buildPackageJson(appDefinition: AppDefinition): void {
+/**
+ * Handler that handles the creation of the package.json File of a given Module.
+ */
+export class PackageJsonHandler implements Handler {
+  /**
+   * Handles the creation of the package.json File.
+   *
+   * @param {AppDefinition} appDefinition The app definition.
+   */
+  public async handle(appDefinition: AppDefinition): Promise<void> {
     console.log("I'm currently building your package.json File, please bear with me...");
     const {
       appName,

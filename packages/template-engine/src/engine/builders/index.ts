@@ -4,3 +4,6 @@ export {
 export {
   ModuleBuilderFactory,
 } from './ModuleBuilderFactory';
+export {
+  WebApiModuleBuilder,
+} from './WebApiModuleBuilder';

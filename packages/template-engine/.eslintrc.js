@@ -21,6 +21,8 @@ module.exports = {
     'class-methods-use-this': ['warn'],
     'modules-newline/import-declaration-newline': 'warn',
     'modules-newline/export-declaration-newline': 'warn',
+    'import/no-cycle': 'warn',
+    'no-restricted-syntax': 'warn',
   },
   ignorePatterns: [
       '**/build/**',

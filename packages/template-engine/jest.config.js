@@ -67,8 +67,8 @@ module.exports = {
 
   // An array of directory names to be searched recursively up from the requiring module's location
   moduleDirectories: [
-     "node_modules",
-     "src",
+    "node_modules",
+    "src",
   ],
 
   // An array of file extensions your modules use
@@ -126,15 +126,8 @@ module.exports = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  /**
-  * If you're using InversifyJS to handle DependencyInjections, make sure to create a JestConfigFile.js under
-  * the tst/utils Folder and uncomment this line. 
-  * Within that file just add: 
-  *  import 'reflect-metadata';
-  * And that's it
-  **/
   setupFiles: [
-    // './tst/utils/JestConfigFile.js',
+    './tst/utils/JestConfigFile.js',
   ],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test

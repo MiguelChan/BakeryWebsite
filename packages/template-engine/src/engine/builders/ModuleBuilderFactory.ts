@@ -1,15 +1,31 @@
 import {
+  inject,
+  injectable,
+} from 'inversify';
+import {
   AppDefinition,
   AppType,
 } from 'models';
-import { ModuleBuilder } from './ModuleBuilder';
-import { WebApiModuleBuilder } from './WebApiModuleBuilder';
-import { WebAppModuleBuilder } from './WebAppModuleBuilder';
+import {
+  Types,
+} from 'src/di/InversifyContainer';
+import {
+  ModuleBuilder,
+} from './ModuleBuilder';
+import {
+  WebAppModuleBuilder,
+} from './WebAppModuleBuilder';
 
 /**
  * Defines the Module Builder Factory.
  */
+@injectable()
 export class ModuleBuilderFactory {
+  public constructor(
+    @inject(Types.WebApiModuleBuilder) private readonly webApiModuleBuilder: ModuleBuilder,
+  ) {
+  }
+
   public getModuleBuilder(appDefinition: AppDefinition): ModuleBuilder {
     const {
       appType,
@@ -19,7 +35,7 @@ export class ModuleBuilderFactory {
       case AppType.WebApp:
         return new WebAppModuleBuilder(appDefinition);
       default:
-        return new WebApiModuleBuilder(appDefinition);
+        return this.webApiModuleBuilder;
     }
   }
 }
