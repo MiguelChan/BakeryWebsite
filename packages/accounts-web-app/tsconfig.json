@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "declarationDir": "build",
+        "module": "ESNext",
+        "target": "ES5",
+        "lib": [
+            "ES6",
+            "DOM",
+            "ES2016",
+            "ES2017"
+        ],
+        "sourceMap": true,
+        "jsx": "react",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+    },
+    "include": [
+        "src/**/*",
+        "./jest-setup.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "build",
+        "src/**/*.stories.tsx",
+        "src/**/*.test.tsx",
+        "src/**/*.tests.tsx",
+    ]
+  }
