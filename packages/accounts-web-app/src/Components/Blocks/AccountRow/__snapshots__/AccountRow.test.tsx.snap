@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccountRow Should display the AccountInformation 1`] = `
+<div>
+  <table
+    class="MuiTable-root css-rqglhn-MuiTable-root"
+  >
+    <tbody>
+      <tr
+        class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+      >
+        <td
+          class="MuiTableCell-root MuiTableCell-sizeMedium css-bsph2u-MuiTableCell-root"
+        >
+          ThisIsAnId
+        </td>
+        <td
+          class="MuiTableCell-root MuiTableCell-sizeMedium css-bsph2u-MuiTableCell-root"
+        >
+          This is an account
+        </td>
+        <td
+          class="MuiTableCell-root MuiTableCell-sizeMedium css-bsph2u-MuiTableCell-root"
+        >
+          Expenses
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

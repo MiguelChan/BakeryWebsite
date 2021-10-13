@@ -15,16 +15,17 @@
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
+        "types": ["node", "jest", "@types/jest", "@types/node"]
     },
     "include": [
         "src/**/*",
-        "./jest-setup.ts"
+        "./jest-setup.ts",
+        "src/**/*.stories.tsx",
+        "src/**/*.test.tsx",
+        "src/**/*.tests.tsx"
     ],
     "exclude": [
         "node_modules",
-        "build",
-        "src/**/*.stories.tsx",
-        "src/**/*.test.tsx",
-        "src/**/*.tests.tsx",
+        "build"
     ]
   }
