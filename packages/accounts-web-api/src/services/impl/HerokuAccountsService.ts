@@ -1,4 +1,6 @@
 import {
+  CreateAccountRequest,
+  CreateAccountResponse,
   GetAccountsRequest,
   GetAccountsResponse,
 } from '@mgl/shared-components';
@@ -27,6 +29,23 @@ const logger: debug.IDebugger = debug('accounts:HerokuAccountsService');
 export class HerokuAccountsService implements AccountsService {
   constructor(@inject(Types.AccountsServiceUrl) private readonly baseUrl: string) {
     this.getAccounts = this.getAccounts.bind(this);
+  }
+
+  createAccount(createAccountRequest: CreateAccountRequest): Promise<CreateAccountResponse> {
+    logger('Attempting to create Account with Params: %j', createAccountRequest);
+
+    return new Promise<CreateAccountResponse>((accept, reject) => {
+      const fullUrl = `${this.baseUrl}/accounts`;
+      logger('Attempting to call: %s', fullUrl);
+
+      axios.post(fullUrl, createAccountRequest).then((response: AxiosResponse<CreateAccountResponse>) => {
+        logger('Got a Response: %j', response);
+        accept(response.data);
+      }).catch((error: AxiosError) => {
+        logger('Got an error: %s', error.message);
+        reject(error);
+      });
+    });
   }
 
   getAccounts(getAccountsRequest: GetAccountsRequest): Promise<GetAccountsResponse> {
