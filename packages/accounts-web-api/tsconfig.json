@@ -12,6 +12,7 @@
     "strict": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "models": [
@@ -31,8 +32,17 @@
       ],
       "controllers": [
         "src/controllers/index"
-      ]
-    }
+      ],
+      "src": [
+        "src/index"
+      ],
+    },
+    "plugins": [
+      {
+        "transform": "@zerollup/ts-transform-paths",
+        "exclude": ["*"]
+      }
+    ]
   },
   "include": [
     "src/**/*",

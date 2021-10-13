@@ -21,8 +21,20 @@ module.exports = {
     'class-methods-use-this': ['warn'],
     'modules-newline/import-declaration-newline': 'warn',
     'modules-newline/export-declaration-newline': 'warn',
+    'import/no-cycle': 'off',
   },
   ignorePatterns: [
       '**/build/**',
   ],
+  settings: {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json",
+      }
+    }
+  }
 };
