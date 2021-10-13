@@ -1,6 +1,8 @@
 import express from 'express';
 import debug from 'debug';
 import {
+  CreateAccountRequest,
+  CreateAccountResponse,
   GetAccountsRequest,
   GetAccountsResponse,
 } from '@mgl/shared-components';
@@ -23,6 +25,7 @@ export class AccountsController {
   constructor(@inject(Types.AccountsService) private readonly accountsService: AccountsService) {
     logger('Initializing Accounts Controller');
     this.getAccounts = this.getAccounts.bind(this);
+    this.createAccount = this.createAccount.bind(this);
   }
 
   /**
@@ -43,6 +46,27 @@ export class AccountsController {
       logger('Got an error from the Service: %s', exception.message);
       res.json({
         error: exception.message,
+      }).status(500);
+    }
+  }
+
+  /**
+   * Creates the Account from the provided parameters.
+   *
+   * @param {express.Request} req .
+   * @param {express.Response} res .
+   */
+  async createAccount(req: express.Request, res: express.Response) {
+    const createAccountRequest: CreateAccountRequest = req.body;
+
+    try {
+      const response: CreateAccountResponse = await this.accountsService.createAccount(createAccountRequest);
+      logger('Got a response from the Service: %j', response);
+      res.json(response);
+    } catch (exception: any) {
+      logger('Got an error from the Service: %s', exception.message);
+      res.json({
+        message: exception.message,
       }).status(500);
     }
   }

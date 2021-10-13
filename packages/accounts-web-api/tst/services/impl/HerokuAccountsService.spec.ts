@@ -1,4 +1,6 @@
 import {
+  CreateAccountRequest,
+  CreateAccountResponse,
   GetAccountsResponse,
 } from '@mgl/shared-components';
 import axios, { AxiosResponse } from 'axios';
@@ -12,6 +14,7 @@ describe('HerokuAccountsService', () => {
   let accountsService: HerokuAccountsService;
 
   const mockGetFn = axios.get as jest.Mock;
+  const mockPostFn = axios.post as jest.Mock;
 
   beforeEach(() => {
     accountsService = new HerokuAccountsService(BASE_URL);
@@ -19,6 +22,7 @@ describe('HerokuAccountsService', () => {
 
   afterEach(() => {
     mockGetFn.mockClear();
+    mockPostFn.mockClear();
   });
 
   const createAxiosResponse = <T> (response: T): AxiosResponse<T> => {
@@ -59,6 +63,48 @@ describe('HerokuAccountsService', () => {
       return accountsService.getAccounts({}).catch((error: Error) => {
         expect(error).toEqual(axiosError);
         expect(mockGetFn).toHaveBeenCalledWith(API_ENDPOINT);
+      });
+    });
+  });
+
+  describe('createAccount', () => {
+    const API_ENDPOINT = `${BASE_URL}/accounts`;
+
+    it('Should create an Account', () => {
+      const expectedResponse: CreateAccountResponse = {
+        accountId: 'SomeSome',
+        message: null,
+        success: true,
+      };
+
+      const axiosResponse = createAxiosResponse(expectedResponse);
+
+      mockPostFn.mockResolvedValueOnce(axiosResponse);
+
+      const expectedRequest: CreateAccountRequest = {
+        account: {} as any,
+        requestingUser: 'SomeSome',
+      };
+
+      return accountsService.createAccount(expectedRequest).then((response: CreateAccountResponse) => {
+        expect(response).toStrictEqual(expectedResponse);
+        expect(mockPostFn).toHaveBeenCalledWith(API_ENDPOINT, expectedRequest);
+      });
+    });
+
+    it('Should handle erros gracefully', () => {
+      const expectedError: Error = new Error('Some Error');
+
+      mockPostFn.mockRejectedValueOnce(expectedError);
+
+      const expectedRequest: CreateAccountRequest = {
+        account: {} as any,
+        requestingUser: 'SomeSome',
+      };
+
+      return accountsService.createAccount(expectedRequest).catch((error: Error) => {
+        expect(error).toEqual(expectedError);
+        expect(mockPostFn).toHaveBeenCalledWith(API_ENDPOINT, expectedRequest);
       });
     });
   });
