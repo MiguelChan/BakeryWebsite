@@ -4,6 +4,10 @@ import {
   WebApplication,
 } from '@mgl/shared-components';
 import debug from 'debug';
+import {
+  InversifyContainer,
+} from 'utils';
+import { CommonRoutesConfig } from 'routes';
 
 const logger: debug.IDebugger = debug('accounts:Module');
 
@@ -14,6 +18,8 @@ const logger: debug.IDebugger = debug('accounts:Module');
  * This is meant to be used with {express}.
  */
 export class AccountsWebApiModule implements WebAppModule {
+  private readonly inversifyContainer: InversifyContainer;
+
   /**
    * Default constructor.
    * @param {express.Application} app .
@@ -21,6 +27,7 @@ export class AccountsWebApiModule implements WebAppModule {
    */
   public constructor(private readonly app: express.Application, private readonly accountsServiceUrl: string) {
     logger(`Attaching into: ${accountsServiceUrl}`);
+    this.inversifyContainer = new InversifyContainer(app, accountsServiceUrl);
   }
 
   /**
@@ -29,6 +36,11 @@ export class AccountsWebApiModule implements WebAppModule {
    * @param {WebApplication} app .
    */
   installModule(app: WebApplication) {
-    logger(`Application: ${app}`);
+    logger('Configuring Routes for Application: %j', app);
+    const currentRoutes: CommonRoutesConfig[] = this.inversifyContainer.getAppRoutes();
+    currentRoutes.forEach((currentRoute: CommonRoutesConfig) => {
+      logger('Configuring Route: %s', currentRoute.getName());
+      currentRoute.configureRoutes();
+    });
   }
 }
