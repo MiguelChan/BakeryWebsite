@@ -7,17 +7,27 @@ import {
   Switch,
 } from 'react-router-dom';
 import { 
-  SimpleBlock,
-} from '../../Blocks';
+  AccountsAppContext, 
+  ApplicationContext,
+} from '../../../Context';
+import {
+  ViewAccountsDashboard,
+} from '../../Constructed';
 
-export const AccountsPage: React.FunctionComponent = () => (
-  <>
+export interface AccountsPageProps {
+  appContext: ApplicationContext;
+}
+
+export const AccountsPage: React.FunctionComponent<AccountsPageProps> = ({
+  appContext,
+}) => (
+  <AccountsAppContext.Provider value={appContext}>
     <Container>
       <Switch>
         <Route path='/accounts' exact>
-          <SimpleBlock />
+          <ViewAccountsDashboard />
         </Route>
       </Switch>
     </Container>
-  </>
+  </AccountsAppContext.Provider>
 );

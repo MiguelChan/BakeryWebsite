@@ -30,6 +30,8 @@ import {
 } from '@mgl/suppliers-web-app';
 import {
   AccountsPage,
+  AccountsAppContext,
+  ApplicationContext,
 } from '@mgl/accounts-web-app';
 
 // https://stackoverflow.com/questions/56021112/react-hooks-in-react-library-giving-invalid-hook-call-error
@@ -87,6 +89,8 @@ const App: React.FunctionComponent<AppProps> = ({
     setIsDrawerOpen(!isDrawerOpen);
   }
 
+  const accountsAppContext: ApplicationContext = React.useContext(AccountsAppContext);
+
   return (
     <>
       <div className={classes.root}>
@@ -108,7 +112,7 @@ const App: React.FunctionComponent<AppProps> = ({
               <SuppliersPage />
             </Route>
             <Route path='/accounts'>
-              <AccountsPage />
+              <AccountsPage appContext={accountsAppContext}/>
             </Route>
             <Route>
               <NotFoundPage />
