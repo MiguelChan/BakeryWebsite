@@ -3,13 +3,15 @@ import {
   Story,
   Meta,
 } from '@storybook/react';
-import {
-  AccountRow, AccountRowProps,
-} from './AccountRow';
 import { Table } from '@mui/material';
 import {
-  Account, AccountType,
+  Account,
+  AccountType,
 } from '@mgl/shared-components';
+import {
+  AccountRow,
+  AccountRowProps,
+} from './AccountRow';
 
 export default {
   title: 'Components/Blocks/AccountRow',

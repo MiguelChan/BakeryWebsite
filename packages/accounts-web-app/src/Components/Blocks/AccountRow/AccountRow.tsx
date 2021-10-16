@@ -2,7 +2,10 @@ import React from 'react';
 import {
   Account,
 } from '@mgl/shared-components';
-import { TableCell, TableRow } from '@mui/material';
+import {
+  TableCell,
+  TableRow,
+} from '@mui/material';
 
 export interface AccountRowProps {
   account: Account;
@@ -10,10 +13,10 @@ export interface AccountRowProps {
 
 /**
  * Defines a row that is meant to be used to displaying an {Account}.
- * 
+ *
  * @param {Account} account The account to use.
- * 
- * @returns 
+ *
+ * @returns
  */
 export const AccountRow: React.FunctionComponent<AccountRowProps> = ({
   account,

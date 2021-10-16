@@ -3,7 +3,10 @@ import {
   render,
   RenderResult,
 } from '@testing-library/react';
-import { Table, TableHead } from '@mui/material';
+import {
+  Table,
+  TableHead,
+} from '@mui/material';
 import { AccountsTableHeader } from './AccountsTableHeader';
 
 describe('AccountsTableHeader', () => {

@@ -3,11 +3,13 @@ import {
   render,
   RenderResult,
 } from '@testing-library/react';
-import { AccountsTable, AccountsTableProps } from './AccountsTable';
 import { AccountType } from '@mgl/shared-components';
+import {
+  AccountsTable,
+  AccountsTableProps,
+} from './AccountsTable';
 
 describe('AccountsTable', () => {
-
   const setupComponent = (args: AccountsTableProps): RenderResult => (
     render(<AccountsTable {...args} />)
   );
@@ -19,19 +21,19 @@ describe('AccountsTable', () => {
           accountType: AccountType.Expenses,
           id: 'AnId',
           subAccounts: [],
-          title: 'This is a title 1'
+          title: 'This is a title 1',
         },
         {
           accountType: AccountType.Capital,
           id: 'AnId2',
           subAccounts: [],
-          title: 'This is a title 2'
+          title: 'This is a title 2',
         },
         {
           accountType: AccountType.Entry,
           id: 'AnId3',
           subAccounts: [],
-          title: 'This is a title 3'
+          title: 'This is a title 3',
         },
       ],
     };

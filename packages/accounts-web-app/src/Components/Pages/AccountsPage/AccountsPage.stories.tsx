@@ -4,15 +4,15 @@ import {
   Meta,
 } from '@storybook/react';
 import {
-  AccountsPage, 
-  AccountsPageProps,
-} from './AccountsPage';
-import { 
-  UseGetAccountsState,
- } from '../../../Hooks';
-import { 
   AccountType,
 } from '@mgl/shared-components';
+import {
+  AccountsPage,
+  AccountsPageProps,
+} from './AccountsPage';
+import {
+  UseGetAccountsState,
+} from '../../../Hooks';
 
 export default {
   title: 'Components/Pages/AccountsPage',

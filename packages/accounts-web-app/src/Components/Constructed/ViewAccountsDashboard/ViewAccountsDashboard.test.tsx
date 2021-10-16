@@ -3,19 +3,22 @@ import {
   render,
   RenderResult,
 } from '@testing-library/react';
-import { AccountsAppContext, ApplicationContext } from '../../../Context';
+import { AccountType } from '@mgl/shared-components';
+import {
+  AccountsAppContext,
+  ApplicationContext,
+} from '../../../Context';
 import { ViewAccountsDashboard } from './ViewAccountsDashboard';
 import { LoadingTable } from './ViewAccountsDashboard.stories';
-import { UseGetAccountsState } from '../../../Hooks';
-import { AccountType } from '@mgl/shared-components';
+import { UseCreateAccountState, UseGetAccountsState } from '../../../Hooks';
 
 describe('ViewAccountsDashbard', () => {
   const setupComponent = (props: ApplicationContext): RenderResult => {
     const Component = (
-      <AccountsAppContext.Provider value={props} >
+      <AccountsAppContext.Provider value={props}>
         <ViewAccountsDashboard />
       </AccountsAppContext.Provider>
-      );
+    );
     return render(Component);
   };
 
@@ -25,10 +28,16 @@ describe('ViewAccountsDashbard', () => {
         accounts: [],
         isLoading: true,
       }),
+      useCreateAccount: (): UseCreateAccountState => ({
+        isAccountCreated: false,
+        isLoading: false,
+        requestCreateAccount: (): void => {},
+        errorMessage: null,
+      }),
     };
 
     const result = setupComponent(loadingTableProps);
-    
+
     expect(result.container).toMatchSnapshot();
   });
 
@@ -38,6 +47,12 @@ describe('ViewAccountsDashbard', () => {
         accounts: [],
         isLoading: false,
         errorMessage: 'Something went wrong',
+      }),
+      useCreateAccount: (): UseCreateAccountState => ({
+        isAccountCreated: false,
+        isLoading: false,
+        requestCreateAccount: (): void => {},
+        errorMessage: null,
       }),
     };
 
@@ -52,6 +67,12 @@ describe('ViewAccountsDashbard', () => {
         accounts: [],
         isLoading: false,
         errorMessage: undefined,
+      }),
+      useCreateAccount: (): UseCreateAccountState => ({
+        isAccountCreated: false,
+        isLoading: false,
+        requestCreateAccount: (): void => {},
+        errorMessage: null,
       }),
     };
 
@@ -73,6 +94,12 @@ describe('ViewAccountsDashbard', () => {
         ],
         isLoading: false,
         errorMessage: undefined,
+      }),
+      useCreateAccount: (): UseCreateAccountState => ({
+        isAccountCreated: false,
+        isLoading: false,
+        requestCreateAccount: (): void => {},
+        errorMessage: null,
       }),
     };
 

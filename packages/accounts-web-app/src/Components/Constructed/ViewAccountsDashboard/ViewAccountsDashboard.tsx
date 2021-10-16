@@ -1,13 +1,13 @@
 import { isNullOrUndefined } from '@mgl/shared-components';
 import React from 'react';
 import { GetAccountsApiFn } from '../../../Clients';
-import { 
-  AccountsAppContext, 
+import {
+  AccountsAppContext,
   ApplicationContext,
 } from '../../../Context';
-import { 
-  useGetAccounts, 
-  UseGetAccounts, 
+import {
+  useGetAccounts,
+  UseGetAccounts,
   UseGetAccountsState,
 } from '../../../Hooks';
 import { AccountsTable } from '../../Composites';
@@ -17,7 +17,6 @@ export interface ViewAccountsDashboardProps {
 
 export const ViewAccountsDashboard: React.FunctionComponent<ViewAccountsDashboardProps> = ({
 }) => {
-
   const appDependencies: ApplicationContext = React.useContext<ApplicationContext>(AccountsAppContext);
   const useGetAccountState: UseGetAccountsState = appDependencies.useGetAccounts();
 
@@ -33,7 +32,7 @@ export const ViewAccountsDashboard: React.FunctionComponent<ViewAccountsDashboar
     }
 
     if (!isNullOrUndefined(errorMessage)) {
-      return <span>{errorMessage}</span>
+      return <span>{errorMessage}</span>;
     }
 
     return <AccountsTable accounts={accounts} />;

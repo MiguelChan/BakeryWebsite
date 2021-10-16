@@ -1,5 +1,12 @@
-import { GetAccountsResponse } from '@mgl/shared-components';
-import axios, { AxiosError, AxiosResponse } from 'axios'
+import {
+  CreateAccountRequest,
+  CreateAccountResponse,
+  GetAccountsResponse,
+} from '@mgl/shared-components';
+import axios, {
+  AxiosError,
+  AxiosResponse,
+} from 'axios';
 import {
   accountsClient,
 } from './AccountsClient';
@@ -7,11 +14,12 @@ import {
 jest.mock('axios');
 
 describe('AccountsClient', () => {
-
   const mockGetFn = axios.get as jest.Mock;
-  
+  const mockPostFn = axios.post as jest.Mock;
+
   afterEach(() => {
     mockGetFn.mockClear();
+    mockPostFn.mockClear();
   });
 
   describe('getAccounts', () => {
@@ -45,4 +53,49 @@ describe('AccountsClient', () => {
       });
     });
   });
+
+  describe('createAccount', () => {
+    it('Should create the Account', () => {
+      const expectedRequest: CreateAccountRequest = {
+        account: {} as any,
+        requestingUser: 'miguel',
+      };
+
+      const expectedResponse: CreateAccountResponse = {
+        accountId: 'SomeSome',
+        message: null,
+        success: true,
+      };
+
+      const axiosResponse = buildAxiosResponse(expectedResponse);
+      mockPostFn.mockResolvedValueOnce(axiosResponse);
+
+      return accountsClient.createAccount(expectedRequest).then((response: CreateAccountResponse) => {
+        expect(expectedResponse).toStrictEqual(response);
+        expect(mockPostFn).toHaveBeenCalledWith('/api/accounts', expectedRequest);
+      });
+    });
+
+    it('Should handle errors gracefully', () => {
+      const expectedRequest: CreateAccountRequest = {
+        account: {} as any,
+        requestingUser: 'miguel',
+      };
+
+      const expectedError = new Error('Something Went Wrong');
+      mockPostFn.mockRejectedValueOnce(expectedError);
+
+      return accountsClient.createAccount(expectedRequest).catch((error: any) => {
+        expect(error).toStrictEqual(expectedError);
+        expect(mockPostFn).toHaveBeenCalledWith('/api/accounts', expectedRequest);
+      });
+    });
+  });
+
+  const buildAxiosResponse = <T> (object: T): AxiosResponse<T> => {
+    const axiosResponse: AxiosResponse<T> = {
+      data: object,
+    } as any;
+    return axiosResponse;
+  };
 });

@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubAccountsTableHeader Should display the SubAccountsTableHeader 1`] = `
+<div>
+  <table
+    class="MuiTable-root css-rqglhn-MuiTable-root"
+  >
+    <thead
+      class="MuiTableHead-root css-15wwp11-MuiTableHead-root"
+    >
+      <tr
+        class="MuiTableRow-root MuiTableRow-head css-1q1u3t4-MuiTableRow-root"
+      >
+        <th
+          class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
+          scope="col"
+        >
+          Id de Subcuenta
+        </th>
+        <th
+          class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
+          scope="col"
+        >
+          Nombre de subcuenta
+        </th>
+        <th
+          class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
+          scope="col"
+        />
+      </tr>
+    </thead>
+  </table>
+</div>
+`;

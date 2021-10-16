@@ -3,8 +3,8 @@ import {
   Story,
   Meta,
 } from '@storybook/react';
-import { AccountsTableHeader } from './AccountsTableHeader';
 import { Table } from '@mui/material';
+import { AccountsTableHeader } from './AccountsTableHeader';
 
 export default {
   title: 'Components/Blocks/AccountsTableHeader',
