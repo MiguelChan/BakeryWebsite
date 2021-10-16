@@ -3,8 +3,10 @@ import {
   render,
   RenderResult,
 } from '@testing-library/react';
-import { 
-  AccountsPage, 
+import { MemoryRouter } from 'react-router-dom';
+import { AccountType } from '@mgl/shared-components';
+import {
+  AccountsPage,
   AccountsPageProps,
 } from './AccountsPage';
 import {
@@ -12,18 +14,14 @@ import {
   LoadingTable,
   WithData,
 } from './AccountsPage.stories';
-import { MemoryRouter } from 'react-router-dom';
-import { UseGetAccountsState } from '../../../Hooks';
-import { AccountType } from '@mgl/shared-components';
+import { UseCreateAccountState, UseGetAccountsState } from '../../../Hooks';
 
 describe('AccountsPage', () => {
-  const setupComponent = (props: AccountsPageProps): RenderResult => {
-    return render(
-      <MemoryRouter>
-        <AccountsPage {...props} />
-      </MemoryRouter>
-    );
-  };
+  const setupComponent = (props: AccountsPageProps): RenderResult => render(
+    <MemoryRouter>
+      <AccountsPage {...props} />
+    </MemoryRouter>,
+  );
 
   it('Should display the loading page', () => {
     const loadingPageProps: AccountsPageProps = {
@@ -32,9 +30,15 @@ describe('AccountsPage', () => {
           accounts: [],
           isLoading: true,
         }),
-      }
+        useCreateAccount: (): UseCreateAccountState => ({
+          isAccountCreated: false,
+          isLoading: false,
+          requestCreateAccount: (): void => {},
+          errorMessage: undefined,
+        }),
+      },
     };
-    
+
     const result = setupComponent(loadingPageProps);
 
     expect(result.container).toMatchSnapshot();
@@ -54,9 +58,15 @@ describe('AccountsPage', () => {
             },
           ],
         }),
+        useCreateAccount: (): UseCreateAccountState => ({
+          isAccountCreated: false,
+          isLoading: false,
+          requestCreateAccount: (): void => {},
+          errorMessage: undefined,
+        }),
       },
     };
-    
+
     const result = setupComponent(props);
 
     expect(result.container).toMatchSnapshot();

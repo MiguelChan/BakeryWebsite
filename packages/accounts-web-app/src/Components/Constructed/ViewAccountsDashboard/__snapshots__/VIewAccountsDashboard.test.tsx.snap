@@ -3,7 +3,7 @@
 exports[`ViewAccountsDashbard Should display empty data 1`] = `
 <div>
   <table
-    class="MuiTable-root css-rqglhn-MuiTable-root"
+    class="MuiTable-root MuiTable-stickyHeader css-xn82ks-MuiTable-root"
   >
     <thead
       class="MuiTableHead-root css-15wwp11-MuiTableHead-root"
@@ -12,19 +12,19 @@ exports[`ViewAccountsDashbard Should display empty data 1`] = `
         class="MuiTableRow-root MuiTableRow-head css-1q1u3t4-MuiTableRow-root"
       >
         <th
-          class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
+          class="MuiTableCell-root MuiTableCell-head MuiTableCell-stickyHeader MuiTableCell-sizeMedium css-y8ay40-MuiTableCell-root"
           scope="col"
         >
           Id
         </th>
         <th
-          class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
+          class="MuiTableCell-root MuiTableCell-head MuiTableCell-stickyHeader MuiTableCell-sizeMedium css-y8ay40-MuiTableCell-root"
           scope="col"
         >
           Nombre de cuenta
         </th>
         <th
-          class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
+          class="MuiTableCell-root MuiTableCell-head MuiTableCell-stickyHeader MuiTableCell-sizeMedium css-y8ay40-MuiTableCell-root"
           scope="col"
         >
           Tipo de Cuenta
@@ -49,7 +49,7 @@ exports[`ViewAccountsDashbard Should display the Loading Message 1`] = `
 exports[`ViewAccountsDashbard Should display the data 1`] = `
 <div>
   <table
-    class="MuiTable-root css-rqglhn-MuiTable-root"
+    class="MuiTable-root MuiTable-stickyHeader css-xn82ks-MuiTable-root"
   >
     <thead
       class="MuiTableHead-root css-15wwp11-MuiTableHead-root"
@@ -58,19 +58,19 @@ exports[`ViewAccountsDashbard Should display the data 1`] = `
         class="MuiTableRow-root MuiTableRow-head css-1q1u3t4-MuiTableRow-root"
       >
         <th
-          class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
+          class="MuiTableCell-root MuiTableCell-head MuiTableCell-stickyHeader MuiTableCell-sizeMedium css-y8ay40-MuiTableCell-root"
           scope="col"
         >
           Id
         </th>
         <th
-          class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
+          class="MuiTableCell-root MuiTableCell-head MuiTableCell-stickyHeader MuiTableCell-sizeMedium css-y8ay40-MuiTableCell-root"
           scope="col"
         >
           Nombre de cuenta
         </th>
         <th
-          class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
+          class="MuiTableCell-root MuiTableCell-head MuiTableCell-stickyHeader MuiTableCell-sizeMedium css-y8ay40-MuiTableCell-root"
           scope="col"
         >
           Tipo de Cuenta

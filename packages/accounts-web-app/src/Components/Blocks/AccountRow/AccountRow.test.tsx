@@ -4,20 +4,20 @@ import {
   render,
 } from '@testing-library/react';
 import {
-  Account, AccountType,
+  Account,
+  AccountType,
 } from '@mgl/shared-components';
-import { AccountRow } from './AccountRow';
 import { Table } from '@mui/material';
+import { AccountRow } from './AccountRow';
 
 describe('AccountRow', () => {
-
   function setupComponent(account: Account): RenderResult {
     return render(
       <Table>
         <tbody>
-          <AccountRow  account={account} />
+          <AccountRow account={account} />
         </tbody>
-      </Table>
+      </Table>,
     );
   }
 

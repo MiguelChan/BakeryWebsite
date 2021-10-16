@@ -3,10 +3,16 @@ import {
   Story,
   Meta,
 } from '@storybook/react';
-import { ViewAccountsDashboard, ViewAccountsDashboardProps } from './ViewAccountsDashboard';
-import { AccountsAppContext, ApplicationContext } from '../../../Context';
-import { UseGetAccountsState } from '../../../Hooks';
 import { AccountType } from '@mgl/shared-components';
+import {
+  ViewAccountsDashboard,
+  ViewAccountsDashboardProps,
+} from './ViewAccountsDashboard';
+import {
+  AccountsAppContext,
+  ApplicationContext,
+} from '../../../Context';
+import { UseGetAccountsState } from '../../../Hooks';
 
 export default {
   title: 'Components/Constructed/ViewAccountsDashboard',
@@ -14,7 +20,7 @@ export default {
 } as Meta;
 
 const Template: Story<ViewAccountsDashboardProps & ApplicationContext> = (props) => (
-  <AccountsAppContext.Provider value={{...props}} >
+  <AccountsAppContext.Provider value={{ ...props }}>
     <ViewAccountsDashboard />
   </AccountsAppContext.Provider>
 );
@@ -25,14 +31,14 @@ LoadingTable.args = {
     accounts: [],
     isLoading: true,
   }),
-}
+};
 
 export const EmptyTable = Template.bind({});
 EmptyTable.args = {
   useGetAccounts: (): UseGetAccountsState => ({
     accounts: [],
     isLoading: false,
-  })
+  }),
 };
 
 export const WithData = Template.bind({});

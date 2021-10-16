@@ -3,28 +3,28 @@ import {
   renderHook,
   RenderHookResult,
 } from '@testing-library/react-hooks';
-import { useGetAccounts, UseGetAccountsState } from './UseGetAccounts';
-import { GetAccountsApiFn } from '../../Clients';
 import { GetAccountsResponse } from '@mgl/shared-components';
+import {
+  useGetAccounts,
+  UseGetAccountsState,
+} from './UseGetAccounts';
+import { GetAccountsApiFn } from '../../Clients';
 
 describe('UseGetAccounts', () => {
-
   interface UseGetAccountsProps {
     getAccountsApiFn: GetAccountsApiFn;
   }
 
-  const setupHook = (props: UseGetAccountsProps): RenderHookResult<UseGetAccountsProps, UseGetAccountsState> => {
-    return renderHook((props: UseGetAccountsProps) => {
-      const {
-        getAccountsApiFn,
-      } = props;
-      return useGetAccounts(getAccountsApiFn);
-    }, {
-      initialProps: {
-        getAccountsApiFn: props.getAccountsApiFn,
-      }
-    });
-  };
+  const setupHook = (props: UseGetAccountsProps): RenderHookResult<UseGetAccountsProps, UseGetAccountsState> => renderHook((props: UseGetAccountsProps) => {
+    const {
+      getAccountsApiFn,
+    } = props;
+    return useGetAccounts(getAccountsApiFn);
+  }, {
+    initialProps: {
+      getAccountsApiFn: props.getAccountsApiFn,
+    },
+  });
 
   it('Should call the API Endpoint', async () => {
     const mockGetAccountsApiFn = jest.fn();

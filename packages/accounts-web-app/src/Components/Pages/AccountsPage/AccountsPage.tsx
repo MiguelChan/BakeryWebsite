@@ -1,18 +1,25 @@
-import { 
+import {
   Container,
 } from '@mui/material';
 import React from 'react';
-import { 
+import {
   Route,
   Switch,
 } from 'react-router-dom';
-import { 
-  AccountsAppContext, 
+import {
+  AccountsAppContext,
   ApplicationContext,
 } from '../../../Context';
 import {
   ViewAccountsDashboard,
 } from '../../Constructed';
+import { 
+  CreateAccountsPage,
+} from '../CreateAccountPage/CreateAccountsPage';
+import { 
+  BrowserRouter,
+} from 'react-router-dom';
+import { ViewAccountsPage } from '../ViewAccountsPage/ViewAccountsPage';
 
 export interface AccountsPageProps {
   appContext: ApplicationContext;
@@ -23,11 +30,16 @@ export const AccountsPage: React.FunctionComponent<AccountsPageProps> = ({
 }) => (
   <AccountsAppContext.Provider value={appContext}>
     <Container>
-      <Switch>
-        <Route path='/accounts' exact>
-          <ViewAccountsDashboard />
-        </Route>
-      </Switch>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/accounts" exact>
+            <ViewAccountsPage />
+          </Route>
+          <Route path="/accounts/create" exact>
+            <CreateAccountsPage />
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </Container>
   </AccountsAppContext.Provider>
 );

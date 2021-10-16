@@ -1,9 +1,12 @@
-import { TableCell, TableRow } from '@mui/material';
+import {
+  TableCell,
+  TableRow,
+} from '@mui/material';
 import React from 'react';
 
 /**
  * Defines the AccounsTable Header.
- * @returns 
+ * @returns
  */
 export const AccountsTableHeader: React.FunctionComponent = () => (
   <TableRow>

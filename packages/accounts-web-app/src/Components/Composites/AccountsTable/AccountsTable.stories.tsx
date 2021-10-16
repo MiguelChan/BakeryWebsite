@@ -3,8 +3,11 @@ import {
   Story,
   Meta,
 } from '@storybook/react';
-import { AccountsTable, AccountsTableProps } from './AccountsTable';
 import { AccountType } from '@mgl/shared-components';
+import {
+  AccountsTable,
+  AccountsTableProps,
+} from './AccountsTable';
 
 export default {
   title: 'Components/Composites/AccountsTable',
@@ -20,19 +23,19 @@ Primary.args = {
       accountType: AccountType.Expenses,
       id: 'AnId',
       subAccounts: [],
-      title: 'This is a title 1'
+      title: 'This is a title 1',
     },
     {
       accountType: AccountType.Capital,
       id: 'AnId2',
       subAccounts: [],
-      title: 'This is a title 2'
+      title: 'This is a title 2',
     },
     {
       accountType: AccountType.Entry,
       id: 'AnId3',
       subAccounts: [],
-      title: 'This is a title 3'
+      title: 'This is a title 3',
     },
   ],
 };

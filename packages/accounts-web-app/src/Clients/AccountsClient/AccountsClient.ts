@@ -1,15 +1,19 @@
-import { GetAccountsResponse } from "@mgl/shared-components";
-import axios, { AxiosResponse } from "axios";
+import {
+  CreateAccountRequest,
+  CreateAccountResponse,
+  GetAccountsResponse,
+} from '@mgl/shared-components';
+import axios, { AxiosResponse } from 'axios';
 
 /**
  * AccountsClient.
  */
 class AccountsClient {
-
   private readonly ACCOUNTS_URL = '/api/accounts';
 
   constructor() {
     this.getAccounts = this.getAccounts.bind(this);
+    this.createAccount = this.createAccount.bind(this);
   }
 
   /**
@@ -23,6 +27,25 @@ class AccountsClient {
       }).catch((error: any) => {
         reject(error);
       });
+    });
+  }
+
+  /**
+   * Creates an Account in the Service.
+   *
+   * @param {CreateAccountRequest} createAccountRequest .
+   *
+   * @return The Promise.
+   */
+  public createAccount(createAccountRequest: CreateAccountRequest): Promise<CreateAccountResponse> {
+    return new Promise<CreateAccountResponse>((accept, reject) => {
+      axios.post(this.ACCOUNTS_URL, createAccountRequest)
+        .then((response: AxiosResponse<CreateAccountResponse>) => {
+          accept(response.data);
+        })
+        .catch((error: any) => {
+          reject(error);
+        });
     });
   }
 }
