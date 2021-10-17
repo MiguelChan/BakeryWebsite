@@ -23,7 +23,7 @@ import {
   SubAccountsTable,
   TableBodyProps,
 } from '../../Composites';
-import { 
+import {
   EditableSubAccountRow,
 } from '../../Blocks';
 
@@ -31,8 +31,11 @@ export const ACCOUNT_TITLE_ID = 'AccountTitleId';
 export const CREATE_ACCOUNT_ID = 'CreateAccountId';
 export const ADD_SUB_ACCOUNT_ID = 'AddSubAccountId';
 
-export interface CreateAccountFormProps {
+export interface EditableAccountFormProps {
   onSubmitAccount: (account: Account) => void;
+  title?: string;
+  readOnly: boolean;
+  account: Account;
 }
 
 const validateSchema = yup.object({
@@ -55,15 +58,26 @@ const validateSchema = yup.object({
 });
 
 /**
- * Defines the CreateAccountForm.
+ * Defines the EditableAccountForm.
  *
  * @returns .
  */
-export const CreateAccountForm: React.FunctionComponent<CreateAccountFormProps> = ({
+export const EditableAccountForm: React.FunctionComponent<EditableAccountFormProps> = ({
   onSubmitAccount,
+  account = {
+    title: '',
+    accountType: AccountType.Capital,
+    subAccounts: [],
+  },
+  readOnly,
+  title = 'Creacion de Cuenta',
 }) => {
   const currentTheme = useTheme();
   const [currentSubAccounts, setCurrentSubAccounts] = React.useState<SubAccount[]>([]);
+
+  React.useEffect(() => {
+    setCurrentSubAccounts(account.subAccounts);
+  }, []);
 
   const handleFormikSubmit = (values) => {
     const accountToCreate: Account = {
@@ -74,11 +88,7 @@ export const CreateAccountForm: React.FunctionComponent<CreateAccountFormProps> 
   };
 
   const formik = useFormik({
-    initialValues: {
-      title: '',
-      accountType: AccountType.Capital,
-      subAccounts: [],
-    },
+    initialValues: account,
     validationSchema: validateSchema,
     onSubmit: handleFormikSubmit,
   });
@@ -111,6 +121,7 @@ export const CreateAccountForm: React.FunctionComponent<CreateAccountFormProps> 
         onDeleteSubAccountClickListener={onDeleteSubAccountListener}
         subAccount={currentSubAccount}
         onSubAccountUpdatedListener={onSubAccountUpdated}
+        readOnly={readOnly}
       />
     ));
 
@@ -140,6 +151,46 @@ export const CreateAccountForm: React.FunctionComponent<CreateAccountFormProps> 
     setCurrentSubAccounts(newSubAccounts);
   };
 
+  const renderButtons = (): React.ReactElement => {
+    if (readOnly) {
+      return <></>;
+    }
+
+    return (
+        <Grid
+          container
+          sx={{
+            paddingTop: currentTheme.spacing(2),
+          }}
+          spacing={2}
+        >
+          <Grid item>
+            <Button
+              color="primary"
+              variant="contained"
+              fullWidth
+              type="submit"
+              form="create-account"
+              data-testid={CREATE_ACCOUNT_ID}
+            >
+              {title}
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              color="secondary"
+              variant="contained"
+              fullWidth
+              onClick={addSubAccount}
+              data-testid={ADD_SUB_ACCOUNT_ID}
+            >
+              Agregar Subcuenta
+            </Button>
+          </Grid>
+        </Grid>
+    );
+  };
+
   return (
     <Paper
       elevation={3}
@@ -155,7 +206,7 @@ export const CreateAccountForm: React.FunctionComponent<CreateAccountFormProps> 
           marginBottom: currentTheme.spacing(3),
         }}
       >
-        Creacion de Cuenta
+        {title}
       </Typography>
       <form onSubmit={formik.handleSubmit} id="create-account">
         <Grid container spacing={4}>
@@ -169,8 +220,9 @@ export const CreateAccountForm: React.FunctionComponent<CreateAccountFormProps> 
               onChange={formik.handleChange}
               error={formik.touched.title && Boolean(formik.errors.title)}
               helperText={formik.touched.title && formik.errors.title}
+              disabled={readOnly}
               inputProps={{
-                "data-testid": ACCOUNT_TITLE_ID,
+                'data-testid': ACCOUNT_TITLE_ID,
               }}
             />
           </Grid>
@@ -183,6 +235,7 @@ export const CreateAccountForm: React.FunctionComponent<CreateAccountFormProps> 
                 id="accountType"
                 name="accountType"
                 label="Tipo de Cuenta"
+                disabled={readOnly}
               >
                 <MenuItem value={AccountType.Capital}>Capital</MenuItem>
                 <MenuItem value={AccountType.Entry}>Entrada</MenuItem>
@@ -203,37 +256,7 @@ export const CreateAccountForm: React.FunctionComponent<CreateAccountFormProps> 
             {renderSubAccountsTable()}
           </Grid>
         </Grid>
-        <Grid
-          container
-          sx={{
-            paddingTop: currentTheme.spacing(2),
-          }}
-          spacing={2}
-        >
-          <Grid item>
-            <Button 
-              color="primary" 
-              variant="contained" 
-              fullWidth 
-              type="submit" 
-              form="create-account"
-              data-testid={CREATE_ACCOUNT_ID}
-            >
-              Crear cuenta
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button 
-              color="secondary" 
-              variant="contained" 
-              fullWidth 
-              onClick={addSubAccount}
-              data-testid={ADD_SUB_ACCOUNT_ID}
-            >
-              Agregar Subcuenta
-            </Button>
-          </Grid>
-        </Grid>
+        {renderButtons()}
       </form>
     </Paper>
   );

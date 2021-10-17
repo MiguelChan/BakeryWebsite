@@ -185,7 +185,7 @@ exports[`CreateAccountsPage Should display the Component 1`] = `
               tabindex="0"
               type="submit"
             >
-              Crear cuenta
+              Creacion de Cuenta
               <span
                 class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
               />
@@ -428,7 +428,7 @@ exports[`CreateAccountsPage Should display the Error message 1`] = `
               tabindex="0"
               type="submit"
             >
-              Crear cuenta
+              Creacion de Cuenta
               <span
                 class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
               />
@@ -643,7 +643,7 @@ exports[`CreateAccountsPage Should display the Loading Dialog 1`] = `
               tabindex="0"
               type="submit"
             >
-              Crear cuenta
+              Creacion de Cuenta
               <span
                 class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
               />

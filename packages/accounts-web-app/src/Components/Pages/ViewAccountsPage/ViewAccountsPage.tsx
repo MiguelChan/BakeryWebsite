@@ -1,10 +1,13 @@
 import React from 'react';
-import { ViewAccountsDashboard } from '../../Constructed';
-import { SimpleAppTemplate } from '../../Templates';
 import {
   Link as RouterLink,
 } from 'react-router-dom';
-import { Button, useTheme } from '@mui/material';
+import {
+  Button,
+  useTheme,
+} from '@mui/material';
+import { ViewAccountsDashboard } from '../../Constructed';
+import { SimpleAppTemplate } from '../../Templates';
 
 /**
  * The ViewAccountsPage component.
@@ -12,16 +15,15 @@ import { Button, useTheme } from '@mui/material';
  * @returns .
  */
 export const ViewAccountsPage: React.FunctionComponent = () => {
-
   const currentTheme = useTheme();
 
   const renderBody = (): React.ReactElement => (
     <>
       <ViewAccountsDashboard />
-      <Button 
-        component={RouterLink as any} 
-        to='/accounts/create' 
-        variant='contained' 
+      <Button
+        component={RouterLink as any}
+        to='/accounts/create'
+        variant='contained'
         color='primary'
         sx={{
           marginTop: currentTheme.spacing(2),

@@ -7,7 +7,7 @@ exports[`AccountRow Should display the AccountInformation 1`] = `
   >
     <tbody>
       <tr
-        class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+        class="MuiTableRow-root MuiTableRow-hover css-1q1u3t4-MuiTableRow-root"
       >
         <td
           class="MuiTableCell-root MuiTableCell-sizeMedium css-bsph2u-MuiTableCell-root"

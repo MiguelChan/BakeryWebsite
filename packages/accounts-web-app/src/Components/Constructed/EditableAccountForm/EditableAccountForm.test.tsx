@@ -8,23 +8,39 @@ import {
   waitFor,
 } from '@testing-library/react';
 import {
-  Account, AccountType,
+  Account,
+  AccountType,
 } from '@mgl/shared-components';
-import { ACCOUNT_TITLE_ID, ADD_SUB_ACCOUNT_ID, CreateAccountForm, CreateAccountFormProps, CREATE_ACCOUNT_ID } from './CreateAccountForm';
-import { DELETE_BUTTON, TEXT_FIELD } from '../../Blocks';
+import {
+  ACCOUNT_TITLE_ID,
+  ADD_SUB_ACCOUNT_ID,
+  EditableAccountForm,
+  EditableAccountFormProps,
+  CREATE_ACCOUNT_ID,
+} from './EditableAccountForm';
+import {
+  DELETE_BUTTON,
+  TEXT_FIELD,
+} from '../../Blocks';
 
-describe('CreateAccountForm', () => {
-  const setupComponent = (props: CreateAccountFormProps): RenderResult => {
+describe('EditableAccountForm', () => {
+  const setupComponent = (props: EditableAccountFormProps): RenderResult => {
     const Component = (
-      <CreateAccountForm {...props} />
+      <EditableAccountForm {...props} />
     );
     return render(Component);
   };
 
   it('Should call the onSubmitAccount Function only when the accounts title is filled in', async () => {
     const mockOnSubmit = jest.fn();
-    const props: CreateAccountFormProps = {
+    const props: EditableAccountFormProps = {
       onSubmitAccount: mockOnSubmit,
+      account: {
+        title: '',
+        accountType: AccountType.Capital,
+        subAccounts: [],
+      } as any,
+      readOnly: false,
     };
 
     setupComponent(props);

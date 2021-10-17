@@ -10,7 +10,10 @@ import {
 } from '../../../Context';
 import { ViewAccountsDashboard } from './ViewAccountsDashboard';
 import { LoadingTable } from './ViewAccountsDashboard.stories';
-import { UseCreateAccountState, UseGetAccountsState } from '../../../Hooks';
+import {
+  UseCreateAccountState,
+  UseGetAccountsState,
+} from '../../../Hooks';
 
 describe('ViewAccountsDashbard', () => {
   const setupComponent = (props: ApplicationContext): RenderResult => {

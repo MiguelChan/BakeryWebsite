@@ -1,4 +1,8 @@
-import { CircularProgress, Dialog, DialogContent } from '@mui/material';
+import {
+  CircularProgress,
+  Dialog,
+  DialogContent,
+} from '@mui/material';
 import React from 'react';
 
 export interface LoadingDialogProps {

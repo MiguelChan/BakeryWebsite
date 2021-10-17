@@ -3,11 +3,14 @@ import {
   RenderResult,
   render,
 } from '@testing-library/react';
-import { AccountsAppContext, ApplicationContext } from '../../../Context';
+import { MemoryRouter } from 'react-router-dom';
+import {
+  AccountsAppContext,
+  ApplicationContext,
+} from '../../../Context';
 import { ViewAccountsPage } from './ViewAccountsPage';
 import { ViewAccountsDashboard } from '../../Constructed';
 import { EmptyTable } from './ViewAccountsPage.stories';
-import { MemoryRouter } from 'react-router-dom';
 
 describe.skip('ViewAccountsPage', () => {
   interface Context {

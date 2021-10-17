@@ -53,6 +53,7 @@ WithEditableRows.args = {
         onDeleteSubAccountClickListener={(): void => {}}
         subAccount={currentSubAccount}
         onSubAccountUpdatedListener={(): void => {}}
+        readOnly={false}
       />
     ));
 

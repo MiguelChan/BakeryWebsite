@@ -10,10 +10,12 @@ import {
 import {
   AccountRow,
   AccountsTableHeader,
+  OnAccountClickedListener,
 } from '../../Blocks';
 
 export interface AccountsTableProps {
   accounts: Account[];
+  onAccountClickedListener?: OnAccountClickedListener;
 }
 
 /**
@@ -25,12 +27,14 @@ export interface AccountsTableProps {
  */
 export const AccountsTable: React.FunctionComponent<AccountsTableProps> = ({
   accounts,
+  onAccountClickedListener,
 }) => {
   const renderRows = (): React.ReactElement[] => (
     accounts.map((currentAccount: Account) => (
       <AccountRow
         account={currentAccount}
         key={currentAccount.id}
+        onAccountClickedListener={onAccountClickedListener}
       />
     ))
   );
