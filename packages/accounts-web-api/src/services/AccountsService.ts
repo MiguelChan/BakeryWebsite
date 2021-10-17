@@ -1,6 +1,8 @@
 import {
   CreateAccountRequest,
   CreateAccountResponse,
+  GetAccountRequest,
+  GetAccountResponse,
   GetAccountsRequest,
   GetAccountsResponse,
 } from '@mgl/shared-components';
@@ -26,4 +28,13 @@ export interface AccountsService {
    * @returns {CreateAccountResponse} The response.
    */
   createAccount(createAccountRequest: CreateAccountRequest): Promise<CreateAccountResponse>;
+
+  /**
+   * Gets the Account from the Service.
+   *
+   * @param {GetAccountRequest} getAccountRequest The request for fetching the Account.
+   *
+   * @returns {GetAccountResponse} The response.
+   */
+  getAccount(getAccountRequest: GetAccountRequest): Promise<GetAccountResponse>;
 }

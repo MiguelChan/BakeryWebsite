@@ -1,6 +1,8 @@
 import {
   CreateAccountRequest,
   CreateAccountResponse,
+  GetAccountRequest,
+  GetAccountResponse,
   GetAccountsResponse,
 } from '@mgl/shared-components';
 import axios, { AxiosResponse } from 'axios';
@@ -105,6 +107,44 @@ describe('HerokuAccountsService', () => {
       return accountsService.createAccount(expectedRequest).catch((error: Error) => {
         expect(error).toEqual(expectedError);
         expect(mockPostFn).toHaveBeenCalledWith(API_ENDPOINT, expectedRequest);
+      });
+    });
+  });
+
+  describe('getAccount', () => {
+    it('Should get a single Account', () => {
+      const expectedResponse: GetAccountsResponse = {
+        discriminator: 'Response',
+      } as any;
+
+      const expectedAccountId = 'SomeId';
+      const expectedUrl = `${BASE_URL}/accounts/${expectedAccountId}`;
+      const request: GetAccountRequest = {
+        accountId: expectedAccountId,
+      };
+
+      const axiosResponse = createAxiosResponse(expectedResponse);
+      mockGetFn.mockResolvedValueOnce(axiosResponse);
+
+      return accountsService.getAccount(request).then((response: GetAccountResponse) => {
+        expect(response).toStrictEqual(expectedResponse);
+        expect(mockGetFn).toHaveBeenCalledWith(expectedUrl);
+      });
+    });
+
+    it('Should handle errors gracefully', () => {
+      const expectedError = new Error('This is dead');
+      const expectedAccountId = 'SomeAccountId';
+      const expectedUrl = `${BASE_URL}/accounts/${expectedAccountId}`;
+      const request: GetAccountRequest = {
+        accountId: expectedAccountId,
+      };
+
+      mockGetFn.mockRejectedValueOnce(expectedError);
+
+      return accountsService.getAccount(request).catch((error: any) => {
+        expect(error).toEqual(expectedError);
+        expect(mockGetFn).toHaveBeenCalledWith(expectedUrl);
       });
     });
   });

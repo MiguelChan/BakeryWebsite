@@ -7,9 +7,14 @@ import { AccountsController } from 'controllers';
 import { AccountsService } from 'services';
 import express from 'express';
 import {
+  parseGetAccountRequest,
+} from 'controllers/parsers';
+import {
   createMockRequest,
   createMockResponse,
 } from '../utils/ExpressUtils';
+
+jest.mock('controllers/parsers');
 
 describe('AccountsController', () => {
   let accountsController: AccountsController;
@@ -17,10 +22,12 @@ describe('AccountsController', () => {
   const mockAccountsService: AccountsService = {
     getAccounts: jest.fn(),
     createAccount: jest.fn(),
+    getAccount: jest.fn(),
   };
 
   const mockGetAccountsFn = mockAccountsService.getAccounts as jest.Mock;
   const mockCreateAccountFn = mockAccountsService.createAccount as jest.Mock;
+  const mockGetAccountFn = mockAccountsService.getAccount as jest.Mock;
 
   beforeEach(() => {
     accountsController = new AccountsController(mockAccountsService);
@@ -29,6 +36,7 @@ describe('AccountsController', () => {
   afterEach(() => {
     mockGetAccountsFn.mockClear();
     mockCreateAccountFn.mockClear();
+    mockGetAccountFn.mockClear();
   });
 
   describe('getAccounts', () => {
@@ -115,6 +123,53 @@ describe('AccountsController', () => {
           message: expectedErrorMessage,
         });
         expect(mockRes.status).toHaveBeenCalledWith(500);
+      });
+    });
+  });
+
+  describe('getAccount', () => {
+    const mockParseGetAccountRequestFn = parseGetAccountRequest as jest.Mock;
+
+    afterEach(() => {
+      mockParseGetAccountRequestFn.mockClear();
+    });
+
+    it('Should get a Single Account', async () => {
+      const mockReq: express.Request = createMockRequest();
+      const mockRes: express.Response = createMockResponse();
+      const expectedGetAccountRequest = {
+        discriminator: 'Discriminator',
+      } as any;
+
+      const expectedResponse = {
+        discr: 'Rsponse',
+      };
+
+      mockParseGetAccountRequestFn.mockReturnValueOnce(expectedGetAccountRequest);
+      mockGetAccountFn.mockResolvedValueOnce(expectedResponse);
+
+      await accountsController.getAccount(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      expect(mockRes.send).toHaveBeenCalledWith(expectedResponse);
+    });
+
+    it('Should handle errors gracefully', async () => {
+      const mockReq: express.Request = createMockRequest();
+      const mockRes: express.Response = createMockResponse();
+      const expectedGetAccountRequest = {
+        discriminator: 'Discriminator',
+      } as any;
+      const expectedErrorMessage = 'ThisIsError';
+
+      mockParseGetAccountRequestFn.mockReturnValueOnce(expectedGetAccountRequest);
+      mockGetAccountFn.mockRejectedValueOnce(new Error(expectedErrorMessage));
+
+      await accountsController.getAccount(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(500);
+      expect(mockRes.send).toHaveBeenCalledWith({
+        message: expectedErrorMessage,
       });
     });
   });

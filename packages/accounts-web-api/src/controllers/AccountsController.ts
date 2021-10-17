@@ -3,6 +3,8 @@ import debug from 'debug';
 import {
   CreateAccountRequest,
   CreateAccountResponse,
+  GetAccountRequest,
+  GetAccountResponse,
   GetAccountsRequest,
   GetAccountsResponse,
 } from '@mgl/shared-components';
@@ -14,6 +16,9 @@ import {
 import {
   Types,
 } from 'utils';
+import {
+  parseGetAccountRequest,
+} from 'controllers/parsers';
 
 const logger: debug.IDebugger = debug('accounts:app:AccountsController');
 
@@ -26,6 +31,7 @@ export class AccountsController {
     logger('Initializing Accounts Controller');
     this.getAccounts = this.getAccounts.bind(this);
     this.createAccount = this.createAccount.bind(this);
+    this.getAccount = this.getAccount.bind(this);
   }
 
   /**
@@ -68,6 +74,27 @@ export class AccountsController {
       res.json({
         message: exception.message,
       }).status(500);
+    }
+  }
+
+  /**
+   * Gets a Single Account
+   *
+   * @param req .
+   * @param res .
+   */
+  async getAccount(req: express.Request, res: express.Response) {
+    const getAccountRequest: GetAccountRequest = parseGetAccountRequest(req);
+
+    try {
+      const response: GetAccountResponse = await this.accountsService.getAccount(getAccountRequest);
+      logger('Got a Response from thee Service %j', response);
+      res.status(200).send(response);
+    } catch (exception: any) {
+      logger('Got an error from the Service: %s', exception.message);
+      res.status(500).send({
+        message: exception.message,
+      });
     }
   }
 }
