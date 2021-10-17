@@ -36,6 +36,9 @@
       "src": [
         "src/index"
       ],
+      "controllers/parsers": [
+        "src/controllers/parsers/index"
+      ]
     },
     "plugins": [
       {
