@@ -14,7 +14,10 @@ import {
   LoadingTable,
   WithData,
 } from './AccountsPage.stories';
-import { UseCreateAccountState, UseGetAccountsState } from '../../../Hooks';
+import {
+  UseCreateAccountState,
+  UseGetAccountsState,
+} from '../../../Hooks';
 
 describe('AccountsPage', () => {
   const setupComponent = (props: AccountsPageProps): RenderResult => render(

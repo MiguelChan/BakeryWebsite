@@ -60,5 +60,6 @@ Whenever your want to test the whole WebApp suite, you need to build the Docker 
 * After building the image create a `.env` file which will contain all the environment variables required to run the image.
   * `SUPPLIERS_URL`: Point this to the correct URL for your Suppliers Service. This could be either Beta or Localhost.
     * When using localhost, use the following format: `http://host.docker.internal:<SERVICE_PORT>/api`
+  * `ACCOUNTS_URL`: Point this to the correct URL For your Accounts Service.
 * Now, it is time to actually run the image: `docker run -p 3030:3030 --env-file .env website-app:<PutAVersionInHere>`
 * Now you can mount the image and start testing it. 

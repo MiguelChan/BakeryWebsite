@@ -7,8 +7,11 @@ import {
   TableRow,
 } from '@mui/material';
 
+export type OnAccountClickedListener = (account: Account) => void;
+
 export interface AccountRowProps {
   account: Account;
+  onAccountClickedListener?: OnAccountClickedListener;
 }
 
 /**
@@ -20,6 +23,7 @@ export interface AccountRowProps {
  */
 export const AccountRow: React.FunctionComponent<AccountRowProps> = ({
   account,
+  onAccountClickedListener,
 }) => {
   const {
     accountType,
@@ -27,8 +31,17 @@ export const AccountRow: React.FunctionComponent<AccountRowProps> = ({
     title,
   } = account;
 
+  const handleClick = (): void => {
+    if (onAccountClickedListener) {
+      onAccountClickedListener(account);
+    }
+  };
+
   return (
-    <TableRow>
+    <TableRow
+      onClick={handleClick}
+      hover
+    >
       <TableCell>
         {id}
       </TableCell>

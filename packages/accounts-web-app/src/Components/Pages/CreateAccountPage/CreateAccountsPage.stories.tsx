@@ -8,7 +8,10 @@ import {
   AccountsAppContext,
   ApplicationContext,
 } from '../../../Context';
-import { UseCreateAccountState, UseGetAccountsState } from '../../../Hooks';
+import {
+  UseCreateAccountState,
+  UseGetAccountsState,
+} from '../../../Hooks';
 
 export default {
   title: 'Components/Pages/CreateAccountPage',
@@ -37,7 +40,7 @@ Primary.args = {
       },
       errorMessage: undefined,
     }),
-  }
+  },
 };
 
 export const Loading = Template.bind({});
@@ -52,7 +55,7 @@ Loading.args = {
       },
       errorMessage: undefined,
     }),
-  }
+  },
 };
 
 export const WithErrorMessage = Template.bind({});
@@ -67,8 +70,8 @@ WithErrorMessage.args = {
       },
       errorMessage: 'El sistema se ha caido y ya no funciona',
     }),
-  }
-}
+  },
+};
 
 export const WithSuccessfulCreation = Template.bind({});
 WithSuccessfulCreation.args = {
@@ -82,5 +85,5 @@ WithSuccessfulCreation.args = {
       },
       errorMessage: undefined,
     }),
-  }
-}
+  },
+};

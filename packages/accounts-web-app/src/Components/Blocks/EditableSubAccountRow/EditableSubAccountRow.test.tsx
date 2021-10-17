@@ -16,7 +16,7 @@ import {
   EditableSubAccountRowProps,
   TEXT_FIELD,
 } from './EditableSubAccountRow';
-import { 
+import {
   Primary,
 } from './EditableSubAccountRow.stories';
 
@@ -51,6 +51,7 @@ describe('EditableSubAccountRow', () => {
       onDeleteSubAccountClickListener: mockOnDelete,
       onSubAccountUpdatedListener: jest.fn(),
       subAccount: expectedSubAccount,
+      readOnly: false,
     };
 
     setupComponent(props);
@@ -71,6 +72,7 @@ describe('EditableSubAccountRow', () => {
       onDeleteSubAccountClickListener: jest.fn(),
       onSubAccountUpdatedListener: mockOnUpdate,
       subAccount: expectedSubAccount,
+      readOnly: false,
     };
 
     setupComponent(props);
@@ -80,7 +82,7 @@ describe('EditableSubAccountRow', () => {
     fireEvent.change(screen.getByTestId(TEXT_FIELD), {
       target: {
         value: expectedText,
-      }
+      },
     });
 
     expect(mockOnUpdate).toHaveBeenCalledWith({

@@ -1,5 +1,12 @@
-import { isNullOrUndefined } from '@mgl/shared-components';
+import {
+  Account,
+  isNullOrUndefined,
+} from '@mgl/shared-components';
 import React from 'react';
+import {
+  useHistory,
+  useLocation,
+} from 'react-router-dom';
 import { GetAccountsApiFn } from '../../../Clients';
 import {
   AccountsAppContext,
@@ -19,6 +26,15 @@ export const ViewAccountsDashboard: React.FunctionComponent<ViewAccountsDashboar
 }) => {
   const appDependencies: ApplicationContext = React.useContext<ApplicationContext>(AccountsAppContext);
   const useGetAccountState: UseGetAccountsState = appDependencies.useGetAccounts();
+  const history = useHistory();
+
+  const onAccountClickedListener = (account: Account): void => {
+    const {
+      id,
+    } = account;
+
+    history.push(`accounts/${id}`);
+  };
 
   const renderComponent = (): React.ReactElement => {
     const {
@@ -35,7 +51,12 @@ export const ViewAccountsDashboard: React.FunctionComponent<ViewAccountsDashboar
       return <span>{errorMessage}</span>;
     }
 
-    return <AccountsTable accounts={accounts} />;
+    return (
+      <AccountsTable
+        accounts={accounts}
+        onAccountClickedListener={onAccountClickedListener}
+      />
+    );
   };
 
   return renderComponent();

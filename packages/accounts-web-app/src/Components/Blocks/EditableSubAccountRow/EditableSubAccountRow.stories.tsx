@@ -47,4 +47,15 @@ Primary.args = {
     description: 'A description',
   },
   onSubAccountUpdatedListener: (): void => {},
+  readOnly: false,
+};
+
+export const ReadOnly = Template.bind({});
+ReadOnly.args = {
+  subAccount: {
+    id: 'AnId',
+    description: 'A description',
+  },
+  onSubAccountUpdatedListener: (): void => {},
+  readOnly: true,
 };

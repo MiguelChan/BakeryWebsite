@@ -3,7 +3,10 @@ import {
   Story,
   Meta,
 } from '@storybook/react';
-import { LoadingDialog, LoadingDialogProps } from './LoadingDialog';
+import {
+  LoadingDialog,
+  LoadingDialogProps,
+} from './LoadingDialog';
 
 export default {
   title: 'Components/Blocks/LoadingDialog',
@@ -14,5 +17,5 @@ const Template: Story<LoadingDialogProps> = (props) => <LoadingDialog {...props}
 
 export const Primary = Template.bind({});
 Primary.args = {
-  
-}
+
+};

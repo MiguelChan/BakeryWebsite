@@ -1,6 +1,7 @@
 import {
   CreateAccountRequest,
   CreateAccountResponse,
+  GetAccountResponse,
   GetAccountsResponse,
 } from '@mgl/shared-components';
 import axios, { AxiosResponse } from 'axios';
@@ -14,6 +15,7 @@ class AccountsClient {
   constructor() {
     this.getAccounts = this.getAccounts.bind(this);
     this.createAccount = this.createAccount.bind(this);
+    this.getAccount = this.getAccount.bind(this);
   }
 
   /**
@@ -46,6 +48,23 @@ class AccountsClient {
         .catch((error: any) => {
           reject(error);
         });
+    });
+  }
+
+  /**
+   * Gets the Account from the Service.
+   *
+   * @param {string} accountId The account id.
+   * @returns The promise.
+   */
+  public getAccount(accountId: string): Promise<GetAccountResponse> {
+    return new Promise<GetAccountResponse>((accept, reject) => {
+      const url = `${this.ACCOUNTS_URL}/${accountId}`;
+      axios.get(url).then((response: AxiosResponse) => {
+        accept(response.data);
+      }).catch((error: any) => {
+        reject(error);
+      });
     });
   }
 }

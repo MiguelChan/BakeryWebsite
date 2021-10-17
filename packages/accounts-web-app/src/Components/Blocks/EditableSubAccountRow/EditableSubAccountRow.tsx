@@ -19,6 +19,7 @@ export interface EditableSubAccountRowProps {
   onDeleteSubAccountClickListener: OnDeleteSubAccountClickListener;
   onSubAccountUpdatedListener: OnSubAccountUpdatedListener;
   subAccount: SubAccount;
+  readOnly: boolean;
 }
 
 export const DELETE_BUTTON = 'DeleteButton';
@@ -28,6 +29,7 @@ export const TEXT_FIELD = 'ATextField';
  * Defines the EditableSubAccount Row.
  *
  * @param {SubAccount} subAccount The SubAccount to init data with.
+ * @param {boolean} readOnly Whether this component can be editted or not.
  * @param {OnSubAccountUpdatedListener} onSubAccountUpdatedListener Called when the SubAccounts gets updated.
  * @param {OnDeleteSubAccountClickListener} onDeleteSubAccountClickListener Called when a deletion of the objec
  * gets requested.
@@ -36,6 +38,7 @@ export const TEXT_FIELD = 'ATextField';
  */
 export const EditableSubAccountRow: React.FunctionComponent<EditableSubAccountRowProps> = ({
   subAccount,
+  readOnly,
   onSubAccountUpdatedListener,
   onDeleteSubAccountClickListener,
 }) => {
@@ -61,14 +64,16 @@ export const EditableSubAccountRow: React.FunctionComponent<EditableSubAccountRo
           label="Descripcion Subcuenta"
           fullWidth
           value={subAccount.description}
+          disabled={readOnly}
           onChange={onSubAccountDescriptionUpdated}
           inputProps={{
-            "data-testid": TEXT_FIELD,
+            'data-testid': TEXT_FIELD,
           }}
         />
       </TableCell>
       <TableCell align="center">
-        <IconButton
+        {!readOnly
+        && <IconButton
           color="primary"
           aria-label="delete-subaccount"
           component="span"
@@ -77,6 +82,7 @@ export const EditableSubAccountRow: React.FunctionComponent<EditableSubAccountRo
         >
           <Delete />
         </IconButton>
+        }
       </TableCell>
     </TableRow>
   );
