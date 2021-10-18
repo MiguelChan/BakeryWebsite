@@ -4,4 +4,6 @@ export const Types = {
   AccountsRoutes: Symbol.for('AccountsRoutes'),
   AccountsServiceUrl: Symbol.for('AccountsServiceUrl'),
   AccountsService: Symbol.for('AccountsService'),
+  SubAccountsController: Symbol.for('SubAccountsController'),
+  SubAccountsRoutes: Symbol.for('SubAccountsRoutes'),
 };

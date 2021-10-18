@@ -3,6 +3,8 @@ import debug from 'debug';
 import {
   CreateAccountRequest,
   CreateAccountResponse,
+  DeleteAccountRequest,
+  DeleteAccountResponse,
   GetAccountRequest,
   GetAccountResponse,
   GetAccountsRequest,
@@ -17,6 +19,7 @@ import {
   Types,
 } from 'utils';
 import {
+  parseDeleteAccountRequest,
   parseGetAccountRequest,
 } from 'controllers/parsers';
 
@@ -32,6 +35,7 @@ export class AccountsController {
     this.getAccounts = this.getAccounts.bind(this);
     this.createAccount = this.createAccount.bind(this);
     this.getAccount = this.getAccount.bind(this);
+    this.deleteAccount = this.deleteAccount.bind(this);
   }
 
   /**
@@ -94,6 +98,27 @@ export class AccountsController {
       logger('Got an error from the Service: %s', exception.message);
       res.status(500).send({
         message: exception.message,
+      });
+    }
+  }
+
+  /**
+   * Deletes a Single Account.
+   *
+   * @param {express.Request} req .
+   * @param {express.Response} res .
+   */
+  async deleteAccount(req: express.Request, res: express.Response) {
+    const deleteAccountRequest: DeleteAccountRequest = parseDeleteAccountRequest(req);
+
+    try {
+      const response: DeleteAccountResponse = await this.accountsService.deleteAccount(deleteAccountRequest);
+      logger('Got a response from the Service: %j', response);
+      res.status(200).send(response);
+    } catch (error: any) {
+      logger('Got an error from the Service: %s', error.message);
+      res.status(500).send({
+        message: error.message,
       });
     }
   }
