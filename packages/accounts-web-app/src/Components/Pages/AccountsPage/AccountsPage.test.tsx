@@ -19,7 +19,7 @@ import {
   UseGetAccountsState,
 } from '../../../Hooks';
 
-describe('AccountsPage', () => {
+describe.skip('AccountsPage', () => {
   const setupComponent = (props: AccountsPageProps): RenderResult => render(
     <MemoryRouter>
       <AccountsPage {...props} />
