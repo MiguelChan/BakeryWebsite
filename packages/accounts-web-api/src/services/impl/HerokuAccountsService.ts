@@ -1,6 +1,10 @@
 import {
   CreateAccountRequest,
   CreateAccountResponse,
+  DeleteAccountRequest,
+  DeleteAccountResponse,
+  DeleteSubAccountRequest,
+  DeleteSubAccountResponse,
   GetAccountRequest,
   GetAccountResponse,
   GetAccountsRequest,
@@ -85,6 +89,42 @@ export class HerokuAccountsService implements AccountsService {
         accept(response.data);
       }).catch((error: AxiosError) => {
         logger('Got an error: %s', error.message);
+        reject(error);
+      });
+    });
+  }
+
+  deleteAccount(deleteAccountRequest: DeleteAccountRequest): Promise<DeleteAccountResponse> {
+    logger('Attempting to delete Account with Params: %j', deleteAccountRequest);
+    return new Promise<DeleteAccountResponse>((accept, reject) => {
+      const {
+        accountId,
+      } = deleteAccountRequest;
+      const fullUrl = `${this.baseUrl}/accounts/${accountId}`;
+
+      axios.delete(fullUrl).then((response: AxiosResponse<DeleteAccountResponse>) => {
+        logger('Got a response: %j', response.data);
+        accept(response.data);
+      }).catch((error: any) => {
+        logger('Got an error: %s', error.message);
+        reject(error);
+      });
+    });
+  }
+
+  deleteSubAccount(deleteSubAccountRequest: DeleteSubAccountRequest): Promise<DeleteSubAccountResponse> {
+    logger('Attempting to delete SubAccount with Params: %j', deleteSubAccountRequest);
+    return new Promise<DeleteSubAccountResponse>((accept, reject) => {
+      const {
+        subAccountId,
+      } = deleteSubAccountRequest;
+      const fullUrl = `${this.baseUrl}/subAccounts/${subAccountId}`;
+
+      axios.delete(fullUrl).then((response: AxiosResponse<DeleteSubAccountResponse>) => {
+        logger('Got a response: %j', response.data);
+        accept(response.data);
+      }).catch((error: any) => {
+        logger('Got an error from the Service: %s', error.message);
         reject(error);
       });
     });

@@ -1,6 +1,10 @@
 import {
   CreateAccountRequest,
   CreateAccountResponse,
+  DeleteAccountRequest,
+  DeleteAccountResponse,
+  DeleteSubAccountRequest,
+  DeleteSubAccountResponse,
   GetAccountRequest,
   GetAccountResponse,
   GetAccountsResponse,
@@ -17,6 +21,7 @@ describe('HerokuAccountsService', () => {
 
   const mockGetFn = axios.get as jest.Mock;
   const mockPostFn = axios.post as jest.Mock;
+  const mockDeleteFn = axios.delete as jest.Mock;
 
   beforeEach(() => {
     accountsService = new HerokuAccountsService(BASE_URL);
@@ -25,6 +30,7 @@ describe('HerokuAccountsService', () => {
   afterEach(() => {
     mockGetFn.mockClear();
     mockPostFn.mockClear();
+    mockDeleteFn.mockClear();
   });
 
   const createAxiosResponse = <T> (response: T): AxiosResponse<T> => {
@@ -145,6 +151,78 @@ describe('HerokuAccountsService', () => {
       return accountsService.getAccount(request).catch((error: any) => {
         expect(error).toEqual(expectedError);
         expect(mockGetFn).toHaveBeenCalledWith(expectedUrl);
+      });
+    });
+  });
+
+  describe('deleteAccount', () => {
+    const TEST_ACCOUNT_ID = 'SomeAccountId';
+    const EXPECTED_DELETE_URL = `${BASE_URL}/accounts/${TEST_ACCOUNT_ID}`;
+
+    it('Should delete the Account', () => {
+      const request: DeleteAccountRequest = {
+        accountId: TEST_ACCOUNT_ID,
+      };
+
+      const expectedResponse: DeleteAccountResponse = {
+        deletedAccount: {} as any,
+        success: true,
+      };
+
+      const axiosResponse = createAxiosResponse(expectedResponse);
+      mockDeleteFn.mockResolvedValueOnce(axiosResponse);
+
+      return accountsService.deleteAccount(request).then((response: DeleteAccountResponse) => {
+        expect(response).toStrictEqual(expectedResponse);
+        expect(mockDeleteFn).toHaveBeenCalledWith(EXPECTED_DELETE_URL);
+      });
+    });
+
+    it('Should handle errors gracefully', () => {
+      const request: DeleteAccountRequest = {
+        accountId: TEST_ACCOUNT_ID,
+      };
+
+      const expectedError = new Error('Something went wrong');
+      mockDeleteFn.mockRejectedValueOnce(expectedError);
+
+      return accountsService.deleteAccount(request).catch((error: any) => {
+        expect(error).toEqual(expectedError);
+        expect(mockDeleteFn).toHaveBeenCalledWith(EXPECTED_DELETE_URL);
+      });
+    });
+  });
+
+  describe('deleteSubAccont', () => {
+    const TEST_SUBACCOUNT_ID = 'SomeId';
+    const TEST_EXPECTED_URL = `${BASE_URL}/subAccounts/${TEST_SUBACCOUNT_ID}`;
+    const TEST_REQUEST: DeleteSubAccountRequest = {
+      subAccountId: TEST_SUBACCOUNT_ID,
+    };
+
+    it('Should delete the SubAccount', () => {
+      const expectedResponse: DeleteSubAccountResponse = {
+        deletedSubAccount: {} as any,
+        success: true,
+      };
+
+      const axiosResponse = createAxiosResponse(expectedResponse);
+      mockDeleteFn.mockResolvedValueOnce(axiosResponse);
+
+      return accountsService.deleteSubAccount(TEST_REQUEST).then((response: DeleteSubAccountResponse) => {
+        expect(response).toStrictEqual(expectedResponse);
+        expect(mockDeleteFn).toHaveBeenCalledWith(TEST_EXPECTED_URL);
+      });
+    });
+
+    it('Should handle errors gracefully', () => {
+      const expectedError = new Error('An error has occurred');
+
+      mockDeleteFn.mockRejectedValueOnce(expectedError);
+
+      return accountsService.deleteSubAccount(TEST_REQUEST).catch((error: any) => {
+        expect(error).toEqual(expectedError);
+        expect(mockDeleteFn).toHaveBeenCalledWith(TEST_EXPECTED_URL);
       });
     });
   });

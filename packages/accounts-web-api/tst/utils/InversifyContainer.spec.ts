@@ -17,5 +17,6 @@ describe('InversifyContainer', () => {
     const appRouteStringSet = new Set(appRoutes.map((currentRoute: CommonRoutesConfig) => currentRoute.getName()));
 
     expect(appRouteStringSet.has('AccountsRoutes')).toBeTruthy();
+    expect(appRouteStringSet.has('SubAccountsRoutes')).toBeTruthy();
   });
 });

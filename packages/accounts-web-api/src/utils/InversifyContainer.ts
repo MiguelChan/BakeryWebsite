@@ -2,10 +2,14 @@ import { Container } from 'inversify';
 import express from 'express';
 import debug from 'debug';
 import { isNullOrUndefined } from '@mgl/shared-components';
-import { AccountsController } from 'controllers';
+import {
+  AccountsController,
+  SubAccountsController,
+} from 'controllers';
 import {
   AccountsRoutes,
   CommonRoutesConfig,
+  SubAccountsRoutes,
 } from 'routes';
 import {
   AccountsService,
@@ -23,6 +27,7 @@ export class InversifyContainer {
 
   private readonly routesTypes: symbol[] = [
     Types.AccountsRoutes,
+    Types.SubAccountsRoutes,
   ];
 
   constructor(private readonly app: express.Application, private readonly accountServiceUrl: string) {
@@ -48,5 +53,7 @@ export class InversifyContainer {
     this.container.bind<AccountsRoutes>(Types.AccountsRoutes).to(AccountsRoutes);
     this.container.bind<string>(Types.AccountsServiceUrl).toConstantValue(this.accountServiceUrl);
     this.container.bind<AccountsService>(Types.AccountsService).to(HerokuAccountsService);
+    this.container.bind<SubAccountsRoutes>(Types.SubAccountsRoutes).to(SubAccountsRoutes);
+    this.container.bind<SubAccountsController>(Types.SubAccountsController).to(SubAccountsController);
   }
 }

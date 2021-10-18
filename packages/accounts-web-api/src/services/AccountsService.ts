@@ -45,17 +45,17 @@ export interface AccountsService {
   /**
    * Deletes an account from the Service.
    * @param {DeleteAccountRequest} deleteAccountRequest The request for deletting the account.
-   * 
+   *
    * @returns {DeleteAccountResponse} The response.
    */
   deleteAccount(deleteAccountRequest: DeleteAccountRequest): Promise<DeleteAccountResponse>;
 
   /**
    * Deletes a single {SubAccount} from the Service.
-   * 
+   *
    * @param {DeleteSubAccountRequest} deleteSubAccountRequest The request.
-   * 
+   *
    * @returns {DeleteSubAccountResponse} The response.
    */
-  deleteSubAccount(deleteSubAccountRequest: DeleteSubAccountRequest): Promise<DeleteSubAccountRequest>;
+  deleteSubAccount(deleteSubAccountRequest: DeleteSubAccountRequest): Promise<DeleteSubAccountResponse>;
 }

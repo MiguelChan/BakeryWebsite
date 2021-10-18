@@ -1,6 +1,8 @@
 import {
   CreateAccountRequest,
   CreateAccountResponse,
+  DeleteAccountRequest,
+  DeleteAccountResponse,
   GetAccountsResponse,
 } from '@mgl/shared-components';
 import { AccountsController } from 'controllers';
@@ -8,6 +10,7 @@ import { AccountsService } from 'services';
 import express from 'express';
 import {
   parseGetAccountRequest,
+  parseDeleteAccountRequest,
 } from 'controllers/parsers';
 import {
   createMockRequest,
@@ -23,11 +26,14 @@ describe('AccountsController', () => {
     getAccounts: jest.fn(),
     createAccount: jest.fn(),
     getAccount: jest.fn(),
+    deleteAccount: jest.fn(),
+    deleteSubAccount: jest.fn(),
   };
 
   const mockGetAccountsFn = mockAccountsService.getAccounts as jest.Mock;
   const mockCreateAccountFn = mockAccountsService.createAccount as jest.Mock;
   const mockGetAccountFn = mockAccountsService.getAccount as jest.Mock;
+  const mockDeleteAccountFn = mockAccountsService.deleteAccount as jest.Mock;
 
   beforeEach(() => {
     accountsController = new AccountsController(mockAccountsService);
@@ -37,6 +43,7 @@ describe('AccountsController', () => {
     mockGetAccountsFn.mockClear();
     mockCreateAccountFn.mockClear();
     mockGetAccountFn.mockClear();
+    mockDeleteAccountFn.mockClear();
   });
 
   describe('getAccounts', () => {
@@ -167,6 +174,59 @@ describe('AccountsController', () => {
 
       await accountsController.getAccount(mockReq, mockRes);
 
+      expect(mockRes.status).toHaveBeenCalledWith(500);
+      expect(mockRes.send).toHaveBeenCalledWith({
+        message: expectedErrorMessage,
+      });
+    });
+  });
+
+  describe('deleteAccount', () => {
+    const mockParseDeleteAccountFn = parseDeleteAccountRequest as jest.Mock;
+
+    afterEach(() => {
+      mockParseDeleteAccountFn.mockClear();
+    });
+
+    it('Should create an Account', async () => {
+      const expectedRequest: DeleteAccountRequest = {
+        discriminator: 'SomeSome',
+      } as any;
+
+      const expectedResponse: DeleteAccountResponse = {
+        discriminator: 'SomeDelete',
+      } as any;
+
+      mockParseDeleteAccountFn.mockReturnValueOnce(expectedRequest);
+      mockDeleteAccountFn.mockResolvedValueOnce(expectedResponse);
+
+      const mockReq = createMockRequest();
+      const mockRes = createMockResponse();
+
+      await accountsController.deleteAccount(mockReq, mockRes);
+
+      expect(mockParseDeleteAccountFn).toHaveBeenCalledWith(mockReq);
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      expect(mockRes.send).toHaveBeenCalledWith(expectedResponse);
+    });
+
+    it('Should handle errors gracefully', async () => {
+      const expectedRequest: DeleteAccountRequest = {
+        discriminator: 'SomeSome',
+      } as any;
+
+      const expectedErrorMessage = 'An Error Has Occurred';
+      const error = new Error(expectedErrorMessage);
+
+      mockParseDeleteAccountFn.mockReturnValueOnce(expectedRequest);
+      mockDeleteAccountFn.mockRejectedValueOnce(error);
+
+      const mockReq = createMockRequest();
+      const mockRes = createMockResponse();
+
+      await accountsController.deleteAccount(mockReq, mockRes);
+
+      expect(mockParseDeleteAccountFn).toHaveBeenCalledWith(mockReq);
       expect(mockRes.status).toHaveBeenCalledWith(500);
       expect(mockRes.send).toHaveBeenCalledWith({
         message: expectedErrorMessage,
