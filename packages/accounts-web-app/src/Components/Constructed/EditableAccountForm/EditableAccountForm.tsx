@@ -42,7 +42,7 @@ const validateSchema = yup.object({
   title: yup
     .string()
     .required('El titulo de cuenta es requerido')
-    .max(10, 'El titulo de cuenta no puede ser mayor a 10 caracters'),
+    .max(120, 'El titulo de cuenta no puede ser mayor a 120 caracters'),
   accountType: yup
     .string()
     .required()
