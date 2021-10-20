@@ -1,6 +1,7 @@
 import {
   CreateAccountRequest,
   CreateAccountResponse,
+  DeleteAccountResponse,
   GetAccountResponse,
   GetAccountsResponse,
 } from '@mgl/shared-components';
@@ -61,6 +62,23 @@ class AccountsClient {
     return new Promise<GetAccountResponse>((accept, reject) => {
       const url = `${this.ACCOUNTS_URL}/${accountId}`;
       axios.get(url).then((response: AxiosResponse) => {
+        accept(response.data);
+      }).catch((error: any) => {
+        reject(error);
+      });
+    });
+  }
+
+  /**
+   * Deletes an Account from the Service.
+   * 
+   * @param accountId .
+   * @returns .
+   */
+  public deleteAccount(accountId: string): Promise<DeleteAccountResponse> {
+    return new Promise<DeleteAccountResponse>((accept, reject) => {
+      const url = `${this.ACCOUNTS_URL}/${accountId}`;
+      axios.delete(url).then((response: AxiosResponse<DeleteAccountResponse>) => {
         accept(response.data);
       }).catch((error: any) => {
         reject(error);
