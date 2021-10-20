@@ -25,6 +25,7 @@ describe('SubAccountsController', () => {
       deleteSubAccount: mockDeleteSubAccountFn,
       getAccount: jest.fn(),
       getAccounts: jest.fn(),
+      putAccount: jest.fn(),
     };
 
     subAccountsController = new SubAccountsController(service);

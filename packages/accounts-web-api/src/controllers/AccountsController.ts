@@ -9,6 +9,7 @@ import {
   GetAccountResponse,
   GetAccountsRequest,
   GetAccountsResponse,
+  PutAccountResponse,
 } from '@mgl/shared-components';
 import { AccountsService } from 'services';
 import {
@@ -21,6 +22,7 @@ import {
 import {
   parseDeleteAccountRequest,
   parseGetAccountRequest,
+  parsePutAccountRequest,
 } from 'controllers/parsers';
 
 const logger: debug.IDebugger = debug('accounts:app:AccountsController');
@@ -36,6 +38,7 @@ export class AccountsController {
     this.createAccount = this.createAccount.bind(this);
     this.getAccount = this.getAccount.bind(this);
     this.deleteAccount = this.deleteAccount.bind(this);
+    this.putAccount = this.putAccount.bind(this);
   }
 
   /**
@@ -119,6 +122,27 @@ export class AccountsController {
       logger('Got an error from the Service: %s', error.message);
       res.status(500).send({
         message: error.message,
+      });
+    }
+  }
+
+  /**
+   * Puts a Single Account.
+   *
+   * @param {express.Request} req .
+   * @param {express.Response} res .
+   */
+  async putAccount(req: express.Request, res: express.Response) {
+    const putAccountRequest = parsePutAccountRequest(req);
+
+    try {
+      const response: PutAccountResponse = await this.accountsService.putAccount(putAccountRequest);
+      logger('Got a response from the Service: %j', response);
+      res.status(200).send(response);
+    } catch (exception: any) {
+      logger('Got an error from the Service: %s', exception.message);
+      res.status(500).send({
+        message: exception.message,
       });
     }
   }

@@ -4,6 +4,8 @@ import {
   DeleteAccountRequest,
   DeleteAccountResponse,
   GetAccountsResponse,
+  PutAccountRequest,
+  PutAccountResponse,
 } from '@mgl/shared-components';
 import { AccountsController } from 'controllers';
 import { AccountsService } from 'services';
@@ -11,6 +13,7 @@ import express from 'express';
 import {
   parseGetAccountRequest,
   parseDeleteAccountRequest,
+  parsePutAccountRequest,
 } from 'controllers/parsers';
 import {
   createMockRequest,
@@ -28,12 +31,14 @@ describe('AccountsController', () => {
     getAccount: jest.fn(),
     deleteAccount: jest.fn(),
     deleteSubAccount: jest.fn(),
+    putAccount: jest.fn(),
   };
 
   const mockGetAccountsFn = mockAccountsService.getAccounts as jest.Mock;
   const mockCreateAccountFn = mockAccountsService.createAccount as jest.Mock;
   const mockGetAccountFn = mockAccountsService.getAccount as jest.Mock;
   const mockDeleteAccountFn = mockAccountsService.deleteAccount as jest.Mock;
+  const mockPutAccountFn = mockAccountsService.putAccount as jest.Mock;
 
   beforeEach(() => {
     accountsController = new AccountsController(mockAccountsService);
@@ -44,6 +49,7 @@ describe('AccountsController', () => {
     mockCreateAccountFn.mockClear();
     mockGetAccountFn.mockClear();
     mockDeleteAccountFn.mockClear();
+    mockPutAccountFn.mockClear();
   });
 
   describe('getAccounts', () => {
@@ -227,6 +233,59 @@ describe('AccountsController', () => {
       await accountsController.deleteAccount(mockReq, mockRes);
 
       expect(mockParseDeleteAccountFn).toHaveBeenCalledWith(mockReq);
+      expect(mockRes.status).toHaveBeenCalledWith(500);
+      expect(mockRes.send).toHaveBeenCalledWith({
+        message: expectedErrorMessage,
+      });
+    });
+  });
+
+  describe('putAccount', () => {
+    const mockParsePutRequestFn = parsePutAccountRequest as jest.Mock;
+
+    afterEach(() => {
+      mockParsePutRequestFn.mockClear();
+    });
+
+    it('Should put the Account', async () => {
+      const mockRequest = createMockRequest();
+      const mockRes = createMockResponse();
+
+      const expectedRequest: PutAccountRequest = {
+        disc: 'Request',
+      } as any;
+      mockParsePutRequestFn.mockReturnValueOnce(expectedRequest);
+
+      const expectedResponse: PutAccountResponse = {
+        disc: 'Response',
+      } as any;
+      mockPutAccountFn.mockResolvedValueOnce(expectedResponse);
+
+      await accountsController.putAccount(mockRequest, mockRes);
+
+      expect(mockParsePutRequestFn).toHaveBeenCalledWith(mockRequest);
+      expect(mockPutAccountFn).toHaveBeenCalledWith(expectedRequest);
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      expect(mockRes.send).toHaveBeenCalledWith(expectedResponse);
+    });
+
+    it('Should handle errors gracefully', async () => {
+      const mockRequest = createMockRequest();
+      const mockRes = createMockResponse();
+
+      const expectedRequest: PutAccountRequest = {
+        disc: 'Request',
+      } as any;
+      mockParsePutRequestFn.mockReturnValueOnce(expectedRequest);
+
+      const expectedErrorMessage = 'An error occurred';
+      const error = new Error(expectedErrorMessage);
+      mockPutAccountFn.mockRejectedValueOnce(error);
+
+      await accountsController.putAccount(mockRequest, mockRes);
+
+      expect(mockParsePutRequestFn).toHaveBeenCalledWith(mockRequest);
+      expect(mockPutAccountFn).toHaveBeenCalledWith(expectedRequest);
       expect(mockRes.status).toHaveBeenCalledWith(500);
       expect(mockRes.send).toHaveBeenCalledWith({
         message: expectedErrorMessage,

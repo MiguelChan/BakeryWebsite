@@ -8,3 +8,5 @@ export * from './accounts-api/DeleteAccountRequest';
 export * from './accounts-api/DeleteAccountResponse';
 export * from './accounts-api/DeleteSubAccountRequest';
 export * from './accounts-api/DeleteSubAccountResponse';
+export * from './accounts-api/PutAccountRequest';
+export * from './accounts-api/PutAccountResponse';
