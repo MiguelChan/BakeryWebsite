@@ -9,6 +9,8 @@ import {
   GetAccountResponse,
   GetAccountsRequest,
   GetAccountsResponse,
+  PutAccountRequest,
+  PutAccountResponse,
 } from '@mgl/shared-components';
 import {
   inject,
@@ -126,6 +128,24 @@ export class HerokuAccountsService implements AccountsService {
       }).catch((error: any) => {
         logger('Got an error from the Service: %s', error.message);
         reject(error);
+      });
+    });
+  }
+
+  putAccount(putAccountRequest: PutAccountRequest): Promise<PutAccountResponse> {
+    logger('Attempting to put Account with Params: %j', putAccountRequest);
+
+    return new Promise<PutAccountResponse>((accept, reject) => {
+      const fullUrl = `${this.baseUrl}/accounts`;
+
+      axios.put(fullUrl, putAccountRequest).then((response: AxiosResponse<PutAccountResponse>) => {
+        logger('Got response from the Server: %j', response.data);
+        accept(response.data);
+      }).catch((error: any) => {
+        logger('Got an error from the Service: %s', error.message);
+        reject(error);
+      }).finally(() => {
+        logger('Completed call to PutAccount');
       });
     });
   }

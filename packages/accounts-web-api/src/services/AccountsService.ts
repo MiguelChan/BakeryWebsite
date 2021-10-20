@@ -9,6 +9,8 @@ import {
   GetAccountResponse,
   GetAccountsRequest,
   GetAccountsResponse,
+  PutAccountRequest,
+  PutAccountResponse,
 } from '@mgl/shared-components';
 
 /**
@@ -58,4 +60,13 @@ export interface AccountsService {
    * @returns {DeleteSubAccountResponse} The response.
    */
   deleteSubAccount(deleteSubAccountRequest: DeleteSubAccountRequest): Promise<DeleteSubAccountResponse>;
+
+  /**
+   * Puts an {Account} into the Service.
+   *
+   * @param {PutAccountRequest} putAccountRequest The request.
+   *
+   * @returns {PutAccountResponse} The response.
+   */
+  putAccount(putAccountRequest: PutAccountRequest): Promise<PutAccountResponse>;
 }

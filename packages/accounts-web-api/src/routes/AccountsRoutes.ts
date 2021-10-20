@@ -22,6 +22,7 @@ export class AccountsRoutes extends CommonRoutesConfig {
   public configureRoutes(): express.Application {
     this.app.route('/api/accounts').get(this.accountsController.getAccounts);
     this.app.route('/api/accounts').post(this.accountsController.createAccount);
+    this.app.route('/api/accounts').put(this.accountsController.putAccount);
     this.app.route('/api/accounts/:accountId').get(this.accountsController.getAccount);
     this.app.route('/api/accounts/:accountId').delete(this.accountsController.deleteAccount);
 

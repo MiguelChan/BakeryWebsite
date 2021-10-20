@@ -8,6 +8,8 @@ import {
   GetAccountRequest,
   GetAccountResponse,
   GetAccountsResponse,
+  PutAccountRequest,
+  PutAccountResponse,
 } from '@mgl/shared-components';
 import axios, { AxiosResponse } from 'axios';
 import { HerokuAccountsService } from 'services';
@@ -22,6 +24,7 @@ describe('HerokuAccountsService', () => {
   const mockGetFn = axios.get as jest.Mock;
   const mockPostFn = axios.post as jest.Mock;
   const mockDeleteFn = axios.delete as jest.Mock;
+  const mockPutFn = axios.put as jest.Mock;
 
   beforeEach(() => {
     accountsService = new HerokuAccountsService(BASE_URL);
@@ -31,6 +34,7 @@ describe('HerokuAccountsService', () => {
     mockGetFn.mockClear();
     mockPostFn.mockClear();
     mockDeleteFn.mockClear();
+    mockPutFn.mockClear();
   });
 
   const createAxiosResponse = <T> (response: T): AxiosResponse<T> => {
@@ -223,6 +227,44 @@ describe('HerokuAccountsService', () => {
       return accountsService.deleteSubAccount(TEST_REQUEST).catch((error: any) => {
         expect(error).toEqual(expectedError);
         expect(mockDeleteFn).toHaveBeenCalledWith(TEST_EXPECTED_URL);
+      });
+    });
+  });
+
+  describe('putAccount', () => {
+    const FULL_URL = `${BASE_URL}/accounts`;
+
+    it('Should put the Account', () => {
+      const request: PutAccountRequest = {
+        disc: 'SomeSome',
+      } as any;
+
+      const expectedResponse: PutAccountResponse = {
+        disc: 'AResponse',
+      } as any;
+
+      const axiosResponse = createAxiosResponse(expectedResponse);
+
+      mockPutFn.mockResolvedValueOnce(axiosResponse);
+
+      return accountsService.putAccount(request).then((response: PutAccountResponse) => {
+        expect(response).toEqual(expectedResponse);
+        expect(mockPutFn).toHaveBeenCalledWith(FULL_URL, request);
+      });
+    });
+
+    it('Should handle errors gracefully', () => {
+      const expectedRequest: PutAccountRequest = {
+        disc: 'Request',
+      } as any;
+
+      const expectedError: Error = new Error('An error occurred');
+
+      mockPutFn.mockRejectedValueOnce(expectedError);
+
+      return accountsService.putAccount(expectedRequest).catch((error: any) => {
+        expect(error).toEqual(expectedError);
+        expect(mockPutFn).toHaveBeenCalledWith(FULL_URL, expectedRequest);
       });
     });
   });
