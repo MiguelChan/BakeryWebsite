@@ -39,6 +39,7 @@ describe.skip('AccountsPage', () => {
           requestCreateAccount: (): void => {},
           errorMessage: undefined,
         }),
+        useGetAccount: jest.fn(),
       },
     };
 
@@ -67,6 +68,7 @@ describe.skip('AccountsPage', () => {
           requestCreateAccount: (): void => {},
           errorMessage: undefined,
         }),
+        useGetAccount: jest.fn(),
       },
     };
 

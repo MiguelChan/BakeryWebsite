@@ -27,6 +27,7 @@ module.exports = {
       '!src/**/index.ts',
       '!src/Utils/TypeUtils.ts',
       '!src/Clients/AccountsClient/AccountsClientTypes.ts',
+      '!src/Hooks/UseDeleteAccount/UseDeleteAccount.ts',
     ],
   
     // The directory where Jest should output its coverage files

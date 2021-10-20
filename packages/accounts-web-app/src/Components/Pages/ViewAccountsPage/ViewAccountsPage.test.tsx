@@ -10,9 +10,9 @@ import {
 } from '../../../Context';
 import { ViewAccountsPage } from './ViewAccountsPage';
 import { ViewAccountsDashboard } from '../../Constructed';
-import { EmptyTable } from './ViewAccountsPage.stories';
+import { EmptyTable, WithData } from './ViewAccountsPage.stories';
 
-describe.skip('ViewAccountsPage', () => {
+describe('ViewAccountsPage', () => {
   interface Context {
     appContext: ApplicationContext;
   }
@@ -31,6 +31,14 @@ describe.skip('ViewAccountsPage', () => {
 
   it('Should display an EmptyTable', () => {
     const props = EmptyTable.args as Context;
+
+    const result = setupComponent(props);
+
+    expect(result.container).toMatchSnapshot();
+  });
+
+  it('Should display some Data', () => {
+    const props = WithData.args as Context;
 
     const result = setupComponent(props);
 

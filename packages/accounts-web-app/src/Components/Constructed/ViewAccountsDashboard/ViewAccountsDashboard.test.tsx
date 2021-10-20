@@ -9,13 +9,12 @@ import {
   ApplicationContext,
 } from '../../../Context';
 import { ViewAccountsDashboard } from './ViewAccountsDashboard';
-import { LoadingTable } from './ViewAccountsDashboard.stories';
 import {
   UseCreateAccountState,
   UseGetAccountsState,
 } from '../../../Hooks';
 
-describe.skip('ViewAccountsDashbard', () => {
+describe('ViewAccountsDashbard', () => {
   const setupComponent = (props: ApplicationContext): RenderResult => {
     const Component = (
       <AccountsAppContext.Provider value={props}>
@@ -37,6 +36,7 @@ describe.skip('ViewAccountsDashbard', () => {
         requestCreateAccount: (): void => {},
         errorMessage: null,
       }),
+      useGetAccount: jest.fn(),
     };
 
     const result = setupComponent(loadingTableProps);
@@ -57,6 +57,7 @@ describe.skip('ViewAccountsDashbard', () => {
         requestCreateAccount: (): void => {},
         errorMessage: null,
       }),
+      useGetAccount: jest.fn(),
     };
 
     const result = setupComponent(errorMessageTableProps);
@@ -77,6 +78,7 @@ describe.skip('ViewAccountsDashbard', () => {
         requestCreateAccount: (): void => {},
         errorMessage: null,
       }),
+      useGetAccount: jest.fn(),
     };
 
     const result = setupComponent(emptyDataProps);
@@ -104,6 +106,7 @@ describe.skip('ViewAccountsDashbard', () => {
         requestCreateAccount: (): void => {},
         errorMessage: null,
       }),
+      useGetAccount: jest.fn(),
     };
 
     const result = setupComponent(withDataProps);

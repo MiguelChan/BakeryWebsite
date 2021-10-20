@@ -1,6 +1,7 @@
 import {
   CreateAccountRequest,
   CreateAccountResponse,
+  DeleteAccountResponse,
   GetAccountResponse,
   GetAccountsResponse,
 } from '@mgl/shared-components';
@@ -17,10 +18,12 @@ jest.mock('axios');
 describe('AccountsClient', () => {
   const mockGetFn = axios.get as jest.Mock;
   const mockPostFn = axios.post as jest.Mock;
+  const mockDeleteFn = axios.delete as jest.Mock;
 
   afterEach(() => {
     mockGetFn.mockClear();
     mockPostFn.mockClear();
+    mockDeleteFn.mockClear();
   });
 
   describe('getAccounts', () => {
@@ -120,6 +123,35 @@ describe('AccountsClient', () => {
         expect(mockGetFn).toHaveBeenCalledWith(`/api/accounts/${expectedAccountId}`);
       });
     });
+  });
+
+  describe('deleteAccount', () => {
+    it('Should delete an Account', () => {
+      const expectedAccountId = 'AccountId';
+      const expectedResponse: DeleteAccountResponse = {} as any;
+      const axiosResponse = buildAxiosResponse(expectedResponse);
+
+      mockDeleteFn.mockResolvedValueOnce(axiosResponse);
+
+      return accountsClient.deleteAccount(expectedAccountId).then((response: DeleteAccountResponse) => {
+        expect(response).toStrictEqual(expectedResponse);
+        expect(mockDeleteFn).toHaveBeenCalledWith(`/api/accounts/${expectedAccountId}`);
+      });
+    });
+
+    it('Should handle errors Gracefully', () => {
+      const expectedAccountId = 'AccountId';
+      const expectedError = new Error('Something went wrong');
+
+      mockDeleteFn.mockRejectedValueOnce(expectedError);
+
+      return accountsClient.deleteAccount(expectedAccountId).catch((error: any) => {
+        expect(error).toStrictEqual(expectedError);
+        expect(mockDeleteFn).toHaveBeenCalledWith(`/api/accounts/${expectedAccountId}`);
+      });
+    });
+
+    
   });
 
   const buildAxiosResponse = <T> (object: T): AxiosResponse<T> => {
