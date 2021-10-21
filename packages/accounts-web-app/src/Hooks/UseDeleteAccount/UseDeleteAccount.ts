@@ -34,7 +34,7 @@ export function useDeleteAccount(deleteAccountApiFn: DeleteAccountApiFn): UseDel
   const requestDeleteAccount = (accountId: string): void => {
     setAccountId(accountId);
     setLoading(true);
-  }
+  };
 
   return {
     isLoading,

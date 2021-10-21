@@ -4,6 +4,8 @@ import {
   DeleteAccountResponse,
   GetAccountResponse,
   GetAccountsResponse,
+  PutAccountRequest,
+  PutAccountResponse,
 } from '@mgl/shared-components';
 
 /**
@@ -21,8 +23,12 @@ export type CreateAccountApiFn = (createAccountRequest: CreateAccountRequest) =>
  */
 export type GetAccountApiFn = (accountId: string) => Promise<GetAccountResponse>;
 
-
 /**
  * Defines the Method signature of the "DeleteAccount" API.
  */
 export type DeleteAccountApiFn = (accountId: string) => Promise<DeleteAccountResponse>;
+
+/**
+ * Defines the Method signature of the "PutAccount" API.
+ */
+export type PutAccountApiFn = (putAccountRequest: PutAccountRequest) => Promise<PutAccountResponse>;

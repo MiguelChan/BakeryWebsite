@@ -63,6 +63,36 @@ describe('EditableSubAccountRow', () => {
     expect(mockOnDelete).toHaveBeenCalledWith(expectedSubAccount);
   });
 
+  it('Should not display the DeleteButton when the Account cant be editted', () => {
+    const expectedSubAccount = initialSubAccount();
+    expectedSubAccount.id = 'sbacct12345678912341';
+    const expectedText = 'SomeText';
+
+    const mockOnUpdate = jest.fn();
+
+    const props: EditableSubAccountRowProps = {
+      onDeleteSubAccountClickListener: jest.fn(),
+      onSubAccountUpdatedListener: mockOnUpdate,
+      subAccount: expectedSubAccount,
+      readOnly: false,
+    };
+
+    setupComponent(props);
+
+    expect(screen.queryByTestId(DELETE_BUTTON)).toBeNull();
+
+    fireEvent.change(screen.getByTestId(TEXT_FIELD), {
+      target: {
+        value: expectedText,
+      },
+    });
+
+    expect(mockOnUpdate).toHaveBeenCalledWith({
+      ...expectedSubAccount,
+      description: expectedText,
+    });
+  });
+
   it('Should call the onSubAccountUpdatedListener when the Name changes', () => {
     const expectedSubAccount = initialSubAccount();
     const expectedText = 'This is the new Text';

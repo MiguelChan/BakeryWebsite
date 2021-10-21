@@ -13,13 +13,11 @@ import {
   ApplicationContext,
 } from '../../../Context';
 import {
-  ViewAccountsDashboard,
-} from '../../Constructed';
-import {
   CreateAccountsPage,
 } from '../CreateAccountPage/CreateAccountsPage';
 import { ViewAccountsPage } from '../ViewAccountsPage/ViewAccountsPage';
 import { ViewAccountPage } from '../ViewAccountPage/ViewAccountPage';
+import { EditAccountPage } from '../EditAccountPage/EditAccountPage';
 
 export interface AccountsPageProps {
   appContext: ApplicationContext;
@@ -38,7 +36,10 @@ export const AccountsPage: React.FunctionComponent<AccountsPageProps> = ({
           <Route path="/accounts/create" exact>
             <CreateAccountsPage />
           </Route>
-          <Route path='/accounts/:accountId'>
+          <Route path='/accounts/:accountId/edit' exact>
+            <EditAccountPage />
+          </Route>
+          <Route path='/accounts/:accountId' exact>
             <ViewAccountPage />
           </Route>
         </Switch>
