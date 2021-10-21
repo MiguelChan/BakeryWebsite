@@ -59,3 +59,13 @@ ReadOnly.args = {
   onSubAccountUpdatedListener: (): void => {},
   readOnly: true,
 };
+
+export const WithNonDeletableRow = Template.bind({});
+WithNonDeletableRow.args = {
+  subAccount: {
+    id: 'sbacct12345678912341',
+    description: 'Some Description',
+  },
+  onSubAccountUpdatedListener: (): void => {},
+  readOnly: false,
+};

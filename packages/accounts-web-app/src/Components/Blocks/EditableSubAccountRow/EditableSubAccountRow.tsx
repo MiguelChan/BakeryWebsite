@@ -42,6 +42,12 @@ export const EditableSubAccountRow: React.FunctionComponent<EditableSubAccountRo
   onSubAccountUpdatedListener,
   onDeleteSubAccountClickListener,
 }) => {
+  const {
+    id,
+  } = subAccount;
+
+  const curatedId = id || '';
+
   const onDeleteClickListener = (): void => {
     onDeleteSubAccountClickListener(subAccount);
   };
@@ -72,7 +78,7 @@ export const EditableSubAccountRow: React.FunctionComponent<EditableSubAccountRo
         />
       </TableCell>
       <TableCell align="center">
-        {!readOnly
+        {!readOnly && !curatedId.startsWith('sbacct')
         && <IconButton
           color="primary"
           aria-label="delete-subaccount"

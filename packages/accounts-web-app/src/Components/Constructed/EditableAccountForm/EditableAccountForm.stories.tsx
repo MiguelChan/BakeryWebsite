@@ -61,3 +61,23 @@ WithInitialValues.args = {
     ],
   },
 };
+
+export const WithNonDeletableValues = Template.bind({});
+WithNonDeletableValues.args = {
+  readOnly: false,
+  title: 'Editar Cuenta',
+  account: {
+    title: 'A Title',
+    accountType: AccountType.Entry,
+    subAccounts: [
+      {
+        id: 'sbacct12345',
+        description: 'One SubAccount',
+      },
+      {
+        id: 'sbacct12346',
+        description: 'Two subAccounts',
+      },
+    ],
+  },
+};

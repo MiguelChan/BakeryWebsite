@@ -4,6 +4,8 @@ import {
   DeleteAccountResponse,
   GetAccountResponse,
   GetAccountsResponse,
+  PutAccountRequest,
+  PutAccountResponse,
 } from '@mgl/shared-components';
 import axios, { AxiosResponse } from 'axios';
 
@@ -17,6 +19,7 @@ class AccountsClient {
     this.getAccounts = this.getAccounts.bind(this);
     this.createAccount = this.createAccount.bind(this);
     this.getAccount = this.getAccount.bind(this);
+    this.updateAccount = this.updateAccount.bind(this);
   }
 
   /**
@@ -71,7 +74,7 @@ class AccountsClient {
 
   /**
    * Deletes an Account from the Service.
-   * 
+   *
    * @param accountId .
    * @returns .
    */
@@ -79,6 +82,23 @@ class AccountsClient {
     return new Promise<DeleteAccountResponse>((accept, reject) => {
       const url = `${this.ACCOUNTS_URL}/${accountId}`;
       axios.delete(url).then((response: AxiosResponse<DeleteAccountResponse>) => {
+        accept(response.data);
+      }).catch((error: any) => {
+        reject(error);
+      });
+    });
+  }
+
+  /**
+   * Puts an Account into the Service.
+   *
+   * @param {PutAccountRequest} putAccountRequest .
+   * @returns .
+   */
+  public updateAccount(putAccountRequest: PutAccountRequest): Promise<PutAccountResponse> {
+    return new Promise<PutAccountResponse>((accept, reject) => {
+      const url = `${this.ACCOUNTS_URL}`;
+      axios.put(url, putAccountRequest).then((response: AxiosResponse<PutAccountResponse>) => {
         accept(response.data);
       }).catch((error: any) => {
         reject(error);

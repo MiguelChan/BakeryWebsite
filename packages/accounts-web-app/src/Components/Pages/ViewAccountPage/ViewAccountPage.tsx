@@ -2,10 +2,12 @@ import { isNullOrUndefined } from '@mgl/shared-components';
 import {
   Alert,
   AlertTitle,
-  Typography,
+  Button,
+  useTheme,
 } from '@mui/material';
 import React from 'react';
 import {
+  useHistory,
   useParams,
 } from 'react-router-dom';
 import {
@@ -21,6 +23,10 @@ export interface ViewAccountPageProps {
 }
 
 export const ViewAccountPage: React.FunctionComponent<ViewAccountPageProps> = () => {
+
+  const currentTheme = useTheme();
+  const currentHistory = useHistory();
+
   const {
     accountId,
   } = useParams<{ accountId: string }>();
@@ -33,6 +39,10 @@ export const ViewAccountPage: React.FunctionComponent<ViewAccountPageProps> = ()
   React.useEffect(() => {
     useGetAccountState.getAccount(accountId);
   }, []);
+
+  const redirectToEditAccount = () => {
+    currentHistory.push(`${accountId}/edit`);
+  };
 
   const renderBody = (): React.ReactElement => {
     if (useGetAccountState.isLoading) {
@@ -62,6 +72,16 @@ export const ViewAccountPage: React.FunctionComponent<ViewAccountPageProps> = ()
           title='Vista de Cuenta'
           readOnly
         />
+        <Button 
+          variant='contained' 
+          color='primary'
+          sx={{
+            marginTop: currentTheme.spacing(2),
+          }}
+          onClick={redirectToEditAccount}
+        >
+          Editar Cuenta
+        </Button>
       </>
     );
   };

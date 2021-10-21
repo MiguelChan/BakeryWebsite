@@ -10,7 +10,10 @@ import {
 } from '../../../Context';
 import { ViewAccountsPage } from './ViewAccountsPage';
 import { ViewAccountsDashboard } from '../../Constructed';
-import { EmptyTable, WithData } from './ViewAccountsPage.stories';
+import {
+  EmptyTable,
+  WithData,
+} from './ViewAccountsPage.stories';
 
 describe('ViewAccountsPage', () => {
   interface Context {

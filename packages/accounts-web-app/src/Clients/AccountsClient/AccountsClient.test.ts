@@ -4,6 +4,8 @@ import {
   DeleteAccountResponse,
   GetAccountResponse,
   GetAccountsResponse,
+  PutAccountRequest,
+  PutAccountResponse,
 } from '@mgl/shared-components';
 import axios, {
   AxiosError,
@@ -19,11 +21,13 @@ describe('AccountsClient', () => {
   const mockGetFn = axios.get as jest.Mock;
   const mockPostFn = axios.post as jest.Mock;
   const mockDeleteFn = axios.delete as jest.Mock;
+  const mockPutFn = axios.put as jest.Mock;
 
   afterEach(() => {
     mockGetFn.mockClear();
     mockPostFn.mockClear();
     mockDeleteFn.mockClear();
+    mockPutFn.mockClear();
   });
 
   describe('getAccounts', () => {
@@ -150,8 +154,40 @@ describe('AccountsClient', () => {
         expect(mockDeleteFn).toHaveBeenCalledWith(`/api/accounts/${expectedAccountId}`);
       });
     });
+  });
 
-    
+  describe('putAccount', () => {
+    it('Should put the Account', () => {
+      const expectedRequest: PutAccountRequest = {
+        disc: 'request',
+      } as any;
+
+      const expectedResponse: PutAccountResponse = {
+        disc: 'response',
+      } as any;
+
+      const axiosResponse = buildAxiosResponse(expectedResponse);
+      mockPutFn.mockResolvedValueOnce(axiosResponse);
+
+      return accountsClient.updateAccount(expectedRequest).then((response: PutAccountResponse) => {
+        expect(response).toEqual(expectedResponse);
+        expect(mockPutFn).toHaveBeenCalledWith('/api/accounts', expectedRequest);
+      });
+    });
+
+    it('Should handle errors gracefully', () => {
+      const expectedRequest: PutAccountRequest = {
+        disc: 'request',
+      } as any;
+
+      const expectedError = new Error('An error occurred');
+      mockPutFn.mockRejectedValueOnce(expectedError);
+
+      return accountsClient.updateAccount(expectedRequest).catch((error: any) => {
+        expect(error).toEqual(expectedError);
+        expect(mockPutFn).toHaveBeenCalledWith('/api/accounts', expectedRequest);
+      });
+    });
   });
 
   const buildAxiosResponse = <T> (object: T): AxiosResponse<T> => {
